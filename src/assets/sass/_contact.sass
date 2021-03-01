@@ -1,0 +1,43 @@
+.contact
+  padding: 140px 5vw 0
+  +breakpoint(sm)
+    padding-top: 8vmin
+
+.description
+  padding-bottom: 30px
+  +breakpoint(sm)
+    text-align: center
+
+.skill p
+  font-size: 14px
+  +breakpoint(sm)
+    font-size: 12px
+
+.info
+  +setFlex(center,flex-start)
+  flex-direction: column
+  .info__email, .info__phone
+    margin-bottom: 15px
+    letter-spacing: 2.5px
+    font-size: 16px
+    display: inline-block
+    +breakpoint(sm)
+      font-size: 12px
+
+.social-bar
+  padding-top: 50px
+  display: inline-block
+  a.fab
+    display: inline-block
+    color: rgba(0, 0, 0, 0.6)
+    font-size: 30px
+    margin: 0 8px
+    +size(30px)
+    @media (min-width: 996px)
+      &:hover svg
+        color: #fcb437
+
+.copyright
+  text-align: center
+  margin: 30px 0
+  padding: 0px 5vw
