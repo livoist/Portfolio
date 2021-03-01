@@ -1,0 +1,36 @@
+#mousemoveScope
+  +size(100vw,100vh)
+
+.mousemoveScope__cursor__pointer
+  +size(56px)
+  +setPosition(fixed,0,null,null,0)
+  opacity: 0
+  z-index: 1
+  pointer-events: none
+  +breakpoint(md)
+    display: none
+  &::before,&::after
+    content: ''
+    border-radius: 50%
+  &::before
+    +size(100%)
+    +setPosition(absolute,-50%,null,null,-50%)
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)
+    border: 2px solid #424040
+  &::after
+    +size(80%)
+    +setPosition(absolute,-40%,null,null,-40%)
+    line-height: 1.5
+    transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1)
+
+.is-hover .mousemoveScope__cursor__pointer
+  z-index: -1
+  &::before
+    opacity: 0.6
+    background-color: #424040
+    transform: scale(1.4)
+
+.is-none .mousemoveScope__cursor__pointer
+  visibility: hidden
+  &::after,&::before
+    visibility: hidden
