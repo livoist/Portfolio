@@ -1,32 +1,53 @@
-<template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+<template lang="pug">
+#mousemoveScope
+  .mousemoveScope__cursor__pointer
+
+  #app
+    Header
+
+    .content--second
+      Portfolio
+      Contact
+
+    TransitionBlock
+
+    .content--first
+      .content__move
+        .content__reverse
+          EnterView
+
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import { TweenMax, TimelineMax } from 'gsap'
+import Scrollbar from 'smooth-scrollbar'
+import Mouse from '@/mouse/mouseEvent.js'
+import { Header, Contact, TransitionBlock } from '@c'
+import EnterView from '@/views/EnterView.vue'
+import Portfolio from '@/views/PortfolioList.vue'
+import '@css'
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  name: 'App',
+  components: {
+    Header,
+    EnterView,
+    Portfolio,
+    Contact,
+    TransitionBlock
+  },
+  mounted () {
+    this.mouseEvent()
+    this.scrollEvent()
+  },
+  methods: {
+    mouseEvent () {
+      const mouseCursor = new Mouse()
+      mouseCursor.render()
+    },
+    scrollEvent() {
+      Scrollbar.init(document.querySelector('.content--second'), { damping: 0.03 })
     }
   }
 }
-</style>
+</script>
