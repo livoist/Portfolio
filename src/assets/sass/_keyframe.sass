@@ -1,0 +1,24 @@
+@keyframes backFrame
+  0%
+    pointer-events: none
+    color: $headerText
+  100%
+    pointer-events: initial
+    color: rgba(#000000, 0.65)
+
+@keyframes backTextShow
+  0%
+    opacity: 0
+    visibility: hidden
+  100%
+    opacity: 1
+    visibility: visible
+    color: rgba(#000000, 0.5)
+
+@keyframes textInput
+  0%,10%
+    content: ""
+
+  100%
+    content: "_"
+

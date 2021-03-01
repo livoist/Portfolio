@@ -1,0 +1,54 @@
+/* Page Loader
+.content, .content__move
+  +size(100%,100vh)
+  justify-self: center
+  position: relative
+
+.content--hidden
+  pointer-events: none
+
+.content__move
+  will-change: transform
+  overflow: hidden
+
+.content--first
+  position: relative
+  +size(100vw,100vh)
+  z-index: 10
+
+.content--second
+  +size(100vw,100vh)
+  position: fixed !important
+  overflow: hidden
+  &.ovh-auto
+    overflow: initial
+
+.content__reverse
+  +size(100%)
+  +setFlex(center,center)
+  flex-direction: column
+  will-change: transform
+
+.overlay
+  +setPosition(fixed,0,null,null,0)
+  +size(100%)
+  +setFlex(center,center)
+  pointer-events: none
+
+.overlay__inner
+  +size(100%)
+  position: relative
+  flex: none
+  will-change: transform
+
+.overlay__inner--color-1
+  background: #0e0e0e
+
+.overlay__inner--color-2
+  background: #2e2e2e
+
+.overlay__inner--color-3
+  background: #868181
+
+.overlay__inner--color-4
+  background: #efecea

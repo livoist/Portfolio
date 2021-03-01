@@ -1,0 +1,30 @@
+.uncover
+  overflow: hidden
+  background-image: none !important
+  position: relative
+
+.uncover__img
+  +size(100%)
+  background-size: cover
+  background-position: 50% 50%
+
+.uncover__slices
+  +size(100%)
+  +setPosition(absolute,0,null,null,0)
+  display: flex
+
+.uncover__slices--vertical
+  flex-direction: row
+
+.uncover__slices--horizontal
+  flex-direction: column
+
+.uncover__slice
+  background-color: currentColor
+  flex: 1
+
+.uncover__slices--vertical .uncover__slice
+  box-shadow: 1px 0 0 currentColor
+
+.uncover__slices--horizontal .uncover__slice
+  box-shadow: 0 1px 0 currentColor

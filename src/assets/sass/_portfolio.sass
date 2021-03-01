@@ -1,0 +1,126 @@
+.work
+  padding: 60px 5vmin
+  .work-item
+    max-width: 1100px
+    margin: 0 auto 10vmin
+    +breakpoint(sm)
+      flex-direction: column
+    &:nth-of-type(1),&:nth-of-type(3)
+      .u-col-1-2
+        flex-direction: row-reverse
+        +breakpoint(sm)
+          flex-direction: column
+    &:nth-of-type(1)
+      .imgbox__inner
+        padding-top: 75%
+        width: 70%
+    &:nth-of-type(2)
+      .imgbox__inner
+        padding-top: calc(100% * 2.5 / 4)
+        width: 80%
+    &:nth-of-type(3)
+      .imgbox__inner
+        padding-top: calc(100% * 2.5 / 5)
+        width: 80%
+    &:nth-of-type(4)
+      .imgbox__inner
+        padding-top: calc(100% * 2 / 3)
+        width: 90%
+    +breakpoint(sm)
+      &:nth-of-type(1),&:nth-of-type(2),&:nth-of-type(3),&:nth-of-type(4)
+        .imgbox__inner
+          padding-top: calc(100% * 3 / 4)
+          width: 100%
+
+    .work-inner
+      +setFlex(center,center)
+      flex-direction: row-reverse
+
+    .work-item-content
+      +setFlex(center,center)
+      overflow: hidden
+      flex: 1
+      flex-direction: column
+      +breakpoint(sm)
+        left: 0
+        text-align: center
+        padding: 0
+      .work-item-title
+        +setFont(30px,bold,3px,rgba(#191919,0.8))
+        position: relative
+        margin: 4vmin 0
+        &.hidden
+          opacity: 0
+        +breakpoint(md)
+          font-size: 4.5vmin
+
+      .work-item-intro
+        +setFont(12px,null,5px,#7e7869)
+        line-height: 1.5
+        position: relative
+        +breakpoint(md)
+          font-size: 14px
+          text-align: center
+        +breakpoint(sm)
+          left: 0
+          font-size: 2vmin
+          line-height: 1.5
+        +breakpoint(xs)
+          transform: scale(0.85)
+
+      .text-btn
+        +setFont(16px,bold,1.5px,#000)
+        +setFlex(flex-start,center)
+        box-sizing: border-box
+        text-decoration: none
+        position: relative
+        width: 165px
+        +breakpoint(md)
+          +setFlex(center,center)
+          margin: 0 auto
+        +breakpoint(sm)
+          transform: scale(0.85)
+        @media (min-width: 996px)
+          &:hover 
+            span
+              width: 24px
+            p
+              color: orange
+        span
+          +size(6px,1px)
+          display: inline-block
+          margin-right: 8px
+          transition: 0.5s
+          background-color: #000
+          +breakpoint(md)
+            display: none
+        p
+          margin-bottom: 0
+          transition: 0.3s
+
+  .imgbox
+    overflow: hidden
+    flex: 1
+    +breakpoint(md)
+      margin: 0
+    .imgbox__inner
+      width: 100%
+      padding-top: 100%
+      position: relative
+      &.imgbox__inner--4-3
+        padding-top: calc(100% * 3 / 4)
+      &.imgbox__inner--4-2
+        padding-top: calc(100% * 2 / 4)
+        width: 90%
+      &.imgbox__inner--4-1
+        padding-top: calc(100% * 1 / 4)
+        width: 80%
+      &.imgbox__inner--4
+        padding-top: 100%
+        width: 70%
+      .image
+        +size(100%)
+        +setPosition(absolute,0,null,null,0)
+        display: block
+        background-size: 100% 100%
+        background-repeat: no-repeat

@@ -1,0 +1,84 @@
+// .overlay
+// 	pointer-events: none
+//   +setPosition(absolute,0,null,null,0)
+//   +size(100%)
+// 	z-index: 99999
+// 	background-color: #0e0e0f
+// 	opacity: 1
+
+.wrapper
+  +setFlex(center,center)
+  +size(100%)
+  position: relative
+
+.person
+  +size(100%)
+  +setPosition(absolute,50%,null,null,50%)
+  +setFlex(center,center)
+  flex-direction: column
+  transform: translate(-50%, -50%)
+  .job-title
+    +setFont(12px,bold,2px,#7e7869)
+    +breakpoint(sm)
+      font-size: 3vmin
+      transform: scale(0.8)
+
+  .person-content
+    +setFlex(center,center)
+    flex-direction: column
+    position: relative
+    .person-heading
+      +setFont(60px,null,8px,#424040)
+      margin: 36px 0px
+      cursor: default
+      // -webkit-text-stroke: 1.5px #222
+      font-family: 'Julius Sans One'
+      font-weight: bold
+      +breakpoint(sm)
+        font-size: 8vmin
+        margin: 5vmin 0 8vmin
+        letter-spacing: 1vmin
+      span
+        display: inline-block
+      .char5, .char9
+        margin-right: 20px
+
+    .input-text
+      +setFont(24px,bold,2px,#878080)
+      text-align: center
+      position: relative
+      z-index: 1
+      margin-bottom: 80px
+      +breakpoint(sm)
+        font-size: 4.5vmin
+      &::after
+        content: '_'
+        position: absolute
+        animation: textInput 0.6s both infinite alternate
+
+    .btn-enter
+      transition: all 0.5s
+      position: relative
+      box-sizing: border-box
+      +setFont(14px,bold,3px,rgba(#000, 0.4))
+      padding: 0 34px
+      z-index: 3
+      cursor: pointer
+      @media (min-width: 996px)
+        &:hover
+          color: rgba(orange, 0.8)
+          &::before,&::after
+            width: 20px
+            background-color: rgba(#000, 0.4)
+      &::before,&::after
+        content: ''
+        position: absolute
+        top: 50%
+        transform: translateY(-50%)
+        +size(6px,2px)
+        background-color: rgba(#000, 1)
+        transition: 0.5s
+      &::before
+        left: 0
+      &::after
+        right: 0

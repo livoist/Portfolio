@@ -1,0 +1,37 @@
+$headerText: #7e7869
+
+@mixin setFlex ($j, $a)
+  display: flex
+  justify-content: $j
+  align-items: $a
+
+@mixin size ($w, $h:$w)
+  width: $w
+  height: $h
+
+@mixin setFont($s, $w, $l, $c)
+  font-size: $s
+  font-weight: $w
+  letter-spacing: $l
+  color: $c
+
+@mixin setPosition($p, $t, $r, $b, $l)
+  position: $p
+  top: $t
+  right: $r
+  bottom: $b
+  left: $l
+
+// media query
+@mixin breakpoint($point)
+  @if $point == md
+    @media only screen and (max-width: 996px)
+      @content
+
+  @else if $point == sm
+    @media only screen and (max-width: 768px)
+      @content
+
+  @else if $point == xs
+    @media only screen and (max-width: 575px)
+      @content
