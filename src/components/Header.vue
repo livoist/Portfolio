@@ -2,6 +2,7 @@
   .header
     .navbar
       a.logo(href="javascript:void('0')") B
+      .test Test
       .nav.u-z-index_7
         //-a.menu-toggle(href='#popup-overlay')
           span

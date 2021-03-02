@@ -6,14 +6,14 @@
 // const routes = [
 //   {
 //     path: '/',
-//     name: 'home',
-//     component: () => import('../App.vue'),
-//     redirect: '/person',
+//     name: 'mainPage',
+//     component: () => import('../views/MainPage.vue'),
+//     redirect: '/gridList',
 //     children: [
 //       {
-//         path: 'person',
-//         name: 'person',
-//         component: () => import('../views/Personal.vue'),
+//         path: 'gridList',
+//         name: 'gridList',
+//         component: () => import('../views/GridLists.vue'),
 //         children: []
 //       },
 //       {

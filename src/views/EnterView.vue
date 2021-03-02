@@ -150,11 +150,17 @@ export default {
     },
     rotateLayout () {
       const contactBlock = document.getElementById('contact')
+
       const tnsfirst = document.querySelector('.content--first')
       const tnssecond = document.querySelector('.content--second')
+
       const { title, heading, input, btn } = this.$refs
+
       const prePage = document.querySelector('.logo')
       const nextPage = btn
+
+      const gridItems = [...document.querySelectorAll('.gridItem')]
+      const randomFloat = (min, max) => parseFloat(Math.min(min + (Math.random() * (max - min)), max).toFixed(2))
 
       const firstPageContent = {
         jobText: title,
@@ -200,29 +206,46 @@ export default {
             ease: ease,
             opacity: 0
         }, 0)
-        .set(contactBlock, { opacity: 0 })
-        .staggerTo(contactBlock, duration * 1.2, {
-          ease: ease,
+        .fromTo(gridItems, {
+          y: () => randomFloat(100, 500)
+        }, {
+          duration: 1,
+          ease: 'Expo.easeOut',
+          y: 0,
           opacity: 1,
+          delay: 0.5
         })
+        // .set(contactBlock, { opacity: 0 })
+        // .staggerTo(contactBlock, duration * 1.2, {
+        //   ease: ease,
+        //   opacity: 1,
+        // })
 			
         // Animate overlays
         let t = 0;
         for (let i = 0; i <= overlaysTotal-1; ++i) {
             t = 0.25 * i + 0.25
+
             this.pageToggleTimeline
             .to(overlays[overlaysTotal-1-i].DOM.inner, duration, {
                 ease: ease,
                 y: '-100%'
-            }, t)
+            }, i >= 3 ? t * 1.75 : t)
           }
+
+        // switch page name
+        this.$store.dispatch('switchTnsName', 'Portfolio')
       };
 
       const showIntro = () => {
+          // switch page name
+          this.$store.dispatch('switchTnsName', 'Home')
+
           // Pointer events related class
           tnsfirst.classList.remove('content--hidden');
           tnssecond.classList.remove('ovh-auto')
           prePage.classList.remove('pointer-initial')
+          
           this.pageToggleTimeline.reverse();
       };
 

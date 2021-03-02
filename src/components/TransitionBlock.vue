@@ -2,6 +2,8 @@
 div
   .overlay.overlay--1
     .overlay__inner.overlay__inner--color-1
+      .portfolioTitle {{ curName }}
+
   .overlay.overlay--2
     .overlay__inner.overlay__inner--color-2
   .overlay.overlay--3
@@ -12,6 +14,22 @@ div
 
 <script>
 export default {
-  name: 'TransitionBlock'
+  name: 'TransitionBlock',
+  computed: {
+    curName() {
+      return this.$store.state.tnsName
+    }
+  }
 }
 </script>
+
+<style lang="sass" scoped>
+.portfolioTitle
+  font-size: 42px
+  letter-spacing: 20px
+  color: #ffffff
+  position: absolute
+  left: 50%
+  top: 50%
+  transform: rotate(5deg) translate(-50%, -50%)
+</style>

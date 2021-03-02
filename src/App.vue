@@ -6,8 +6,7 @@
     Header
 
     .content--second
-      Portfolio
-      Contact
+      components(:is="curPage")
 
     TransitionBlock
 
@@ -19,10 +18,10 @@
 </template>
 
 <script>
-import { TweenMax, TimelineMax } from 'gsap'
-import Scrollbar from 'smooth-scrollbar'
+// import Scrollbar from 'smooth-scrollbar'
 import Mouse from '@/mouse/mouseEvent.js'
 import { Header, Contact, TransitionBlock } from '@c'
+import GridLists from '@/views/GridLists.vue'
 import EnterView from '@/views/EnterView.vue'
 import Portfolio from '@/views/PortfolioList.vue'
 import '@css'
@@ -33,21 +32,27 @@ export default {
     Header,
     EnterView,
     Portfolio,
+    GridLists,
     Contact,
     TransitionBlock
   },
   mounted () {
     this.mouseEvent()
-    this.scrollEvent()
+    // this.scrollEvent()
+  },
+  computed: {
+    curPage() {
+      return this.$store.state.curPageCom
+    }
   },
   methods: {
     mouseEvent () {
       const mouseCursor = new Mouse()
       mouseCursor.render()
     },
-    scrollEvent() {
-      Scrollbar.init(document.querySelector('.content--second'), { damping: 0.03 })
-    }
+    // scrollEvent() {
+    //   Scrollbar.init(document.querySelector('.content--second'), { damping: 0.03 })
+    // }
   }
 }
 </script>
