@@ -1,8 +1,11 @@
 <template lang="pug">
   .header
     .navbar
-      a.logo(href="javascript:void('0')") B
-      .test Test
+      a.logo(
+        href="javascript:void('0')"
+        :class="{ 'pointer-initial': prePage }"
+        @click="showIntro"
+      ) B
       .nav.u-z-index_7
         //-a.menu-toggle(href='#popup-overlay')
           span
@@ -36,12 +39,20 @@ export default {
       ]
     }
   },
+  computed: {
+    prePage() {
+      return this.$store.state.prePage
+    }
+  },
   methods: {
     scrollTarget(target) {
       window.scroll({
         top: target,
         behavior: 'smooth'
       })
+    },
+    showIntro() {
+      this.$store.dispatch('showIntro', { comName: 'EnterView', tnsName: 'Home' })
     }
   }
 }

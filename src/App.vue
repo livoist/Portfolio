@@ -6,11 +6,15 @@
     Header
 
     .content--second
-      components(:is="curPage")
+      Transition(name="fade" mode="out-in")
+        components(:is="curPage")
 
     TransitionBlock
 
-    .content--first
+    .content--first(
+      :class="{ 'content--hidden': hiddenContent }"
+      ref="firstEl"
+    )
       .content__move
         .content__reverse
           EnterView
@@ -38,15 +42,23 @@ export default {
   },
   mounted () {
     this.mouseEvent()
+    this.getFirstElems()
     // this.scrollEvent()
   },
   computed: {
     curPage() {
       return this.$store.state.curPageCom
+    },
+    hiddenContent() {
+      return this.$store.state.tnsHidden
     }
   },
   methods: {
-    mouseEvent () {
+    getFirstElems() {
+      const firstEl = this.$refs.firstEl
+      this.$store.dispatch('getFirstElems', firstEl)
+    },
+    mouseEvent() {
       const mouseCursor = new Mouse()
       mouseCursor.render()
     },
@@ -56,3 +68,12 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.fade-enter-active, .fade-leave-active
+  transition: opacity .5s
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+  opacity: 0
+
+</style>

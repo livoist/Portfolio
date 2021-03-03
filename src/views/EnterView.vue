@@ -9,7 +9,10 @@
     .person-content
       .person-heading(ref="heading") Hello I&apos;m Ben
       .input-text(ref="input") Start Coding?
-      a.btn.btn-enter(ref="btn" href.prevent="javascript:void('0')") ENTER
+      a.btn.btn-enter(
+        ref="btn" href.prevent="javascript:void('0')"
+        @click="showNextPage"
+      ) ENTER
 
 </template>
 
@@ -148,114 +151,118 @@ export default {
       preloadingText.classList.add('enter')
       preloadingAn.classList.add('enter')
     },
-    rotateLayout () {
-      const contactBlock = document.getElementById('contact')
-
-      const tnsfirst = document.querySelector('.content--first')
-      const tnssecond = document.querySelector('.content--second')
-
-      const { title, heading, input, btn } = this.$refs
-
-      const prePage = document.querySelector('.logo')
-      const nextPage = btn
-
-      const gridItems = [...document.querySelectorAll('.gridItem')]
-      const randomFloat = (min, max) => parseFloat(Math.min(min + (Math.random() * (max - min)), max).toFixed(2))
-
-      const firstPageContent = {
-        jobText: title,
-        heading: heading,
-        inputAn: input,
-        enterBtn: btn
-      }
-
-      const overlays = [];
-      const overlayElems = [...document.querySelectorAll('.overlay')];
-      const overlaysTotal = overlayElems.length;
-      overlayElems.forEach((overlay,i) => overlays.push(new RotateLayout(overlay, {angle: i % 3 === 0 ? -5 : 5})));
-      
-      const showNextPage = () => {
-			// Pointer events related class
-        tnsfirst.classList.add('content--hidden');
-        tnssecond.classList.add('ovh-auto')
-        prePage.classList.add('pointer-initial')
-
-        const ease = Expo.easeInOut;
-        const duration = 1.3;
-			
-        this.pageToggleTimeline = new TimelineMax()
-        .to(firstPageContent.jobText, duration * 0.7, {
-            ease: ease,
-            opacity: 0
-        }, 0)
-        .to(firstPageContent.heading, duration, {
-            ease: ease,
-            opacity: 0,
-            y: '-100%',
-        }, 0)
-        .to(firstPageContent.inputAn, duration, {
-            ease: ease,
-            opacity: 0,
-            y: '-100%',
-        }, 0)
-        .to(firstPageContent.enterBtn, duration * 0.6, {
-            ease: ease,
-            opacity: 0
-        }, 0)
-        .to(tnsfirst, duration, {
-            ease: ease,
-            opacity: 0
-        }, 0)
-        .fromTo(gridItems, {
-          y: () => randomFloat(100, 500)
-        }, {
-          duration: 1,
-          ease: 'Expo.easeOut',
-          y: 0,
-          opacity: 1,
-          delay: 0.5
-        })
-        // .set(contactBlock, { opacity: 0 })
-        // .staggerTo(contactBlock, duration * 1.2, {
-        //   ease: ease,
-        //   opacity: 1,
-        // })
-			
-        // Animate overlays
-        let t = 0;
-        for (let i = 0; i <= overlaysTotal-1; ++i) {
-            t = 0.25 * i + 0.25
-
-            this.pageToggleTimeline
-            .to(overlays[overlaysTotal-1-i].DOM.inner, duration, {
-                ease: ease,
-                y: '-100%'
-            }, i >= 3 ? t * 1.75 : t)
-          }
-
-        // switch page name
-        this.$store.dispatch('switchTnsName', 'Portfolio')
-      };
-
-      const showIntro = () => {
-          // switch page name
-          this.$store.dispatch('switchTnsName', 'Home')
-
-          // Pointer events related class
-          tnsfirst.classList.remove('content--hidden');
-          tnssecond.classList.remove('ovh-auto')
-          prePage.classList.remove('pointer-initial')
-          
-          this.pageToggleTimeline.reverse();
-      };
-
-      if (nextPage) {
-        nextPage.addEventListener('click', showNextPage);
-      }
-      if (prePage) {
-        prePage.addEventListener('click', showIntro);
-      }
+    showNextPage() {
+      this.$store.dispatch('showNextPage', { comName: 'GridLists', hidden: true, page: true })
     },
+    // rotateLayout () {
+    //   // const contactBlock = document.getElementById('contact')
+
+    //   const tnsfirst = document.querySelector('.content--first')
+    //   // const tnssecond = document.querySelector('.content--second')
+
+    //   const { title, heading, input, btn } = this.$refs
+
+    //   const prePage = document.querySelector('.logo')
+    //   const nextPage = btn
+
+    //   const gridItems = [...document.querySelectorAll('.gridItem')]
+    //   const randomFloat = (min, max) => parseFloat(Math.min(min + (Math.random() * (max - min)), max).toFixed(2))
+
+    //   const firstPageContent = {
+    //     jobText: title,
+    //     heading: heading,
+    //     inputAn: input,
+    //     enterBtn: btn
+    //   }
+
+    //   const overlays = [];
+    //   const overlayElems = [...document.querySelectorAll('.overlay')];
+    //   const overlaysTotal = overlayElems.length;
+    //   overlayElems.forEach((overlay,i) => overlays.push(new RotateLayout(overlay, {angle: i % 3 === 0 ? -5 : 5})));
+      
+    //   const showNextPage = () => {
+		// 	// Pointer events related class
+    //     tnsfirst.classList.add('content--hidden');
+    //     // tnssecond.classList.add('ovh-auto')
+    //     prePage.classList.add('pointer-initial')
+
+    //     const ease = Expo.easeInOut;
+    //     const duration = 1.3;
+
+    //     // switch page name
+    //     this.$store.dispatch('switchTnsName', 'Portfolio')
+			
+    //     this.pageToggleTimeline = new TimelineMax()
+    //     // .to(firstPageContent.jobText, duration * 0.7, {
+    //     //     ease: ease,
+    //     //     opacity: 0
+    //     // }, 0)
+    //     // .to(firstPageContent.heading, duration, {
+    //     //     ease: ease,
+    //     //     opacity: 0,
+    //     //     y: '-100%',
+    //     // }, 0)
+    //     // .to(firstPageContent.inputAn, duration, {
+    //     //     ease: ease,
+    //     //     opacity: 0,
+    //     //     y: '-100%',
+    //     // }, 0)
+    //     // .to(firstPageContent.enterBtn, duration * 0.6, {
+    //     //     ease: ease,
+    //     //     opacity: 0
+    //     // }, 0)
+    //     .to(tnsfirst, duration, {
+    //         ease: ease,
+    //         opacity: 0
+    //     }, 0)
+    //     // .fromTo(gridItems, {
+    //     //   y: () => randomFloat(100, 500)
+    //     // }, {
+    //     //   duration: 1,
+    //     //   ease: 'Expo.easeOut',
+    //     //   y: 0,
+    //     //   opacity: 1,
+    //     //   delay: 0.5
+    //     // })
+    //     // .set(contactBlock, { opacity: 0 })
+    //     // .staggerTo(contactBlock, duration * 1.2, {
+    //     //   ease: ease,
+    //     //   opacity: 1,
+    //     // })
+			
+    //     // Animate overlays
+    //     let t = 0;
+    //     for (let i = 0; i <= overlaysTotal-1; ++i) {
+    //         t = 0.25 * i + 0.25
+
+    //         this.pageToggleTimeline
+    //         .to(overlays[overlaysTotal-1-i].DOM.inner, duration, {
+    //             ease: ease,
+    //             y: '-100%'
+    //         }, i >= 3 ? t * 1.75 : t)
+    //       }
+    //   };
+
+    //   const showIntro = () => {
+    //       // switch page name
+    //       this.$store.dispatch('switchTnsName', 'Home')
+    //       this.$store.dispatch('switchCurPageComponent', 'GridLists')
+
+    //       // Pointer events related class
+    //       tnsfirst.classList.remove('content--hidden');
+    //       // tnssecond.classList.remove('ovh-auto')
+    //       prePage.classList.remove('pointer-initial')
+          
+    //       this.pageToggleTimeline.reverse();
+    //   };
+
+    //   if (nextPage) {
+    //     nextPage.addEventListener('click', showNextPage);
+    //   }
+    //   if (prePage) {
+    //     prePage.addEventListener('click', showIntro);
+    //   }
+    // },
     meshLine() {
       const static_props = {
         width: 0.08, // meshLine width
@@ -308,11 +315,11 @@ export default {
       }
       // add mouseenter event in btn
       hoverEffect.button.addEventListener('mouseenter', onEnterHoverFn)
-    },
+    }
   },
   mounted () {
     window.addEventListener('load', this.preloadingAn())
-    this.rotateLayout()
+    // this.rotateLayout()
     this.charmingText()
     this.meshLine()
   },
