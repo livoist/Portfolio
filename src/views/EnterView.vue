@@ -1,8 +1,8 @@
 <template lang="pug">
 #about.wrapper
   .person.container
-    .preloadingAn(ref="preloadingAn")
-      .preloadingText(ref="preloadingText") Welcome Ben Porfolio Website
+    //- .preloadingAn(ref="preloadingAn")
+    //-   .preloadingText(ref="preloadingText") Welcome Ben Porfolio Website
 
     .job-title(ref="title") Front-End Developer
 
@@ -128,21 +128,27 @@
 </style>
 
 <script>
-import { TimelineMax, Quad, Quint, Expo } from 'gsap'
+import { TimelineMax, Quad, Quint, Expo } from 'gsap/all'
 import { 
   Engine,
   CustomLineGenerator,
   HandleCameraOrbit,
   FullScreenInBackground
 } from '@/meshAn'
-import RotateLayout from '@/rotateLayout/rotateLayout.js'
 import charming from 'charming'
 
 export default {
-  name: 'Personal',
+  name: 'EnterView',
   data () {
     return {
       engine: '',
+      pageToggleTimeline: '',
+      viewTimeline: ''
+    }
+  },
+  computed: {
+    getGridItems() {
+      return this.$store.state.gridItems
     }
   },
   methods: {
@@ -152,117 +158,64 @@ export default {
       preloadingAn.classList.add('enter')
     },
     showNextPage() {
-      this.$store.dispatch('showNextPage', { comName: 'GridLists', hidden: true, page: true })
+      this.$store.dispatch('showNextPage', { comName: 'GridLists', tnsName: 'Portfolio', hidden: true, page: true })
+      this.enterViewTimeline()
     },
-    // rotateLayout () {
-    //   // const contactBlock = document.getElementById('contact')
+    initTimelineMax() {
+      this.pageToggleTimeline = new TimelineMax()
+      this.$store.dispatch('initTimeline', this.pageToggleTimeline)
+    },
+    enterViewTimeline() {
+      const { title, heading, input, btn } = this.$refs
 
-    //   const tnsfirst = document.querySelector('.content--first')
-    //   // const tnssecond = document.querySelector('.content--second')
+      const randomFloat = (min, max) => parseFloat(Math.min(min + (Math.random() * (max - min)), max).toFixed(2))
 
-    //   const { title, heading, input, btn } = this.$refs
-
-    //   const prePage = document.querySelector('.logo')
-    //   const nextPage = btn
-
-    //   const gridItems = [...document.querySelectorAll('.gridItem')]
-    //   const randomFloat = (min, max) => parseFloat(Math.min(min + (Math.random() * (max - min)), max).toFixed(2))
-
-    //   const firstPageContent = {
-    //     jobText: title,
-    //     heading: heading,
-    //     inputAn: input,
-    //     enterBtn: btn
-    //   }
-
-    //   const overlays = [];
-    //   const overlayElems = [...document.querySelectorAll('.overlay')];
-    //   const overlaysTotal = overlayElems.length;
-    //   overlayElems.forEach((overlay,i) => overlays.push(new RotateLayout(overlay, {angle: i % 3 === 0 ? -5 : 5})));
+      const firstPageContent = {
+        jobText: title,
+        heading: heading,
+        inputAn: input,
+        enterBtn: btn
+      }
       
-    //   const showNextPage = () => {
-		// 	// Pointer events related class
-    //     tnsfirst.classList.add('content--hidden');
-    //     // tnssecond.classList.add('ovh-auto')
-    //     prePage.classList.add('pointer-initial')
+        const ease = Expo.easeInOut;
+        const duration = 1.3;
 
-    //     const ease = Expo.easeInOut;
-    //     const duration = 1.3;
+        this.viewTimeline = new TimelineMax()
+        .to(firstPageContent.jobText, duration * 0.7, {
+            ease: ease,
+            opacity: 0
+        }, 0)
+        .to(firstPageContent.heading, duration, {
+            ease: ease,
+            opacity: 0,
+            y: '-100%',
+        }, 0)
+        .to(firstPageContent.inputAn, duration, {
+            ease: ease,
+            opacity: 0,
+            y: '-100%',
+        }, 0)
+        .to(firstPageContent.enterBtn, duration * 0.6, {
+            ease: ease,
+            opacity: 0
+        }, 0)
+        .fromTo(this.getGridItems, {
+          y: () => randomFloat(100, 500)
+        }, {
+          duration: 1,
+          ease: 'Expo.easeOut',
+          y: 0,
+          opacity: 1,
+          delay: 0.5
+        })
 
-    //     // switch page name
-    //     this.$store.dispatch('switchTnsName', 'Portfolio')
-			
-    //     this.pageToggleTimeline = new TimelineMax()
-    //     // .to(firstPageContent.jobText, duration * 0.7, {
-    //     //     ease: ease,
-    //     //     opacity: 0
-    //     // }, 0)
-    //     // .to(firstPageContent.heading, duration, {
-    //     //     ease: ease,
-    //     //     opacity: 0,
-    //     //     y: '-100%',
-    //     // }, 0)
-    //     // .to(firstPageContent.inputAn, duration, {
-    //     //     ease: ease,
-    //     //     opacity: 0,
-    //     //     y: '-100%',
-    //     // }, 0)
-    //     // .to(firstPageContent.enterBtn, duration * 0.6, {
-    //     //     ease: ease,
-    //     //     opacity: 0
-    //     // }, 0)
-    //     .to(tnsfirst, duration, {
-    //         ease: ease,
-    //         opacity: 0
-    //     }, 0)
-    //     // .fromTo(gridItems, {
-    //     //   y: () => randomFloat(100, 500)
-    //     // }, {
-    //     //   duration: 1,
-    //     //   ease: 'Expo.easeOut',
-    //     //   y: 0,
-    //     //   opacity: 1,
-    //     //   delay: 0.5
-    //     // })
-    //     // .set(contactBlock, { opacity: 0 })
-    //     // .staggerTo(contactBlock, duration * 1.2, {
-    //     //   ease: ease,
-    //     //   opacity: 1,
-    //     // })
-			
-    //     // Animate overlays
-    //     let t = 0;
-    //     for (let i = 0; i <= overlaysTotal-1; ++i) {
-    //         t = 0.25 * i + 0.25
+        this.$store.dispatch('curTimeline', this.viewTimeline)
+        console.log('curTimeline', this.viewTimeline)
+        console.log('store time', this.$store.state.curTimeline)
+        console.log('store time2', this.$store.state.timeline)
 
-    //         this.pageToggleTimeline
-    //         .to(overlays[overlaysTotal-1-i].DOM.inner, duration, {
-    //             ease: ease,
-    //             y: '-100%'
-    //         }, i >= 3 ? t * 1.75 : t)
-    //       }
-    //   };
-
-    //   const showIntro = () => {
-    //       // switch page name
-    //       this.$store.dispatch('switchTnsName', 'Home')
-    //       this.$store.dispatch('switchCurPageComponent', 'GridLists')
-
-    //       // Pointer events related class
-    //       tnsfirst.classList.remove('content--hidden');
-    //       // tnssecond.classList.remove('ovh-auto')
-    //       prePage.classList.remove('pointer-initial')
-          
-    //       this.pageToggleTimeline.reverse();
-    //   };
-
-    //   if (nextPage) {
-    //     nextPage.addEventListener('click', showNextPage);
-    //   }
-    //   if (prePage) {
-    //     prePage.addEventListener('click', showIntro);
-    //   }
-    // },
+        console.log('===', this.$store.state.curTimeline === this.$store.state.timeline)
+    },
     meshLine() {
       const static_props = {
         width: 0.08, // meshLine width
@@ -318,13 +271,15 @@ export default {
     }
   },
   mounted () {
-    window.addEventListener('load', this.preloadingAn())
-    // this.rotateLayout()
+    // window.addEventListener('load', this.preloadingAn())
     this.charmingText()
     this.meshLine()
+    this.initTimelineMax()
+
+    // this.viewTimeline
   },
   beforeDestory() {
-    window.removeEventListener('load', this.preloadingAn())
+    // window.removeEventListener('load', this.preloadingAn())
     window.removeEventListener('mouseenter', this.charmingText())
   }
 }

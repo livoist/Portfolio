@@ -53,6 +53,7 @@ export default {
     },
     showIntro() {
       this.$store.dispatch('showIntro', { comName: 'EnterView', tnsName: 'Home' })
+      this.$store.dispatch('timelineReverse', true)
     }
   }
 }

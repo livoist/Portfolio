@@ -5,6 +5,7 @@
       v-for="(item, idx) in gridItems"
       :style="{ backgroundImage: `url(${bgImg(idx + 1)})` }"
       :class="item"
+      ref="gridItems"
     )
 
 </template>
@@ -20,7 +21,14 @@ export default {
   methods: {
     bgImg(num) {
       return require(`@img/${num + 1}.jpg`)
+    },
+    getGridItems() {
+      const gridItems = this.$refs.gridItems
+      this.$store.dispatch('getGridItems', gridItems)
     }
+  },
+  mounted() {
+    this.getGridItems()
   }
 }
 </script>

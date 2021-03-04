@@ -1,17 +1,12 @@
 <template lang="pug">
 div
-  .overlay.overlay--1
-    .overlay__inner.overlay__inner--color-1
-      .portfolioTitle {{ curName }}
-
-  .overlay.overlay--2
-    .overlay__inner.overlay__inner--color-2
-
-  .overlay.overlay--3
-    .overlay__inner.overlay__inner--color-3
-
-  .overlay.overlay--4
-    .overlay__inner.overlay__inner--color-4
+  .overlay(
+    v-for="n in 4"
+    :class="`overlay--${n}`"
+    ref="overlays"
+  )
+    .overlay__inner(:class="`overlay__inner--color-${n}`")
+      .portfolioTitle(v-if="n === 1") {{ curName }}
 
 </template>
 
@@ -27,7 +22,7 @@ export default {
   },
   methods: {
     getOverlaysElems() {
-      const overlays = [...document.querySelectorAll('.overlay')]
+      const overlays = this.$refs.overlays
       this.$store.dispatch('getOverlaysElems', overlays)
 
       const layouts = []

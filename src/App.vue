@@ -6,8 +6,8 @@
     Header
 
     .content--second
-      Transition(name="fade" mode="out-in")
-        components(:is="curPage")
+      GridLists
+      //- components(:is="curPage")
 
     TransitionBlock
 
