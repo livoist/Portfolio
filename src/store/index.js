@@ -1,44 +1,38 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { Expo } from 'gsap'
+// import { Expo } from 'gsap'
 
 Vue.use(Vuex)
 
 const TNS_NAME = 'TNS_NAME'
 const CUR_PAGE_COMPONENT = 'CUR_PAGE_COMPONENT'
 const OVERLAYS_ELEMS = 'OVERLAYS_ELEMS'
-const ROTATE_LAYOUT = 'ROTATE_LAYOUT'
-const FIRST_ELEMS = 'FIRST_ELEMS'
-const HIDDEN_CONTENT = 'HIDDEN_CONTENT'
-const PRE_PAGE = 'PRE_PAGE'
+const GET_FIRST_ELEM = 'FIRST_ELEMS'
+const GET_SEC_ELEM = 'GET_SEC_ELEM'
 const INIT_TIMELINE = 'INIT_TIMELINE'
 const TIMELINE_REVERSE = 'TIMELINE_REVERSE'
 const CUR_TIMELINE = 'CUR_TIMELINE'
 const GET_GRID_ITEMS = 'GET_GRID_ITEMS'
 
 
-const nextTimeline = (state, getters) => {
-  const ease = Expo.easeInOut
-  const duration = 1.3
-  console.log('action')
+// const nextTimeline = (state, getters) => {
+//   const ease = Expo.easeInOut
+//   const duration = 1.3
 
-  state.timeline.to(state.firstElems, duration, {
-    ease: ease,
-    opacity: 0
-  }, 0)
+//   state.timeline.to(state.firstElems, duration, {
+//     ease: ease,
+//     opacity: 0
+//   }, 0)
 
-  let t = 0
-  for (let i = 0; i <= getters.overlaysTotal - 1; ++i) {
-    t = 0.25 * i + 0.25
-    state.timeline.to(state.overlays[getters.overlaysTotal - 1 - i].DOM.inner, duration, {
-      ease: ease,
-      y: '-100%'
-    }, i >= 3 ? t * 1.75 : t)
-  }
-
-  console.log('for timeline', state.timeline)
-}
-
+//   let t = 0
+//   for (let i = 0; i <= getters.overlaysTotal - 1; ++i) {
+//     t = 0.25 * i + 0.25
+//     state.timeline.to(state.overlays[getters.overlaysTotal - 1 - i].DOM.inner, duration, {
+//       ease: ease,
+//       y: '-100%'
+//     }, i >= 3 ? t * 1.75 : t)
+//   }
+// }
 
 
 export default new Vuex.Store({
@@ -46,12 +40,9 @@ export default new Vuex.Store({
     curPageCom: 'GridLists',
     tnsName: 'Portfolio',
     timeline: '',
-    overlays: [],
     overlayElems: [],
-    overlaysTotal: 0,
-    firstElems: '',
-    tnsHidden: false,
-    prePage: false,
+    firstEl: '',
+    secEl: '',
     isReverse: false,
     curTimeline: '',
     gridItems: ''
@@ -66,17 +57,11 @@ export default new Vuex.Store({
     [OVERLAYS_ELEMS](state, ary) {
       state.overlayElems = ary
     },
-    [ROTATE_LAYOUT](state, ary) {
-      state.overlays = ary
+    [GET_FIRST_ELEM](state, el) {
+      state.firstEl = el
     },
-    [FIRST_ELEMS](state, dom) {
-      state.firstElems = dom
-    },
-    [HIDDEN_CONTENT](state, boolean) {
-      state.tnsHidden = boolean
-    },
-    [PRE_PAGE](state, boolean) {
-      state.prePage = boolean
+    [GET_SEC_ELEM](state, el) {
+      state.secEl = el
     },
     [INIT_TIMELINE](state, el) {
       state.timeline = el
@@ -101,46 +86,37 @@ export default new Vuex.Store({
     getOverlaysElems({ commit }, array) {
       commit(OVERLAYS_ELEMS, array)
     },
-    getRotateLayout({ commit }, array) {
-      commit(ROTATE_LAYOUT, array)
-    },
-    showNextPage({ commit, state, getters }, { comName, tnsName, hidden, page }) {
+    showNextPage({ commit, state, getters }, { comName, tnsName }) {
       commit(TNS_NAME, tnsName)
-      commit(HIDDEN_CONTENT, hidden)
-      commit(PRE_PAGE, page)
-      commit(CUR_PAGE_COMPONENT, comName)
 
+      commit(CUR_PAGE_COMPONENT, comName)
       nextTimeline(state, getters)
     },
-    showIntro({ commit, state }, { comName, tnsName }) {
+    async showIntro({ commit, state }, { comName, tnsName }) {
       commit(TNS_NAME, tnsName)
       commit(HIDDEN_CONTENT, false)
       commit(PRE_PAGE, false)
-      commit(CUR_PAGE_COMPONENT, comName)
 
-      state.timeline.reverse()
+      await state.timeline.reverse()
+      commit(CUR_PAGE_COMPONENT, comName)
     },
-    getFirstElems({ commit }, elems) {
-      commit(FIRST_ELEMS, elems)
+    getFirstEl({ commit }, el) {
+      commit(GET_FIRST_ELEM, el)
+    },
+    getSecEl({ commit }, el) {
+      commit(GET_SEC_ELEM, el)
     },
     initTimeline({ commit }, timeline) {
       commit(INIT_TIMELINE, timeline)
     },
-    timelineReverse({ commit, state }, isReverse) {
+    canReverse({ commit }, isReverse) {
       commit(TIMELINE_REVERSE, isReverse)
-
-      state.isReverse ? state.curTimeline.reverse() : state.curTimeline
     },
     curTimeline({ commit }, curTimeline) {
       commit(CUR_TIMELINE, curTimeline)
     },
     getGridItems({ commit }, elems) {
       commit(GET_GRID_ITEMS, elems)
-    }
-  },
-  getters: {
-    overlaysTotal: state => {
-      return state.overlayElems.length
     }
   }
 })

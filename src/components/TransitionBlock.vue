@@ -11,8 +11,6 @@ div
 </template>
 
 <script>
-import RotateLayout from '@/rotateLayout/rotateLayout.js'
-
 export default {
   name: 'TransitionBlock',
   computed: {
@@ -24,10 +22,6 @@ export default {
     getOverlaysElems() {
       const overlays = this.$refs.overlays
       this.$store.dispatch('getOverlaysElems', overlays)
-
-      const layouts = []
-      overlays.forEach((overlay, i) => layouts.push(new RotateLayout(overlay, { angle: i % 3 === 0 ? -5 : 5 })))
-      this.$store.dispatch('getRotateLayout', layouts)
     }
   },
   mounted() {
@@ -38,11 +32,12 @@ export default {
 
 <style lang="sass" scoped>
 .portfolioTitle
-  font-size: 42px
-  letter-spacing: 20px
+  font-size: 4vw
+  text-align: center
+  letter-spacing: 1.5vw
   color: #ffffff
   position: absolute
   left: 50%
   top: 50%
-  transform: rotate(5deg) translate(-50%, -50%)
+  transform: translate(-50%, -50%) rotate(5deg)
 </style>

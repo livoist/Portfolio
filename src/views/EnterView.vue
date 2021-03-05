@@ -4,14 +4,16 @@
     //- .preloadingAn(ref="preloadingAn")
     //-   .preloadingText(ref="preloadingText") Welcome Ben Porfolio Website
 
-    .job-title(ref="title") Front-End Developer
+    .job-title(ref="jobTitle") Front-End Developer
 
     .person-content
-      .person-heading(ref="heading") Hello I&apos;m Ben
-      .input-text(ref="input") Start Coding?
+      .person-heading(ref="greetText") Hello I&apos;m Ben
+
+      .input-text(ref="textAn") Start Coding?
+
       a.btn.btn-enter(
-        ref="btn" href.prevent="javascript:void('0')"
-        @click="showNextPage"
+        ref="enterBtn"
+        href.prevent="javascript:void('0')"
       ) ENTER
 
 </template>
@@ -128,28 +130,31 @@
 </style>
 
 <script>
-import { TimelineMax, Quad, Quint, Expo } from 'gsap/all'
+import { mapState } from 'vuex'
+import { TimelineMax, Quad, Quint, Expo } from 'gsap'
 import { 
   Engine,
   CustomLineGenerator,
   HandleCameraOrbit,
   FullScreenInBackground
 } from '@/meshAn'
+import RotateLayout from '@/rotateLayout/rotateLayout.js'
 import charming from 'charming'
 
 export default {
   name: 'EnterView',
   data () {
     return {
-      engine: '',
-      pageToggleTimeline: '',
-      viewTimeline: ''
+      engine: ''
     }
   },
   computed: {
-    getGridItems() {
-      return this.$store.state.gridItems
-    }
+    ...mapState({
+      getGridItems: 'gridItems',
+      getOverlays: 'overlayElems',
+      getFirstElems: 'firstEl',
+      getReverse: 'isReverse'
+    })
   },
   methods: {
     preloadingAn() {
@@ -157,40 +162,45 @@ export default {
       preloadingText.classList.add('enter')
       preloadingAn.classList.add('enter')
     },
-    showNextPage() {
-      this.$store.dispatch('showNextPage', { comName: 'GridLists', tnsName: 'Portfolio', hidden: true, page: true })
-      this.enterViewTimeline()
-    },
-    initTimelineMax() {
-      this.pageToggleTimeline = new TimelineMax()
-      this.$store.dispatch('initTimeline', this.pageToggleTimeline)
-    },
     enterViewTimeline() {
-      const { title, heading, input, btn } = this.$refs
+      const { jobTitle, greetText, textAn, enterBtn } = this.$refs
+      const firstPageContent = {
+        jobTitle: jobTitle,
+        greetText: greetText,
+        textAn: textAn,
+        enterBtn: enterBtn
+      }
 
       const randomFloat = (min, max) => parseFloat(Math.min(min + (Math.random() * (max - min)), max).toFixed(2))
 
-      const firstPageContent = {
-        jobText: title,
-        heading: heading,
-        inputAn: input,
-        enterBtn: btn
-      }
-      
-        const ease = Expo.easeInOut;
-        const duration = 1.3;
+      const prePage = document.querySelector('.logo')
+      const nextPage = enterBtn
 
-        this.viewTimeline = new TimelineMax()
-        .to(firstPageContent.jobText, duration * 0.7, {
+      const secEl = document.querySelector('.content--second')
+      const contactBlock = document.querySelector('.contact')
+
+      const overlays = []
+      const overlaysTotal = this.getOverlays.length
+      this.getOverlays.forEach((overlay, i) => overlays.push(new RotateLayout(overlay, { angle: i % 3 === 0 ? -5 : 5 })))
+
+      const enterNextPage = () => {
+        this.$store.dispatch('canReverse', true)
+        this.$store.dispatch('switchTnsName', 'Portfolio')
+
+        const ease = Expo.easeInOut
+        const duration = 1.3
+  
+        this.pageToggleTimeline = new TimelineMax()
+        .to(firstPageContent.jobTitle, duration * 0.7, {
             ease: ease,
             opacity: 0
         }, 0)
-        .to(firstPageContent.heading, duration, {
+        .to(firstPageContent.greetText, duration, {
             ease: ease,
             opacity: 0,
             y: '-100%',
         }, 0)
-        .to(firstPageContent.inputAn, duration, {
+        .to(firstPageContent.textAn, duration, {
             ease: ease,
             opacity: 0,
             y: '-100%',
@@ -199,6 +209,17 @@ export default {
             ease: ease,
             opacity: 0
         }, 0)
+        .to(this.getFirstElems, duration, {
+            ease: ease,
+            opacity: 0
+        }, 0)
+        .staggerTo(contactBlock, {
+          opacity: 0
+        }, {
+          duration: duration * 1.2,
+          ease: ease,
+          opacity: 1
+        })
         .fromTo(this.getGridItems, {
           y: () => randomFloat(100, 500)
         }, {
@@ -206,15 +227,36 @@ export default {
           ease: 'Expo.easeOut',
           y: 0,
           opacity: 1,
-          delay: 0.5
+          delay: 1
         })
 
-        this.$store.dispatch('curTimeline', this.viewTimeline)
-        console.log('curTimeline', this.viewTimeline)
-        console.log('store time', this.$store.state.curTimeline)
-        console.log('store time2', this.$store.state.timeline)
+        secEl.classList.add('ovh-auto')
 
-        console.log('===', this.$store.state.curTimeline === this.$store.state.timeline)
+        let t = 0
+        for (let i = 0; i <= overlaysTotal - 1; i++) {
+          t = 0.25 * i + 0.25
+          this.pageToggleTimeline.to(overlays[overlaysTotal - 1 - i].DOM.inner, duration, {
+            ease: ease,
+            y: '-100%'
+          }, i >= 3 ? t * 1.75 : t)
+        }
+
+        console.log('n', this.pageToggleTimeline)
+      }
+      
+
+      const introPage = async () => {
+        this.$store.dispatch('canReverse', false)
+        this.$store.dispatch('switchTnsName', 'Home')
+
+        await this.pageToggleTimeline.reverse()
+        secEl.classList.remove('ovh-auto')
+
+        console.log('b', this.pageToggleTimeline)
+      }
+
+      if (nextPage) nextPage.addEventListener('click', enterNextPage)
+      if (prePage) prePage.addEventListener('click', introPage)
     },
     meshLine() {
       const static_props = {
@@ -235,16 +277,17 @@ export default {
       this.engine.start()
     },
     charmingText () {
+      const { enterBtn, greetText } = this.$refs
       const hoverEffect = {
         // event btn
-        button: document.querySelector('.btn-enter'),
+        enterBtn: enterBtn,
         // animation text
-        personal: document.querySelector('.person-heading')
+        greetText: greetText
       }
       // charming text add span tag
-      charming(hoverEffect.personal)
+      charming(hoverEffect.greetText)
       // select all span tag text
-      hoverEffect.personalLetters = [...hoverEffect.personal.querySelectorAll('span')]
+      hoverEffect.personalLetters = [...hoverEffect.greetText.querySelectorAll('span')]
       // random sort
       hoverEffect.personalLetters.sort(() => Math.round(Math.random()) - 0.5)
       // random < 0.5
@@ -267,20 +310,13 @@ export default {
           }, 0.04, 0.4)
       }
       // add mouseenter event in btn
-      hoverEffect.button.addEventListener('mouseenter', onEnterHoverFn)
+      hoverEffect.enterBtn.addEventListener('mouseenter', onEnterHoverFn)
     }
   },
   mounted () {
-    // window.addEventListener('load', this.preloadingAn())
     this.charmingText()
     this.meshLine()
-    this.initTimelineMax()
-
-    // this.viewTimeline
-  },
-  beforeDestory() {
-    // window.removeEventListener('load', this.preloadingAn())
-    window.removeEventListener('mouseenter', this.charmingText())
+    this.enterViewTimeline()
   }
 }
 </script>

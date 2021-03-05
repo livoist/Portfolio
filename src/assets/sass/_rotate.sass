@@ -21,7 +21,12 @@
   position: fixed !important
   overflow: hidden
   &.ovh-auto
-    overflow: initial
+    overflow: auto
+    .gridContainer
+      height: auto
+      .gridInner
+        +breakpoint(xs)
+          height: 200vh
 
 .content__reverse
   +size(100%)

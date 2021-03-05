@@ -29,6 +29,7 @@ export default {
   },
   mounted() {
     this.getGridItems()
+    console.log('gridItems in gridLists', this.$store.state.gridItems)
   }
 }
 </script>
@@ -48,6 +49,8 @@ export default {
   grid-template-columns: repeat(13, 1fr)
   grid-template-rows: repeat(8, 1fr)
   grid-gap: 1vw
+  +breakpoint(xs)
+    height: auto
 
 .gridItem
   position: relative
@@ -71,7 +74,7 @@ export default {
   &.f
     grid-area: 6 / 9 / 9 / 12
   &.g
-    grid-area: 5 / 1 / 7 / 2
+    grid-area: 6 / 7 / 8 / 9
   &.h
     grid-area: 2 / 5 / 3 / 7
   &.i
