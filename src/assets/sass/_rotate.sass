@@ -25,8 +25,12 @@
     .gridContainer
       height: auto
       .gridInner
+        +breakpoint(sm)
+          height: 250vh
         +breakpoint(xs)
           height: 200vh
+        @media (max-width: 768px) and (orientation: landscape)
+          height: 500vh
 
 .content__reverse
   +size(100%)

@@ -17,16 +17,21 @@
       .subtitle CONTACT
       .info__email
         a(href='mailto:waterblue104@gmail.com') Email : waterblue104@gmail.com
+
       .info__phone
         a(href='tel:0981896398') Phone : 0981896398
 
     .social-bar
-      a.fab(v-for="item in iconLinks" :href='item.link' target='_blank')
+      a.fab(
+        v-for="item in iconLinks"
+        :href='item.link'
+        target='_blank'
+      )
         font-awesome-icon(:icon="['fab',`${item.icon}`]")
 
     .footer
       .container
-        p.copyright Copyright @ 2020 Ben All right reserved
+        p.copyright Copyright @ 2021 Ben All right reserved
 
 </template>
 

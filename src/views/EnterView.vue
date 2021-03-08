@@ -213,21 +213,14 @@ export default {
             ease: ease,
             opacity: 0
         }, 0)
-        .staggerTo(contactBlock, {
-          opacity: 0
-        }, {
-          duration: duration * 1.2,
-          ease: ease,
-          opacity: 1
-        })
         .fromTo(this.getGridItems, {
-          y: () => randomFloat(100, 500)
+          y: () => randomFloat(10, 200)
         }, {
           duration: 1,
-          ease: 'Expo.easeOut',
+          ease: "Expo.easeOut",
           y: 0,
           opacity: 1,
-          delay: 1
+          delay: 0.85
         })
 
         secEl.classList.add('ovh-auto')
@@ -240,8 +233,6 @@ export default {
             y: '-100%'
           }, i >= 3 ? t * 1.75 : t)
         }
-
-        console.log('n', this.pageToggleTimeline)
       }
       
 
@@ -251,8 +242,6 @@ export default {
 
         await this.pageToggleTimeline.reverse()
         secEl.classList.remove('ovh-auto')
-
-        console.log('b', this.pageToggleTimeline)
       }
 
       if (nextPage) nextPage.addEventListener('click', enterNextPage)

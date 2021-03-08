@@ -10,7 +10,7 @@
     )
       //- components(:is="curPage")
       GridLists
-      Contact
+      //- Contact
 
     TransitionBlock
 
