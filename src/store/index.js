@@ -13,6 +13,7 @@ const INIT_TIMELINE = 'INIT_TIMELINE'
 const TIMELINE_REVERSE = 'TIMELINE_REVERSE'
 const CUR_TIMELINE = 'CUR_TIMELINE'
 const GET_GRID_ITEMS = 'GET_GRID_ITEMS'
+const FULL_VIEW = 'FULL_VIEW'
 
 
 // const nextTimeline = (state, getters) => {
@@ -45,7 +46,8 @@ export default new Vuex.Store({
     secEl: '',
     isReverse: false,
     curTimeline: '',
-    gridItems: ''
+    gridItems: '',
+    fullView: false
   },
   mutations: {
     [TNS_NAME](state, name) {
@@ -74,6 +76,9 @@ export default new Vuex.Store({
     },
     [GET_GRID_ITEMS](state, elems) {
       state.gridItems = elems
+    },
+    [FULL_VIEW](state, bool) {
+      state.fullView = bool
     }
   },
   actions: {
@@ -117,6 +122,9 @@ export default new Vuex.Store({
     },
     getGridItems({ commit }, elems) {
       commit(GET_GRID_ITEMS, elems)
+    },
+    isFullView({ commit }, bool) {
+      commit(FULL_VIEW, bool)
     }
   }
 })

@@ -153,7 +153,8 @@ export default {
       getGridItems: 'gridItems',
       getOverlays: 'overlayElems',
       getFirstElems: 'firstEl',
-      getReverse: 'isReverse'
+      getReverse: 'isReverse',
+      getFullView: 'fullView'
     })
   },
   methods: {
@@ -177,7 +178,6 @@ export default {
       const nextPage = enterBtn
 
       const secEl = document.querySelector('.content--second')
-      const contactBlock = document.querySelector('.contact')
 
       const overlays = []
       const overlaysTotal = this.getOverlays.length
@@ -216,7 +216,7 @@ export default {
         .fromTo(this.getGridItems, {
           y: () => randomFloat(10, 200)
         }, {
-          duration: 1,
+          duration: 1.25,
           ease: "Expo.easeOut",
           y: 0,
           opacity: 1,

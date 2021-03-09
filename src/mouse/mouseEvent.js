@@ -40,11 +40,17 @@ export default class MouseCursor {
   }
 
   updateOnHover (e) {
-    const { tagName } = e.target
+    const { tagName, className } = e.target
     // update hover status, if tag === target change class
-    if (tagName === 'A' ||
-      tagName === 'BUTTON' ||
-      e.target.parentElement.tagName === 'A' || e.target.tagName === 'IMG' || e.target.classList.contains('.btn-contact')
+    console.log('e', e.target.className)
+    if (
+      tagName === 'A'
+      || tagName === 'BUTTON'
+      || tagName === 'IMG'
+      || e.target.classList.contains('gridItem')
+      || e.target.classList.contains('fullViewNext')
+      || e.target.classList.contains('fullViewClose')
+      || e.target.parentElement.tagName === 'A'
     ) {
       // switch class
       document.querySelector('html').classList.toggle('is-hover')

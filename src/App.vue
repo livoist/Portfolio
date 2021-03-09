@@ -8,9 +8,8 @@
     .content--second(
       ref="secEl"
     )
-      //- components(:is="curPage")
       GridLists
-      //- Contact
+      Contact
 
     TransitionBlock
 
