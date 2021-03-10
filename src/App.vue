@@ -21,12 +21,14 @@
         .content__reverse
           EnterView
 
+  DetailView
+
 </template>
 
 <script>
 import Scrollbar from 'smooth-scrollbar'
 import Mouse from '@/mouse/mouseEvent.js'
-import { Header, Contact, TransitionBlock } from '@c'
+import { Header, Contact, TransitionBlock, DetailView } from '@c'
 import GridLists from '@/views/GridLists.vue'
 import EnterView from '@/views/EnterView.vue'
 import Portfolio from '@/views/PortfolioList.vue'
@@ -40,7 +42,8 @@ export default {
     Portfolio,
     GridLists,
     Contact,
-    TransitionBlock
+    TransitionBlock,
+    DetailView
   },
   mounted() {
     this.mouseEvent()
