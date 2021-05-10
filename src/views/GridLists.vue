@@ -30,15 +30,15 @@ export default {
       return this.$store.state.gridTimelineReverse
     },
     getFullViewImage() {
-      return require(`@img/${this.$store.state.curFullView}.jpg`)
+      return require(`@img/${this.$store.state.curFullView}.png`)
     }
   },
   watch: {
-    getGridTimelineState: {
-      handler(val) {
-        if (!val) this.gridTimeline.reverse()
-      }
-    }
+    // getGridTimelineState: {
+    //   handler(val) {
+    //     if (!val) this.gridTimeline.reverse()
+    //   }
+    // }
   },
   methods: {
     getItemDetail(name, pos) {
@@ -47,15 +47,15 @@ export default {
       this.$store.dispatch('getNamePos', pos)
       this.$store.dispatch('getGridTimelineState', true)
 
-      this.gridTimeline = new TimelineMax()
-      .to(this.getGridItems, 0.6, {
-        x: () => Math.random() * -100,
-        z: () => Math.floor(Math.random() * -250),
-        rotateZ: () => Math.random() > 0.5 ? Math.random() * -100 : Math.random() * 100,
-        skewX: () => Math.random() * 100,
-        skewY: () => Math.random() * 10,
-        ease: Sine
-      })
+      // this.gridTimeline = new TimelineMax()
+      // .to(this.getGridItems, 0.6, {
+      //   x: () => Math.random() * -100,
+      //   z: () => Math.floor(Math.random() * -250),
+      //   rotateZ: () => Math.random() > 0.5 ? Math.random() * -100 : Math.random() * 100,
+      //   skewX: () => Math.random() * 100,
+      //   skewY: () => Math.random() * 10,
+      //   ease: Sine
+      // })
     },
     saveGridItems() {
       const gridItems = this.$refs.gridItems
