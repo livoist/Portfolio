@@ -4,12 +4,12 @@
     //- .preloadingAn(ref="preloadingAn")
     //-   .preloadingText(ref="preloadingText") Welcome Ben Porfolio Website
 
-    .job-title(ref="jobTitle") Front-End Developer
-
     .person-content
-      .person-heading(ref="greetText") Hello I&apos;m Ben
+      //- .person-heading(ref="greetText") Hello I&apos;m Ben
+      .person-heading.c1(ref="jobTitle1") FrontEnd
+      .person-heading.c2(ref="jobTitle2") Developer
 
-      .input-text(ref="textAn") Start Coding?
+      //- .input-text(ref="textAn") Start Coding?
 
       a.btn.btn-enter(
         ref="enterBtn"
@@ -164,10 +164,11 @@ export default {
       preloadingAn.classList.add('enter')
     },
     enterViewTimeline() {
-      const { jobTitle, greetText, textAn, enterBtn } = this.$refs
+      const { jobTitle1, jobTitle2, textAn, enterBtn } = this.$refs
       const firstPageContent = {
-        jobTitle: jobTitle,
-        greetText: greetText,
+        // jobTitle: jobTitle,
+        jobTitle1: jobTitle1,
+        jobTitle2: jobTitle2,
         textAn: textAn,
         enterBtn: enterBtn
       }
@@ -191,11 +192,16 @@ export default {
         const duration = 1.3
   
         this.pageToggleTimeline = new TimelineMax()
-        .to(firstPageContent.jobTitle, duration * 0.7, {
+        // .to(firstPageContent.jobTitle, duration * 0.7, {
+        //     ease: ease,
+        //     opacity: 0
+        // }, 0)
+        .to(firstPageContent.jobTitle1, duration, {
             ease: ease,
-            opacity: 0
+            opacity: 0,
+            y: '-100%',
         }, 0)
-        .to(firstPageContent.greetText, duration, {
+        .to(firstPageContent.jobTitle2, duration * 1.25, {
             ease: ease,
             opacity: 0,
             y: '-100%',
@@ -238,7 +244,7 @@ export default {
 
       const introPage = async () => {
         this.$store.dispatch('canReverse', false)
-        this.$store.dispatch('switchTnsName', 'Home')
+        this.$store.dispatch('switchTnsName', 'VisionPage')
 
         await this.pageToggleTimeline.reverse()
         secEl.classList.remove('ovh-auto')
@@ -266,17 +272,19 @@ export default {
       this.engine.start()
     },
     charmingText () {
-      const { enterBtn, greetText } = this.$refs
+      const { enterBtn, jobTitle1, jobTitle2 } = this.$refs
       const hoverEffect = {
         // event btn
         enterBtn: enterBtn,
         // animation text
-        greetText: greetText
+        jobTitle1: jobTitle1,
+        jobTitle2: jobTitle2
       }
       // charming text add span tag
-      charming(hoverEffect.greetText)
+      charming(hoverEffect.jobTitle1)
+      charming(hoverEffect.jobTitle2)
       // select all span tag text
-      hoverEffect.personalLetters = [...hoverEffect.greetText.querySelectorAll('span')]
+      hoverEffect.personalLetters = [...hoverEffect.jobTitle1.querySelectorAll('span'), ...hoverEffect.jobTitle2.querySelectorAll('span')]
       // random sort
       hoverEffect.personalLetters.sort(() => Math.round(Math.random()) - 0.5)
       // random < 0.5

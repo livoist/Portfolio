@@ -17,6 +17,7 @@ const GRID_TIME_REVERSE = 'GRID_TIME_REVERSE'
 
 export default new Vuex.Store({
   state: {
+    tnsName: 'VisionPage',
     overlayElems: [],
     firstEl: '',
     secEl: '',

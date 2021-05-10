@@ -17,32 +17,31 @@
   +setFlex(center,center)
   flex-direction: column
   transform: translate(-50%, -50%)
-  .job-title
-    +setFont(12px,bold,2px,#7e7869)
-    +breakpoint(sm)
-      font-size: 3vmin
-      transform: scale(0.8)
-
   .person-content
     +setFlex(center,center)
     flex-direction: column
     position: relative
+    width: 18%
+    +breakpoint(sm)
+      width: 50%
     .person-heading
-      +setFont(60px,null,8px,#424040)
-      margin: 36px 0px
+      +setFont(3.5vw,null,4px,#424040)
       cursor: default
-      // -webkit-text-stroke: 1.5px #222
-      font-family: 'Julius Sans One'
-      font-weight: bold
+      -webkit-text-stroke: 1px #efecea
+      font-family: 'Shippori Mincho'
+      letter-spacing: -4px
       +breakpoint(sm)
         font-size: 8vmin
-        margin: 5vmin 0 8vmin
-        letter-spacing: 1vmin
+        letter-spacing: -0.5vmin
+        -webkit-text-stroke: 0.5px #efecea
+      &.c1
+        align-self: flex-start
+      &.c2
+        align-self: flex-end
       span
         display: inline-block
-      .char5, .char9
-        margin-right: 20px
-
+      // .char5, .char9
+      //   margin-right: 20px
     .input-text
       +setFont(24px,bold,2px,#878080)
       text-align: center
@@ -55,7 +54,6 @@
         content: '_'
         position: absolute
         animation: textInput 0.6s both infinite alternate
-
     .btn-enter
       transition: all 0.5s
       position: relative
@@ -64,6 +62,9 @@
       padding: 0 34px
       z-index: 3
       cursor: pointer
+      +breakpoint(sm)
+        margin-top: 4vmin
+        font-size: 12px
       @media (min-width: 996px)
         &:hover
           color: rgba(orange, 0.8)
