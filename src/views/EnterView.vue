@@ -314,7 +314,7 @@ export default {
     }
   },
   mounted () {
-    // this.charmingText()
+    this.charmingText()
     this.meshLine()
     this.enterViewTimeline()
   }
