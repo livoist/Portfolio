@@ -1,8 +1,6 @@
 import { Vector3 } from 'three'
-import LineGenerator from '../meshAn/LineGenerator'
-import getRandomFloat from '../meshAn/getRandomFloat'
-import getRandomItem from '../meshAn/getRandomItem'
-
+import LineGenerator from './LineGenerator'
+import { getRandomFloat, getRandomItem } from './getCalcRandom'
 export default class CustomLineGenerator extends LineGenerator {
   addLine() {
     super.addLine({

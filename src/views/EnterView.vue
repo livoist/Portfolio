@@ -136,18 +136,15 @@ import {
   Engine,
   CustomLineGenerator,
   HandleCameraOrbit,
-  FullScreenInBackground
+  FullScreenInBackground,
+  AnimatedText3D,
+  Hastouch
 } from '@/meshAn'
 import RotateLayout from '@/rotateLayout/rotateLayout.js'
 import charming from 'charming'
 
 export default {
   name: 'EnterView',
-  data () {
-    return {
-      engine: ''
-    }
-  },
   computed: {
     ...mapState({
       getGridItems: 'gridItems',
@@ -263,13 +260,19 @@ export default {
       @HandleCameraOrbit({x: 4, y: 4}) // camera perspective
 
       class CustomEngine extends Engine {} // init customEngine
-      this.engine = new CustomEngine()
+      const engine = new CustomEngine()
+
+      const isMobile = Hastouch()
+      const threeText = new AnimatedText3D('Confetti', { color: '#0f070a', size: isMobile ? 0.6 : 0.8 })
+      console.log('threeText', threeText)
+      threeText.position.x -= threeText.basePosition * 0.5
+      engine.add(threeText)
 
       const linegenerator = new CustomLineGenerator({frequency: 0.2}, static_props)
       linegenerator.start()
 
-      this.engine.add(linegenerator)
-      this.engine.start()
+      engine.add(linegenerator)
+      engine.start()
     },
     charmingText () {
       const { enterBtn, jobTitle1, jobTitle2 } = this.$refs
@@ -311,7 +314,7 @@ export default {
     }
   },
   mounted () {
-    this.charmingText()
+    // this.charmingText()
     this.meshLine()
     this.enterViewTimeline()
   }

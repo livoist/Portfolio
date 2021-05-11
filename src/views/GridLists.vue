@@ -33,13 +33,6 @@ export default {
       return require(`@img/${this.$store.state.curFullView}.png`)
     }
   },
-  watch: {
-    // getGridTimelineState: {
-    //   handler(val) {
-    //     if (!val) this.gridTimeline.reverse()
-    //   }
-    // }
-  },
   methods: {
     getItemDetail(name, pos) {
       this.$store.dispatch('getCurFullView', name)

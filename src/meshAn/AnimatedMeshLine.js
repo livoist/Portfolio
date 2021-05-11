@@ -11,7 +11,7 @@ import {
   MeshLineMaterial
 } from 'three.meshline';
 
-import getRandomFloat from './getRandomFloat';
+import { getRandomFloat } from './getCalcRandom';
 
 export default class AnimatedMeshLine extends Mesh {
   constructor({

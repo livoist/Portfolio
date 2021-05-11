@@ -54,9 +54,6 @@ export default {
       this.$store.dispatch('showIntro', { comName: 'Portfolio', tnsName: 'Home' })
       this.$store.dispatch('timelineReverse', true)
     }
-  },
-  mounted() {
-    console.log('gridItems in header', this.$store.state.gridItems)
   }
 }
 </script>
