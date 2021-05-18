@@ -12,8 +12,6 @@ div
 </template>
 
 <script>
-import { TimelineMax, Sine } from 'gsap'
-
 export default {
   name: 'GridLists',
   data() {
@@ -33,29 +31,12 @@ export default {
       return require(`@img/${this.$store.state.curFullView}.png`)
     }
   },
-  watch: {
-    // getGridTimelineState: {
-    //   handler(val) {
-    //     if (!val) this.gridTimeline.reverse()
-    //   }
-    // }
-  },
   methods: {
     getItemDetail(name, pos) {
       this.$store.dispatch('getCurFullView', name)
       this.$store.dispatch('isFullView', true)
       this.$store.dispatch('getNamePos', pos)
       this.$store.dispatch('getGridTimelineState', true)
-
-      // this.gridTimeline = new TimelineMax()
-      // .to(this.getGridItems, 0.6, {
-      //   x: () => Math.random() * -100,
-      //   z: () => Math.floor(Math.random() * -250),
-      //   rotateZ: () => Math.random() > 0.5 ? Math.random() * -100 : Math.random() * 100,
-      //   skewX: () => Math.random() * 100,
-      //   skewY: () => Math.random() * 10,
-      //   ease: Sine
-      // })
     },
     saveGridItems() {
       const gridItems = this.$refs.gridItems
@@ -135,7 +116,6 @@ $mb-grid-items: ("a" "2 / 1 / 4 / 7", "b" "4 / 7 / 6 / 13", "c" "6 / 1 / 8 / 7",
     grid-area: 7 / 5 / 9 / 8
   &:hover
     filter: brightness(1)
-    // grid-area: 3 / 5 / 5 / 11
   +breakpoint(sm)
     @each $item, $grid in $mb-grid-items
       &.#{$item}

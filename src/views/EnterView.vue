@@ -1,15 +1,13 @@
 <template lang="pug">
 #about.wrapper
   .person.container
-    //- .preloadingAn(ref="preloadingAn")
-    //-   .preloadingText(ref="preloadingText") Welcome Ben Porfolio Website
+    .preloadingAn(:class="{ 'enter': loadingAn }")
+      .preloadingText(:class="{ 'enter': loadingAn }") Welcome Ben Porfolio Website
+      .anMaterial(:class="{ 'enter': loadingAn }")
 
     .person-content
-      //- .person-heading(ref="greetText") Hello I&apos;m Ben
       .person-heading.c1(ref="jobTitle1") FrontEnd
       .person-heading.c2(ref="jobTitle2") Developer
-
-      //- .input-text(ref="textAn") Start Coding?
 
       a.btn.btn-enter(
         ref="enterBtn"
@@ -19,73 +17,33 @@
 </template>
 
 <style lang="sass" scoped>
-@keyframes transitionBgAn
+@keyframes materialNoneAn
   0%
     opacity: 1
     z-index: 100
-  65%
-    opacity: 1
   100%
     opacity: 0
     z-index: -1
 
-@keyframes textNoneAn
+@keyframes rotateRect1
   0%
-    opacity: 1
-    z-index: 100
-    color: #000
-    letter-spacing: 4px
-  65%
-    opacity: 1
-    letter-spacing: 8px
-  100%
-    color: #000
-    opacity: 0
-    z-index: -1
-    letter-spacing: 8px
+    transform: translateX(-50%) rotate3d(0,0,0,45deg)
+  33%
+    transform: translateX(-50%) rotate3d(0.9,0,0.9,315deg)
+  66%
+    transform: translateX(-50%) rotate3d(0,0,0,45deg)
+  95%,100%
+    transform: translateX(-50%) rotate3d(0.9,0,0.9,315deg)
 
-@keyframes mobileTextNoneAn
+@keyframes rotateRect2
   0%
-    opacity: 1
-    z-index: 100
-    color: #000
-    letter-spacing: 0.75vmin
-  65%
-    opacity: 1
-    letter-spacing: 1.25vmin
-  100%
-    color: #000
-    opacity: 0
-    z-index: -1
-    letter-spacing: 1.25vmin
-
-@keyframes fullBorderAn
-  0%
-    width: 25vw
-  100%
-    width: 100vw
-
-@keyframes fillBarAn
-  0%
-    width: 0
-  10%
-    width: 5vw
-  25%
-    width: 30vw
-  99%
-    width: 30vw
-  100%
-    width: 100vw
-
-@keyframes mobileFillBarAn
-  0%
-    width: 0
-  10%
-    width: 5vw
-  25%
-    width: 30vw
-  100%
-    width: 100vw
+    transform: translateX(-50%) rotate3d(0,0,0,-45deg)
+  33%
+    transform: translateX(-50%) rotate3d(0.9,0,0.9,-315deg)
+  66%
+    transform: translateX(-50%) rotate3d(0,0,0,-45deg)
+  95%,100%
+    transform: translateX(-50%) rotate3d(0.9,0,0.9,-315deg)
 
 .preloadingAn
   +size(100vw,100vh)
@@ -94,39 +52,39 @@
   z-index: 100
   cursor: none
   &.enter
-    animation: transitionBgAn 6s 5s both
+    animation: materialNoneAn 2s 8s both
     +breakpoint(sm)
       animation-duration: 7s
   .preloadingText
     +setPosition(absolute,50%,null,null,50%)
     color: #000
-    font-size: 14px
+    font-size: 18px
     transform: translate(-50%,-50%)
     width: 100%
     text-align: center
+    letter-spacing: 4px
     +breakpoint(sm)
       font-size: 3vmin
     &.enter
-      animation: textNoneAn 5s 3s both
+      animation: materialNoneAn 1s 7s both
       +breakpoint(sm)
-        animation: mobileTextNoneAn 5.5s 4s both
+        animation: materialNoneAn 5.5s 4s both
+  .anMaterial
+    +size(100%)
+    +setPosition(absolute,50%,null,null,50%)
+    transform: translate(-50%,-50%)
+    animation: materialNoneAn 1s 6.5s both
+    &::after,&::before
+      content: ''
+      +setPosition(absolute,60%,null,null,50%)
+      +size(50px)
+      border: 1px solid #000
+      box-sizing: border-box
     &::after
-      content: ''
-      +setPosition(absolute,null,null,-20px,50%)
-      +size(25vw,1px)
-      transform: translateX(-50%)
-      background: #000
-      animation: fullBorderAn 6s 4s both
+      animation: rotateRect1 7s both
     &::before
-      content: ''
-      +setPosition(absolute,null,null,-20px,50%)
-      +size(25vw,1px)
-      transform: translateX(-50%)
-      background: #efecea
-      animation: fillBarAn 8s 1s both
-      z-index: 2
-      +breakpoint(sm)
-        animation: mobileFillBarAn 8s 1s both
+      animation: rotateRect2 7s both
+    
 </style>
 
 <script>
@@ -145,7 +103,8 @@ export default {
   name: 'EnterView',
   data () {
     return {
-      engine: ''
+      engine: '',
+      loadingAn: false
     }
   },
   computed: {
@@ -158,11 +117,6 @@ export default {
     })
   },
   methods: {
-    preloadingAn() {
-      const { preloadingAn, preloadingText } = this.$refs
-      preloadingText.classList.add('enter')
-      preloadingAn.classList.add('enter')
-    },
     enterViewTimeline() {
       const { jobTitle1, jobTitle2, textAn, enterBtn } = this.$refs
       const firstPageContent = {
@@ -306,14 +260,17 @@ export default {
             opacity: 1
           }, 0.04, 0.4)
       }
-      // add mouseenter event in btn
+      // add mouseenter event on btn
       hoverEffect.enterBtn.addEventListener('mouseenter', onEnterHoverFn)
     }
   },
   mounted () {
     this.charmingText()
-    this.meshLine()
     this.enterViewTimeline()
+    this.loadingAn = true
+    setTimeout(() => {
+      this.meshLine()
+    }, 9000)
   }
 }
 </script>

@@ -31,7 +31,6 @@ import Mouse from '@/mouse/mouseEvent.js'
 import { Header, Contact, TransitionBlock, DetailView } from '@c'
 import GridLists from '@/views/GridLists.vue'
 import EnterView from '@/views/EnterView.vue'
-import Portfolio from '@/views/PortfolioList.vue'
 import '@css'
 
 export default {
@@ -39,7 +38,6 @@ export default {
   components: {
     Header,
     EnterView,
-    Portfolio,
     GridLists,
     Contact,
     TransitionBlock,
@@ -74,12 +72,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass" scoped>
-.fade-enter-active, .fade-leave-active
-  transition: opacity .5s
-
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-  opacity: 0
-
-</style>
