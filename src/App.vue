@@ -29,8 +29,7 @@
 import Scrollbar from 'smooth-scrollbar'
 import Mouse from '@/mouse/mouseEvent.js'
 import { Header, Contact, TransitionBlock, DetailView } from '@c'
-import GridLists from '@/views/GridLists.vue'
-import EnterView from '@/views/EnterView.vue'
+import { GridLists, EnterView, ProtfolioList } from '@/views'
 import '@css'
 
 export default {
@@ -38,6 +37,7 @@ export default {
   components: {
     Header,
     EnterView,
+    ProtfolioList,
     GridLists,
     Contact,
     TransitionBlock,
