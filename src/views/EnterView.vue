@@ -53,8 +53,6 @@
   cursor: none
   &.enter
     animation: materialNoneAn 2s 8s both
-    +breakpoint(sm)
-      animation-duration: 7s
   .preloadingText
     +setPosition(absolute,50%,null,null,50%)
     color: #000
@@ -65,15 +63,16 @@
     letter-spacing: 4px
     +breakpoint(sm)
       font-size: 3vmin
+      top: 43%
     &.enter
       animation: materialNoneAn 1s 7s both
-      +breakpoint(sm)
-        animation: materialNoneAn 5.5s 4s both
   .anMaterial
     +size(100%)
     +setPosition(absolute,50%,null,null,50%)
     transform: translate(-50%,-50%)
     animation: materialNoneAn 1s 6.5s both
+    +breakpoint(sm)
+      top: 43%
     &::after,&::before
       content: ''
       +setPosition(absolute,60%,null,null,50%)
