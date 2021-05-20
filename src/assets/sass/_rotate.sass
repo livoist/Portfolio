@@ -34,14 +34,14 @@
 
 .content__reverse
   +size(100%)
-  +setFlex(center,center)
+  +setFlex
   flex-direction: column
   will-change: transform
 
 .overlay
   +setPosition(fixed,0,null,null,0)
   +size(100%)
-  +setFlex(center,center)
+  +setFlex
   pointer-events: none
 
 .overlay__inner
@@ -50,15 +50,8 @@
   flex: none
   will-change: transform
 
-.overlay__inner--color-1
-  background: #0e0e0e
 
-.overlay__inner--color-2
-  background: #2e2e2e
-
-.overlay__inner--color-3
-  background: #868181
-
-// enterPage background
-.overlay__inner--color-4
-  background: #efecea
+$blockMap: (1: #0e0e0e, 2: #2e2e2e, 3: #868181, 4: #efecea)
+@each $num, $color in $blockMap
+  .overlay__inner--color-#{$num}
+    background: $color

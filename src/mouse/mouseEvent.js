@@ -52,8 +52,13 @@ export default class MouseCursor {
       || e.target.classList.contains('fullViewClose')
       || e.target.parentElement.tagName === 'A'
     ) {
-      // switch class
+      // switch style1
       document.querySelector('html').classList.toggle('is-hover')
+    }
+
+    if (e.target.classList.contains('fab') && tagName === 'A') {
+      // switch style2
+      document.querySelector('html').classList.toggle('is-hover2')
     }
   }
 

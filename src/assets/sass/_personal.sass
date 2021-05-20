@@ -7,18 +7,18 @@
 // 	opacity: 1
 
 .wrapper
-  +setFlex(center,center)
+  +setFlex
   +size(100%)
   position: relative
 
 .person
   +size(100%)
   +setPosition(absolute,50%,null,null,50%)
-  +setFlex(center,center)
+  +setFlex
   flex-direction: column
   transform: translate(-50%, -50%)
   .person-content
-    +setFlex(center,center)
+    +setFlex
     flex-direction: column
     position: relative
     width: 18%

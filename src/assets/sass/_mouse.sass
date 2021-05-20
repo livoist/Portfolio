@@ -4,7 +4,7 @@
 .mousemoveScope__cursor__pointer
   +size(56px)
   +setPosition(fixed,0,null,null,0)
-  opacity: 0
+  opacity: 1
   z-index: 100
   pointer-events: none
   +breakpoint(md)
@@ -28,6 +28,9 @@
     opacity: 0.6
     background-color: #424040
     transform: scale(1.4)
+
+.is-hover2 .mousemoveScope__cursor__pointer
+  z-index: -1
 
 .is-none .mousemoveScope__cursor__pointer
   visibility: hidden

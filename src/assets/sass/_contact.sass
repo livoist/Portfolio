@@ -33,9 +33,16 @@
     font-size: 30px
     margin: 0 8px
     +size(30px)
+    position: relative
+    z-index: 1
     @media (min-width: 996px)
       &:hover svg
         color: #fcb437
+        z-index: 100
+    svg
+      pointer-events: none
+      position: relative
+      transition: 0.3s
 
 .footer
   margin-top: 100px

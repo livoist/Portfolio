@@ -52,6 +52,10 @@ export default {
         {
           link: 'https://medium.com/@waterblue104',
           icon: 'medium'
+        },
+        {
+          link: 'https://www.linkedin.com/in/ben-lai-21906b109/',
+          icon: 'linkedin'
         }
       ]
     }
