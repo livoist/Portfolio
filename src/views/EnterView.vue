@@ -1,9 +1,13 @@
 <template lang="pug">
 #about.wrapper
   .person.container
-    .preloadingAn(:class="{ 'enter': loadingAn }")
-      .preloadingText(:class="{ 'enter': loadingAn }") Welcome Ben Porfolio Website
-      .anMaterial(:class="{ 'enter': loadingAn }")
+    .preloadingAn(:class="{ 'enter': loadingAnStep1 }")
+      .preloadingText(:class="{ 'enter': loadingAnStep1 }") Welcome Ben Porfolio Website
+      .anMaterial(:class="{ 'enter': loadingAnStep2 }")
+        span(@click="startLoagingAn") enter
+
+      .anMaterial2(:class="{ 'enter': loadingAnStep1 }")
+        span(:class="{ 'start': loadingAnStep2 }" v-for="n in 8")
 
     .person-content
       .person-heading.c1(ref="jobTitle1") FrontEnd
@@ -45,14 +49,21 @@
   95%,100%
     transform: translateX(-50%) rotate3d(0.9,0,0.9,-315deg)
 
+@keyframes delayShow
+  0%
+    opacity: 0
+    pointer-events: none
+  100%
+    opacity: 1
+    cursor: pointer
+
 .preloadingAn
   +size(100vw,100vh)
   position: absolute
   background: #efecea
   z-index: 100
-  cursor: none
   &.enter
-    animation: materialNoneAn 2s 8s both
+    animation: materialNoneAn 2s 1s both
   .preloadingText
     +setPosition(absolute,50%,null,null,50%)
     color: #000
@@ -65,24 +76,68 @@
       font-size: 3vmin
       top: 43%
     &.enter
-      animation: materialNoneAn 1s 7s both
+      animation: materialNoneAn 1s both
   .anMaterial
-    +size(100%)
-    +setPosition(absolute,50%,null,null,50%)
+    +size(50px)
+    +setPosition(absolute,55%,null,null,50%)
     transform: translate(-50%,-50%)
-    animation: materialNoneAn 1s 6.5s both
     +breakpoint(sm)
-      top: 43%
+      top: 50%
+      transform: translate(-50%,-50%) scale(0.8)
+    &.enter
+      animation: materialNoneAn 0.3s both
     &::after,&::before
       content: ''
       +setPosition(absolute,60%,null,null,50%)
-      +size(50px)
+      transform: translate(-50%,-50%)
+      +size(100%)
       border: 1px solid #000
       box-sizing: border-box
     &::after
       animation: rotateRect1 7s both
     &::before
       animation: rotateRect2 7s both
+    span
+      display: inline-block
+      +setFlex
+      +size(100%)
+      +setPosition(absolute,110%,null,null,50%)
+      font-size: 12px
+      transform: translate(-50%,-50%) rotate3d(0,0,0,0)
+      animation: delayShow 1.25s 6.5s both
+      z-index: 300
+
+  .anMaterial2
+    +setPosition(absolute,59%,null,null,50%)
+    transform: translate(-50%,-50%)
+    z-index: 200
+    +size(50px)
+    pointer-events: none
+    &.enter
+      animation: materialNoneAn 1s both
+    +breakpoint(sm)
+      top: 54%
+      transform: translate(-50%,-50%) scale(0.8)
+    $colorAry: (1: #E29E93, 2: #EDBC7A, 3: #0384BD, 4: #F45B69, 5: #E29E93, 6: #EDBC7A, 7: #0384BD, 8: #F45B69)
+    span
+      +size(90%)
+      display: inline-block
+      @each $pos, $color in $colorAry
+        @keyframes colorfulRotate#{$pos}
+          0%
+            background: transparent
+          5%
+            background: $color
+            transform: translate(-50%,-50%) rotate((($pos - 1) * 22.5deg))
+          100%
+            background: $color
+            transform: translate(-50%,-50%) rotate($pos * 22.5deg)
+        &:nth-of-type(#{$pos})
+          +setPosition(absolute,50%,null,null,50%)
+          transform: translate(-50%,-50%) rotate((($pos - 1) * 22.5deg))
+          &.start
+            animation: colorfulRotate#{$pos} 2s #{$pos * 0.15}s both
+
     
 </style>
 
@@ -105,7 +160,8 @@ export default {
   data () {
     return {
       engine: '',
-      loadingAn: false
+      loadingAnStep1: false,
+      loadingAnStep2: false
     }
   },
   computed: {
@@ -117,7 +173,24 @@ export default {
       getFullView: 'fullView'
     })
   },
+  watch: {
+    loadingAnStep1: {
+      handler(val) {
+        if (val) {
+          setTimeout(() => {
+            this.meshLine()
+          }, 2000)
+        }
+      }
+    }
+  },
   methods: {
+    startLoagingAn() {
+      this.loadingAnStep2 = true
+      setTimeout(() => {
+        this.loadingAnStep1 = true
+      }, 2500)
+    },
     enterViewTimeline() {
       const { jobTitle1, jobTitle2, textAn, enterBtn } = this.$refs
       const firstPageContent = {
@@ -274,10 +347,6 @@ export default {
   mounted () {
     this.charmingText()
     this.enterViewTimeline()
-    this.loadingAn = true
-    setTimeout(() => {
-      this.meshLine()
-    }, 9000)
   }
 }
 </script>
