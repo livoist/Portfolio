@@ -25,11 +25,11 @@
     +breakpoint(sm)
       width: 50%
     .person-heading
-      +setFont(3.5vw,null,4px,#424040)
+      +setFont(3vw,null,4px,#424040)
       cursor: default
       // -webkit-text-stroke: 1px #efecea
       font-family: 'Shippori Mincho'
-      letter-spacing: -4px
+      letter-spacing: 0px
       +breakpoint(sm)
         font-size: 8vmin
         letter-spacing: -0.5vmin
@@ -67,17 +67,17 @@
         font-size: 12px
       @media (min-width: 996px)
         &:hover
-          color: rgba(orange, 0.8)
+          color: rgba(#000, 1)
           &::before,&::after
             width: 20px
-            background-color: rgba(#000, 0.4)
+            background-color: rgba(#000, 1)
       &::before,&::after
         content: ''
         position: absolute
         top: 50%
         transform: translateY(-50%)
         +size(6px,2px)
-        background-color: rgba(#000, 1)
+        background-color: rgba(#000, 0.3)
         transition: 0.5s
       &::before
         left: 0

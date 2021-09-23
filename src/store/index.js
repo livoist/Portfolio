@@ -13,11 +13,13 @@ const CUR_FULL_VIEW = 'CUR_FULL_VIEW'
 const GET_GRID_NAMES = 'GET_GRID_NAMES'
 const GET_NAME_POS = 'GET_NAME_POS'
 const GRID_TIME_REVERSE = 'GRID_TIME_REVERSE'
+const SWITCH_COLOR_MAP = 'SWITCH_COLOR_MAP'
 
 
 export default new Vuex.Store({
   state: {
-    tnsName: 'VisionPage',
+    colorMap: ['#FEB75D', '#55C9EA', '#013B63', '#000E2B'],
+    tnsName: 'Visual',
     overlayElems: [],
     firstEl: '',
     secEl: '',
@@ -62,6 +64,9 @@ export default new Vuex.Store({
     },
     [GRID_TIME_REVERSE](state, bool) {
       state.gridTimelineReverse = bool
+    },
+    [SWITCH_COLOR_MAP](state, colors) {
+      state.colorMap = colors
     }
   },
   actions: {
@@ -106,6 +111,9 @@ export default new Vuex.Store({
     },
     getGridTimelineState({ commit }, bool) {
       commit(GRID_TIME_REVERSE, bool)
+    },
+    switchColorMap({ commit }, colors) {
+      commit(SWITCH_COLOR_MAP, colors)
     }
   },
   getters: {

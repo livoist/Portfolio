@@ -10,136 +10,22 @@
         span(:class="{ 'start': loadingAnStep2 }" v-for="n in 8")
 
     .person-content
-      .person-heading.c1(ref="jobTitle1") FrontEnd
+      .person-heading.c1(ref="jobTitle1") Frontend
       .person-heading.c2(ref="jobTitle2") Developer
 
       a.btn.btn-enter(
         ref="enterBtn"
-        href.prevent="javascript:void('0')"
+        href="javascript:void('0')"
       ) ENTER
 
+  .switchColorMaps
+    .colorMapBtn(
+      v-for="item in colorMaps"
+      :style="{ background: item[0] }"
+      @click="switchMeshLineColorMap(item)"
+    )
+
 </template>
-
-<style lang="sass" scoped>
-@keyframes materialNoneAn
-  0%
-    opacity: 1
-    z-index: 100
-  100%
-    opacity: 0
-    z-index: -1
-
-@keyframes rotateRect1
-  0%
-    transform: translateX(-50%) rotate3d(0,0,0,45deg)
-  33%
-    transform: translateX(-50%) rotate3d(0.9,0,0.9,315deg)
-  66%
-    transform: translateX(-50%) rotate3d(0,0,0,45deg)
-  95%,100%
-    transform: translateX(-50%) rotate3d(0.9,0,0.9,315deg)
-
-@keyframes rotateRect2
-  0%
-    transform: translateX(-50%) rotate3d(0,0,0,-45deg)
-  33%
-    transform: translateX(-50%) rotate3d(0.9,0,0.9,-315deg)
-  66%
-    transform: translateX(-50%) rotate3d(0,0,0,-45deg)
-  95%,100%
-    transform: translateX(-50%) rotate3d(0.9,0,0.9,-315deg)
-
-@keyframes delayShow
-  0%
-    opacity: 0
-    pointer-events: none
-  100%
-    opacity: 1
-    cursor: pointer
-
-.preloadingAn
-  +size(100vw,100vh)
-  position: absolute
-  background: #efecea
-  z-index: 100
-  &.enter
-    animation: materialNoneAn 2s 1s both
-  .preloadingText
-    +setPosition(absolute,50%,null,null,50%)
-    color: #000
-    font-size: 18px
-    transform: translate(-50%,-50%)
-    width: 100%
-    text-align: center
-    letter-spacing: 4px
-    +breakpoint(sm)
-      font-size: 3vmin
-      top: 43%
-    &.enter
-      animation: materialNoneAn 1s both
-  .anMaterial
-    +size(50px)
-    +setPosition(absolute,55%,null,null,50%)
-    transform: translate(-50%,-50%)
-    +breakpoint(sm)
-      top: 50%
-      transform: translate(-50%,-50%) scale(0.8)
-    &.enter
-      animation: materialNoneAn 0.3s both
-    &::after,&::before
-      content: ''
-      +setPosition(absolute,60%,null,null,50%)
-      transform: translate(-50%,-50%)
-      +size(100%)
-      border: 1px solid #000
-      box-sizing: border-box
-    &::after
-      animation: rotateRect1 7s both
-    &::before
-      animation: rotateRect2 7s both
-    span
-      display: inline-block
-      +setFlex
-      +size(100%)
-      +setPosition(absolute,110%,null,null,50%)
-      font-size: 12px
-      transform: translate(-50%,-50%) rotate3d(0,0,0,0)
-      animation: delayShow 1.25s 6.5s both
-      z-index: 300
-
-  .anMaterial2
-    +setPosition(absolute,59%,null,null,50%)
-    transform: translate(-50%,-50%)
-    z-index: 200
-    +size(50px)
-    pointer-events: none
-    &.enter
-      animation: materialNoneAn 1s both
-    +breakpoint(sm)
-      top: 54%
-      transform: translate(-50%,-50%) scale(0.8)
-    $colorAry: (1: #E29E93, 2: #EDBC7A, 3: #0384BD, 4: #F45B69, 5: #E29E93, 6: #EDBC7A, 7: #0384BD, 8: #F45B69)
-    span
-      +size(90%)
-      display: inline-block
-      @each $pos, $color in $colorAry
-        @keyframes colorfulRotate#{$pos}
-          0%
-            background: transparent
-          5%
-            background: $color
-            transform: translate(-50%,-50%) rotate((($pos - 1) * 22.5deg))
-          100%
-            background: $color
-            transform: translate(-50%,-50%) rotate($pos * 22.5deg)
-        &:nth-of-type(#{$pos})
-          +setPosition(absolute,50%,null,null,50%)
-          transform: translate(-50%,-50%) rotate((($pos - 1) * 22.5deg))
-          &.start
-            animation: colorfulRotate#{$pos} 2s #{$pos * 0.15}s both
-
-    
-</style>
 
 <script>
 import { mapState } from 'vuex'
@@ -161,7 +47,12 @@ export default {
     return {
       engine: '',
       loadingAnStep1: false,
-      loadingAnStep2: false
+      loadingAnStep2: false,
+      colorMaps: [
+        ['#EE3239', '#5EAA5F', '#FECE00', '#9D6AB9'],
+        ['#FFEFA1', '#FFB21A', '#876363', '#414B6F'],
+        ['#E6B6C2', '#D4587A', '#DC364C', '#778633']
+      ]
     }
   },
   computed: {
@@ -185,6 +76,9 @@ export default {
     }
   },
   methods: {
+    switchMeshLineColorMap(item) {
+      this.$store.dispatch('switchColorMap', item)
+    },
     startLoagingAn() {
       this.loadingAnStep2 = true
       setTimeout(() => {
@@ -272,7 +166,7 @@ export default {
 
       const introPage = async () => {
         this.$store.dispatch('canReverse', false)
-        this.$store.dispatch('switchTnsName', 'VisionPage')
+        this.$store.dispatch('switchTnsName', 'Visual')
 
         await this.pageToggleTimeline.reverse()
         secEl.classList.remove('ovh-auto')
@@ -284,7 +178,8 @@ export default {
     meshLine() {
       const static_props = {
         width: 0.08, // meshLine width
-        nbrOfPoints: 4 // meshLine turn point 
+        nbrOfPoints: 4, // meshLine turn point
+        color: ['#FEB75D', '#55C9EA', '#013B63', '#000E2B']
       }
 
       @FullScreenInBackground // auto background canvas
@@ -350,3 +245,134 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+@keyframes materialNoneAn
+  0%
+    opacity: 1
+    z-index: 100
+  100%
+    opacity: 0
+    z-index: -1
+
+@keyframes rotateRect1
+  0%
+    transform: translateX(-50%) rotate3d(0,0,0,45deg)
+  33%
+    transform: translateX(-50%) rotate3d(0.9,0,0.9,315deg)
+  66%
+    transform: translateX(-50%) rotate3d(0,0,0,45deg)
+  95%,100%
+    transform: translateX(-50%) rotate3d(0.9,0,0.9,315deg)
+
+@keyframes rotateRect2
+  0%
+    transform: translateX(-50%) rotate3d(0,0,0,-45deg)
+  33%
+    transform: translateX(-50%) rotate3d(0.9,0,0.9,-315deg)
+  66%
+    transform: translateX(-50%) rotate3d(0,0,0,-45deg)
+  95%,100%
+    transform: translateX(-50%) rotate3d(0.9,0,0.9,-315deg)
+
+@keyframes delayShow
+  0%
+    opacity: 0
+    pointer-events: none
+  100%
+    opacity: 1
+    cursor: pointer
+
+.switchColorMaps
+  position: fixed
+  right: 40px
+  top: 15%
+
+.colorMapBtn
+  width: 50px
+  height: 50px
+  margin-bottom: 20px
+  cursor: pointer
+
+.preloadingAn
+  +size(100vw,100vh)
+  position: absolute
+  background: #efecea
+  z-index: 100
+  &.enter
+    animation: materialNoneAn 2s 1s both
+  .preloadingText
+    +setPosition(absolute,50%,null,null,50%)
+    color: #000
+    font-size: 18px
+    transform: translate(-50%,-50%)
+    width: 100%
+    text-align: center
+    letter-spacing: 4px
+    +breakpoint(sm)
+      font-size: 3vmin
+      top: 43%
+    &.enter
+      animation: materialNoneAn 1s both
+  .anMaterial
+    +size(50px)
+    +setPosition(absolute,55%,null,null,50%)
+    transform: translate(-50%,-50%)
+    +breakpoint(sm)
+      top: 50%
+      transform: translate(-50%,-50%) scale(0.8)
+    &.enter
+      animation: materialNoneAn 0.3s both
+    &::after,&::before
+      content: ''
+      +setPosition(absolute,60%,null,null,50%)
+      transform: translate(-50%,-50%)
+      +size(100%)
+      border: 1px solid #000
+      box-sizing: border-box
+    &::after
+      animation: rotateRect1 7s both
+    &::before
+      animation: rotateRect2 7s both
+    span
+      display: inline-block
+      +setFlex
+      +size(100%)
+      +setPosition(absolute,110%,null,null,50%)
+      font-size: 12px
+      transform: translate(-50%,-50%) rotate3d(0,0,0,0)
+      animation: delayShow 1.25s 6.5s both
+      z-index: 300
+
+  .anMaterial2
+    +setPosition(absolute,59%,null,null,50%)
+    transform: translate(-50%,-50%)
+    z-index: 200
+    +size(50px)
+    pointer-events: none
+    &.enter
+      animation: materialNoneAn 1s both
+    +breakpoint(sm)
+      top: 54%
+      transform: translate(-50%,-50%) scale(0.8)
+    $colorAry: (1: #E29E93, 2: #EDBC7A, 3: #0384BD, 4: #F45B69, 5: #E29E93, 6: #EDBC7A, 7: #0384BD, 8: #F45B69)
+    span
+      +size(90%)
+      display: inline-block
+      @each $pos, $color in $colorAry
+        @keyframes colorfulRotate#{$pos}
+          0%
+            background: transparent
+          5%
+            background: $color
+            transform: translate(-50%,-50%) rotate((($pos - 1) * 22.5deg))
+          100%
+            background: $color
+            transform: translate(-50%,-50%) rotate($pos * 22.5deg)
+        &:nth-of-type(#{$pos})
+          +setPosition(absolute,50%,null,null,50%)
+          transform: translate(-50%,-50%) rotate((($pos - 1) * 22.5deg))
+          &.start
+            animation: colorfulRotate#{$pos} 2s #{$pos * 0.15}s both
+
+</style>

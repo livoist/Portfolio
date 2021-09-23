@@ -1,6 +1,8 @@
 import { Vector3 } from 'three'
 import LineGenerator from './LineGenerator'
 import { getRandomFloat, getRandomItem } from './getCalcRandom'
+import store from '../store'
+
 export default class CustomLineGenerator extends LineGenerator {
   addLine() {
     super.addLine({
@@ -16,7 +18,7 @@ export default class CustomLineGenerator extends LineGenerator {
       ),
       orientation: new Vector3(getRandomFloat(-1.8, 1.8), 1, 1,),
       speed: getRandomFloat(0.004, 0.008),
-      color: getRandomItem(['#E29E93', '#EDBC7A', '#0384BD', '#F45B69']),
+      color: getRandomItem(store.state.colorMap),
     });
   }
 }
