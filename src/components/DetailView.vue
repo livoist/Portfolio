@@ -70,11 +70,12 @@ export default {
       }, 500)
 
       if (this.tnsAn) {
+        this.$store.state.namePos++
+        if (this.getNamePos > 10) this.$store.dispatch('getNamePos', 0)
+
         setTimeout(() => {
-          this.$store.state.namePos++
-          if (this.getNamePos > 10) this.$store.dispatch('getNamePos', 0)
           this.$store.dispatch('switchCurView')
-        }, 100)
+        }, 200)
       }
 
       if (this.getCurFullView === 'k') {

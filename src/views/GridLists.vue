@@ -16,8 +16,7 @@ export default {
   name: 'GridLists',
   data() {
     return {
-      gridNames: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'],
-      gridTimeline: ''
+      gridNames: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']
     }
   },
   computed: {

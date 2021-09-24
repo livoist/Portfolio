@@ -7,7 +7,7 @@
         span(@click="startLoagingAn") enter
 
       .anMaterial2(:class="{ 'enter': loadingAnStep1 }")
-        span(:class="{ 'start': loadingAnStep2 }" v-for="n in 8")
+        span(:class="{ 'start': loadingAnStep2 }" v-for="n in 12")
 
     .person-content
       .person-heading.c1(ref="jobTitle1") Frontend
@@ -18,12 +18,16 @@
         href="javascript:void('0')"
       ) ENTER
 
-  .switchColorMaps
-    .colorMapBtn(
-      v-for="item in colorMaps"
-      :style="{ background: item[0] }"
-      @click="switchMeshLineColorMap(item)"
-    )
+  .switchColorMaps(:class="{ 'show': loadingAnStep2 }")
+    p Switch LineColors
+    .flexBox
+      .colorMapBtn(
+        v-for="(item, idx) in colorMaps"
+        :style="{ background: item[1] }"
+        :class="getColorMapClassList(idx)"
+        @click="switchMeshLineColorMap(item, idx)"
+      )
+  .switchBgModal(@click="switchBgModal()") switch
 
 </template>
 
@@ -52,7 +56,9 @@ export default {
         ['#EE3239', '#5EAA5F', '#FECE00', '#9D6AB9'],
         ['#FFEFA1', '#FFB21A', '#876363', '#414B6F'],
         ['#E6B6C2', '#D4587A', '#DC364C', '#778633']
-      ]
+      ],
+      curColorMap: 0,
+      canSwitchColorMap: true
     }
   },
   computed: {
@@ -76,8 +82,30 @@ export default {
     }
   },
   methods: {
-    switchMeshLineColorMap(item) {
+    switchBgModal() {
+      const body = document.body
+      body.classList.add('darkModal')
+    },
+    getColorMapClassList(idx) {
+      return {
+        'active': this.curColorMap === idx,
+        'pointer-none': !this.canSwitchColorMap,
+        'prevent': (this.curColorMap !== idx && !this.canSwitchColorMap) || this.curColorMap !== idx
+      }
+    },
+    switchMeshLineColorMap(item, idx) {
       this.$store.dispatch('switchColorMap', item)
+      this.curColorMap = idx
+
+      const meshCanvas = document.getElementById('#canvas')
+      meshCanvas.classList.add('tnsCanvas')
+
+      this.canSwitchColorMap = false
+
+      setTimeout(() => {
+        meshCanvas.classList.remove('tnsCanvas')
+        this.canSwitchColorMap = true
+      }, 1500)
     },
     startLoagingAn() {
       this.loadingAnStep2 = true
@@ -179,7 +207,6 @@ export default {
       const static_props = {
         width: 0.08, // meshLine width
         nbrOfPoints: 4, // meshLine turn point
-        color: ['#FEB75D', '#55C9EA', '#013B63', '#000E2B']
       }
 
       @FullScreenInBackground // auto background canvas
@@ -283,16 +310,53 @@ export default {
     opacity: 1
     cursor: pointer
 
-.switchColorMaps
+.switchBgModal
   position: fixed
+  z-index: 100
+  right: 0
+
+.switchColorMaps
+  position: absolute
   right: 40px
-  top: 15%
+  top: 5%
+  transition: 2s 4s
+  opacity: 0
+  visibility: hidden
+  border-bottom: 1px solid rgba(#000,0.2)
+  padding-bottom: 8px
+  +setFlex
+  +breakpoint(sm)
+    top: 3.25%
+    right: 5%
+    padding-bottom: 1vmin
+  &.show
+    opacity: 1
+    visibility: visible
+  > p
+    text-align: center
+    margin: 0 0.75vw 0 0
+    +breakpoint(sm)
+      font-size: 3vmin
+
+.flexBox
+  +setFlex
 
 .colorMapBtn
-  width: 50px
-  height: 50px
+  width: 30px
+  height: 30px
+  border-radius: 50%
   margin-bottom: 20px
   cursor: pointer
+  position: relative
+  transition: 2s
+  margin: 0 0.25vw
+  +breakpoint(sm)
+    +size(4vmin)
+    margin: 0 0.75vw
+  &.pointer-none
+    pointer-events: none
+  &.prevent
+    opacity: 0.1
 
 .preloadingAn
   +size(100vw,100vh)
@@ -328,7 +392,7 @@ export default {
       +setPosition(absolute,60%,null,null,50%)
       transform: translate(-50%,-50%)
       +size(100%)
-      border: 1px solid #000
+      border: 1px solid rgba(#000, 0.4)
       box-sizing: border-box
     &::after
       animation: rotateRect1 7s both
@@ -355,7 +419,7 @@ export default {
     +breakpoint(sm)
       top: 54%
       transform: translate(-50%,-50%) scale(0.8)
-    $colorAry: (1: #E29E93, 2: #EDBC7A, 3: #0384BD, 4: #F45B69, 5: #E29E93, 6: #EDBC7A, 7: #0384BD, 8: #F45B69)
+    $colorAry: (1: #EE3239, 2: #5EAA5F, 3: #FECE00, 4: #9D6AB9, 5: #FFEFA1, 6: #FFB21A, 7: #876363, 8: #414B6F, 9: #E6B6C2, 10: #D4587A, 11: #DC364C, 12: #778633)
     span
       +size(90%)
       display: inline-block
