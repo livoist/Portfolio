@@ -21,14 +21,15 @@
         .content__reverse
           EnterView
 
-  DetailView
+  //- ModalDetail
+  OverlayDetail
 
 </template>
 
 <script>
 import Scrollbar from 'smooth-scrollbar'
 import Mouse from '@/mouse/mouseEvent.js'
-import { Header, Contact, TransitionBlock, DetailView } from '@c'
+import { Header, Contact, TransitionBlock, ModalDetail, OverlayDetail } from '@c'
 import { GridLists, EnterView } from '@/views'
 import '@css'
 
@@ -40,7 +41,8 @@ export default {
     GridLists,
     Contact,
     TransitionBlock,
-    DetailView
+    ModalDetail,
+    OverlayDetail
   },
   mounted() {
     this.mouseEvent()

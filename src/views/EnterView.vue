@@ -27,7 +27,7 @@
         :class="getColorMapClassList(idx)"
         @click="switchMeshLineColorMap(item, idx)"
       )
-  .switchBgModal(@click="switchBgModal()") switch
+  //- .switchBgModal(@click="switchBgModal()") switch
 
 </template>
 

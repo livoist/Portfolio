@@ -1,39 +1,39 @@
 <template lang="pug">
-.fullView(
-    :class="{ 'showContent': isFullView }"
-  )
-    .fullViewContent
-      .fullViewImage(
-        :class="{ tnsOpacity: tnsAn }"
-      )
-        .fullViewImageInner(
-          :style="{ backgroundImage: `url(${getFullViewImage})` }"
-          :class="{ 'switchImage': tnsAn }"
-        )
-      .fullViewDes(
-        :class="{ 'tnsOpacity': tnsAn }"
-      )
-        .fullViewTitle Title {{ getCurFullView }}
-        .fullViewDes Description
+//- .fullView(
+//-     :class="{ 'showContent': isFullView }"
+//-   )
+//-     .fullViewContent
+//-       .fullViewImage(
+//-         :class="{ tnsOpacity: tnsAn }"
+//-       )
+//-         .fullViewImageInner(
+//-           :style="{ backgroundImage: `url(${getFullViewImage})` }"
+//-           :class="{ 'switchImage': tnsAn }"
+//-         )
+//-       .fullViewDes(
+//-         :class="{ 'tnsOpacity': tnsAn }"
+//-       )
+//-         .fullViewTitle Title {{ getCurFullView }}
+//-         .fullViewDes Description
 
-      .fullViewDate(
-        :class="{ 'tnsOpacity': tnsAn }"
-      )
-        p 2021/3/{{ getCurFullView }}
+//-       .fullViewDate(
+//-         :class="{ 'tnsOpacity': tnsAn }"
+//-       )
+//-         p 2021/3/{{ getCurFullView }}
 
-      .fullViewTag(
-        :class="{ 'tnsOpacity': tnsAn }"
-      )
-        p Layout Demo {{ getCurFullView }}
+//-       .fullViewTag(
+//-         :class="{ 'tnsOpacity': tnsAn }"
+//-       )
+//-         p Layout Demo {{ getCurFullView }}
 
-      .fullViewNext(
-        @click="switchImage"
-        :class="{ 'canSwitch': isSwitch }"
-      ) →
+//-       .fullViewNext(
+//-         @click="switchImage"
+//-         :class="{ 'canSwitch': isSwitch }"
+//-       ) →
 
-      .fullViewClose(
-        @click="closeFullView(false)"
-      )
+//-       .fullViewClose(
+//-         @click="closeFullView(false)"
+//-       )
 </template>
 
 <script>

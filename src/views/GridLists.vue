@@ -7,7 +7,7 @@ div
         :style="{ backgroundImage: `url(${require(`@img/${item}.jpg`)})` }"
         :class="item"
         ref="gridItems"
-        @click="getItemDetail(item, idx)"
+        @click="getOverlayDetail(item, idx)"
       )
 </template>
 
@@ -36,6 +36,12 @@ export default {
       this.$store.dispatch('isFullView', true)
       this.$store.dispatch('getNamePos', pos)
       this.$store.dispatch('getGridTimelineState', true)
+    },
+    getOverlayDetail() {
+      this.$store.dispatch('isFullView', true)
+      setTimeout(() => {
+        this.$store.dispatch('isFullView', false)
+      }, 1000)
     },
     saveGridItems() {
       const gridItems = this.$refs.gridItems
