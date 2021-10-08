@@ -2,10 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-const TNS_NAME = 'TNS_NAME'
+const ROTATE_LAYOUT_NAME = 'ROTATE_LAYOUT_NAME'
 const GET_OVERLAYS_ELEMS = 'GET_OVERLAYS_ELEMS'
-const GET_FIRST_ELEM = 'FIRST_ELEMS'
-const GET_SEC_ELEM = 'GET_SEC_ELEM'
+const GET_FIRST_PAGE_EL = 'GET_FIRST_PAGE_EL'
+const GET_SEC_PAGE_EL = 'GET_SEC_PAGE_EL'
 const TIMELINE_REVERSE = 'TIMELINE_REVERSE'
 const GET_GRID_ITEMS = 'GET_GRID_ITEMS'
 const FULL_VIEW_STATE = 'FULL_VIEW_STATE'
@@ -14,35 +14,37 @@ const GET_GRID_NAMES = 'GET_GRID_NAMES'
 const GET_NAME_POS = 'GET_NAME_POS'
 const GRID_TIME_REVERSE = 'GRID_TIME_REVERSE'
 const SWITCH_COLOR_MAP = 'SWITCH_COLOR_MAP'
+const IS_OVERLAY_TNS = 'IS_OVERLAY_TNS'
 
 
 export default new Vuex.Store({
   state: {
     colorMap: ['#FEB75D', '#55C9EA', '#013B63', '#000E2B'],
-    tnsName: 'Visual',
+    rotateLayoutName: 'Visual',
     overlayElems: [],
-    firstEl: '',
-    secEl: '',
+    firstPageEl: '',
+    secPageEl: '',
     isReverse: false,
     gridItems: '',
     fullView: false,
     curFullView: 'a',
     gridNames: [],
     namePos: 0,
-    gridTimelineReverse: false
+    gridTimelineReverse: false,
+    isOverlayTns: false
   },
   mutations: {
-    [TNS_NAME](state, name) {
-      state.tnsName = name
+    [ROTATE_LAYOUT_NAME](state, name) {
+      state.rotateLayoutName = name
     },
     [GET_OVERLAYS_ELEMS](state, ary) {
       state.overlayElems = ary
     },
-    [GET_FIRST_ELEM](state, el) {
-      state.firstEl = el
+    [GET_FIRST_PAGE_EL](state, el) {
+      state.firstPageEl = el
     },
-    [GET_SEC_ELEM](state, el) {
-      state.secEl = el
+    [GET_SEC_PAGE_EL](state, el) {
+      state.secPageEl = el
     },
     [TIMELINE_REVERSE](state, isReverse) {
       state.isReverse = isReverse
@@ -67,20 +69,23 @@ export default new Vuex.Store({
     },
     [SWITCH_COLOR_MAP](state, colors) {
       state.colorMap = colors
+    },
+    [IS_OVERLAY_TNS](state, bool) {
+      state.isOverlayTns = bool
     }
   },
   actions: {
     switchTnsName({ commit }, string) {
-      commit(TNS_NAME, string)
+      commit(ROTATE_LAYOUT_NAME, string)
     },
     getOverlaysElems({ commit }, array) {
       commit(GET_OVERLAYS_ELEMS, array)
     },
     getFirstEl({ commit }, el) {
-      commit(GET_FIRST_ELEM, el)
+      commit(GET_FIRST_PAGE_EL, el)
     },
     getSecEl({ commit }, el) {
-      commit(GET_SEC_ELEM, el)
+      commit(GET_SEC_PAGE_EL, el)
     },
     canReverse({ commit }, isReverse) {
       commit(TIMELINE_REVERSE, isReverse)
@@ -114,6 +119,9 @@ export default new Vuex.Store({
     },
     switchColorMap({ commit }, colors) {
       commit(SWITCH_COLOR_MAP, colors)
+    },
+    switchOverlayTns({ commit }, bool) {
+      commit(IS_OVERLAY_TNS, bool)
     }
   },
   getters: {

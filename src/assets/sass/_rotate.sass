@@ -20,6 +20,10 @@
   +size(100vw,100vh)
   position: fixed !important
   overflow: hidden
+  transition: 0.5s
+  &.hidden
+    opacity: 0
+    visibility: hidden
   &.ovh-auto
     overflow: auto
     .gridContainer

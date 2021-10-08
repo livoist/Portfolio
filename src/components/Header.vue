@@ -3,7 +3,7 @@
     .navbar
       a.logo(
         href="javascript:void('0')"
-        :class="{ 'pointer-initial': prePage }"
+        :class="getLogoClassList"
       ) B
       .nav.u-z-index_7
         //-a.menu-toggle(href='#popup-overlay')
@@ -41,6 +41,15 @@ export default {
   computed: {
     prePage() {
       return this.$store.state.isReverse
+    },
+    getFullViewState() {
+      return this.$store.state.fullView
+    },
+    getLogoClassList() {
+      return {
+        'pointer-initial': this.prePage,
+        'hidden': this.getFullViewState
+      }
     }
   },
   methods: {
@@ -51,7 +60,7 @@ export default {
       })
     },
     showIntro() {
-      this.$store.dispatch('showIntro', { comName: 'Portfolio', tnsName: 'Home' })
+      this.$store.dispatch('showIntro', { comName: 'Portfolio', rotateLayoutName: 'Home' })
       this.$store.dispatch('timelineReverse', true)
     }
   }

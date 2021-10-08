@@ -5,7 +5,7 @@
     h2 CONTACT
 
     .skill
-      .subtitle SKILLS
+      .subtitle Skills
       p
         | JavaScript / Vue.js(Vuex) / HTML5(pug) / CSS3(SCSS/SASS) / RWD / Git Flow / Canvas / SVG / GSAP(TweenMax) / Bootstrap /
         | JQuery
@@ -14,7 +14,7 @@
         | Learning ( PIXI.js &#x3001; Three.js &#x3001; UX/UI concept &#x3001; WebGL )
 
     .info
-      .subtitle CONTACT
+      .subtitle Information
       .info__email
         a(href='mailto:waterblue104@gmail.com') Email : waterblue104@gmail.com
 

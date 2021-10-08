@@ -2,16 +2,17 @@ import { TweenLite, Power4 } from 'gsap'
 
 export default class MouseCursor {
   constructor () {
+    // mouse scope
     this.page = document.querySelector('#app')
-    // mouse range
+
+    // get cursor
     const cursor = document.querySelector('.mousemoveScope__cursor__pointer')
-    // cursor
     TweenLite.to(cursor, {
       autoAlpha: 0
     })
   }
 
-  // cursor move position
+  // get mouse pos
   moveMousePos (e) {
     const mousePosX = e.clientX
     const mousePosY = e.clientY
@@ -31,7 +32,7 @@ export default class MouseCursor {
     })
   }
 
-  // listener range
+  // listener scope
   handleMousePos () {
     if (window.innerWidth > 1024) {
       this.page.addEventListener('mouseenter', this.enterMouse)
@@ -40,9 +41,9 @@ export default class MouseCursor {
   }
 
   updateOnHover (e) {
-    const { tagName, className } = e.target
     // update hover status, if tag === target change class
-    console.log('e', e.target.className)
+    const { tagName } = e.target
+
     if (
       tagName === 'A'
       || tagName === 'BUTTON'
@@ -50,19 +51,23 @@ export default class MouseCursor {
       || e.target.classList.contains('gridItem')
       || e.target.classList.contains('fullViewNext')
       || e.target.classList.contains('fullViewClose')
+      || e.target.classList.contains('viewOverlayClose')
+      || e.target.classList.contains('colorMapBtn')
       || e.target.parentElement.tagName === 'A'
     ) {
       // switch style1
       document.querySelector('html').classList.toggle('is-hover')
     }
 
-    if (e.target.classList.contains('fab') && tagName === 'A') {
+    if (
+      (e.target.classList.contains('fab') && tagName === 'A')
+    ) {
       // switch style2
       document.querySelector('html').classList.toggle('is-hover2')
     }
   }
 
-  // update cursor
+  // update mouse
   handleLinkHover () {
     if (window.innerWidth > 1024) {
       this.page.addEventListener('mouseover', this.updateOnHover.bind(this))

@@ -43,6 +43,9 @@ h2
   margin-bottom: 34px
   margin-top: 24px
   letter-spacing: 1px
+  +breakpoint(sm)
+    margin: 6vmin 0 10vmin
+    font-size: 7vmin
 
 p
   font-size: 12px
@@ -59,9 +62,12 @@ p
 
 .subtitle
   font-size: 24px
-  font-weight: 900
+  font-weight: 400
   margin: 24px 0
   letter-spacing: 4px
+  +breakpoint(sm)
+    margin: 4.5vmin 0
+    font-size: 5.5vmin
 
 .btn
   display: inline-block

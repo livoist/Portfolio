@@ -3,10 +3,13 @@
   .mousemoveScope__cursor__pointer
 
   #app
+    .overlayBlock(:class="{ 'inTfm': getOverlayState }")
+
     Header
 
     .content--second(
       ref="secEl"
+      :class="{ 'hidden': getFullViewState }"
     )
       GridLists
       Contact
@@ -21,12 +24,13 @@
         .content__reverse
           EnterView
 
-  //- ModalDetail
-  OverlayDetail
+    OverlayDetail
+    //- ModalDetail
 
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Scrollbar from 'smooth-scrollbar'
 import Mouse from '@/mouse/mouseEvent.js'
 import { Header, Contact, TransitionBlock, ModalDetail, OverlayDetail } from '@c'
@@ -50,12 +54,12 @@ export default {
     this.scrollEvent()
   },
   computed: {
-    curPage() {
-      return this.$store.state.curPageCom
-    },
-    hiddenContent() {
-      return this.$store.state.isReverse
-    }
+    ...mapState({
+      curPage: 'curPageCom',
+      hiddenContent: 'isReverse',
+      getOverlayState: 'isOverlayTns',
+      getFullViewState: 'fullView'
+    })
   },
   methods: {
     getTransitionElems() {
@@ -73,3 +77,20 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.overlayBlock
+  position: absolute
+  background: #efecea
+  width: 100vw
+  height: 100vh
+  will-change: transform
+  transform: scaleX(0)
+  transform-origin: right center
+  transition: transform 0.9s cubic-bezier(0.785, 0.135, 0.15, 0.86)
+  z-index: 999
+  &.inTfm
+    transform-origin: left center
+    transform: scale(1)
+
+</style>

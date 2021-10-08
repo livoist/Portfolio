@@ -15,6 +15,7 @@
     font-size: 7vmin
     position: relative
     pointer-events: none
+    z-index: 999
     @media (min-width: 996px)
       +setFont(38px,bold,null,null)
     &::after
@@ -34,6 +35,9 @@
       animation: backFrame 1.5s 1.5s both
       &::after
         animation: backTextShow 1.5s 2.5s both
+    &.hidden
+      opacity: 0
+      visibility: hidden
 
   ul.links
     +setFlex

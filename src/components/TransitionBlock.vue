@@ -15,7 +15,7 @@ export default {
   name: 'TransitionBlock',
   computed: {
     curName() {
-      return this.$store.state.tnsName
+      return this.$store.state.rotateLayoutName
     }
   },
   methods: {
