@@ -65,9 +65,10 @@ export default {
     ...mapState({
       getGridItems: 'gridItems',
       getOverlays: 'overlayElems',
-      getFirstElems: 'firstEl',
+      getFirstPageEl: 'firstPageEl',
       getReverse: 'isReverse',
-      getFullView: 'fullView'
+      getFullView: 'fullView',
+      getSecPageEl: 'secPageEl'
     })
   },
   watch: {
@@ -128,8 +129,6 @@ export default {
       const prePage = document.querySelector('.logo')
       const nextPage = enterBtn
 
-      const secEl = document.querySelector('.content--second')
-
       const overlays = []
       const overlaysTotal = this.getOverlays.length
       this.getOverlays.forEach((overlay, i) => overlays.push(new RotateLayout(overlay, { angle: i % 3 === 0 ? -5 : 5 })))
@@ -165,7 +164,7 @@ export default {
             ease: ease,
             opacity: 0
         }, 0)
-        .to(this.getFirstElems, duration, {
+        .to(this.getFirstPageEl, duration, {
             ease: ease,
             opacity: 0
         }, 0)
@@ -179,7 +178,7 @@ export default {
           delay: 0.85
         })
 
-        secEl.classList.add('ovh-auto')
+        this.getSecPageEl.classList.add('ovh-auto')
 
         let t = 0
         for (let i = 0; i <= overlaysTotal - 1; i++) {
@@ -197,7 +196,7 @@ export default {
         this.$store.dispatch('switchTnsName', 'Visual')
 
         await this.pageToggleTimeline.reverse()
-        secEl.classList.remove('ovh-auto')
+        this.getSecPageEl.classList.remove('ovh-auto')
       }
 
       if (nextPage) nextPage.addEventListener('click', enterNextPage)
@@ -350,6 +349,7 @@ export default {
   position: relative
   transition: 2s
   margin: 0 0.25vw
+  z-index: 1
   +breakpoint(sm)
     +size(4vmin)
     margin: 0 0.75vw

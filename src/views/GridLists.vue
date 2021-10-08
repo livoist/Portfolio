@@ -12,6 +12,8 @@ div
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'GridLists',
   data() {
@@ -20,27 +22,35 @@ export default {
     }
   },
   computed: {
-    getGridItems() {
-      return this.$store.state.gridItems
-    },
-    getGridTimelineState() {
-      return this.$store.state.gridTimelineReverse
-    },
+    ...mapState({
+      getGridItems: 'gridItems',
+      getGridTimelineState: 'gridTimelineReverse',
+      getOverlayState: 'isOverlayTns'
+    }),
     getFullViewImage() {
       return require(`@img/${this.$store.state.curFullView}.png`)
     }
   },
   methods: {
-    getItemDetail(name, pos) {
+    // getItemDetail(name, pos) {
+    //   this.$store.dispatch('getCurFullView', name)
+    //   this.$store.dispatch('isFullView', true)
+    //   this.$store.dispatch('getNamePos', pos)
+    //   this.$store.dispatch('getGridTimelineState', true)
+    // },
+    getOverlayDetail(name, pos) {
       this.$store.dispatch('getCurFullView', name)
-      this.$store.dispatch('isFullView', true)
       this.$store.dispatch('getNamePos', pos)
       this.$store.dispatch('getGridTimelineState', true)
-    },
-    getOverlayDetail() {
-      this.$store.dispatch('isFullView', true)
+
+      this.$store.dispatch('switchOverlayTns', true)
+
       setTimeout(() => {
-        this.$store.dispatch('isFullView', false)
+        this.$store.dispatch('isFullView', true)
+      }, 800)
+
+      setTimeout(() => {
+        this.$store.dispatch('switchOverlayTns', false)
       }, 1000)
     },
     saveGridItems() {
