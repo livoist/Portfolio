@@ -14,7 +14,8 @@ const GET_GRID_NAMES = 'GET_GRID_NAMES'
 const GET_NAME_POS = 'GET_NAME_POS'
 const GRID_TIME_REVERSE = 'GRID_TIME_REVERSE'
 const SWITCH_COLOR_MAP = 'SWITCH_COLOR_MAP'
-const IS_OVERLAY_TNS = 'IS_OVERLAY_TNS'
+const IS_OVERLAY_IN = 'IS_OVERLAY_IN'
+const IS_OVERLAY_OUT = 'IS_OVERLAY_OUT'
 
 
 export default new Vuex.Store({
@@ -31,7 +32,8 @@ export default new Vuex.Store({
     gridNames: [],
     namePos: 0,
     gridTimelineReverse: false,
-    isOverlayTns: false
+    isOverlayIn: false,
+    isOverlayOut: false
   },
   mutations: {
     [ROTATE_LAYOUT_NAME](state, name) {
@@ -70,8 +72,11 @@ export default new Vuex.Store({
     [SWITCH_COLOR_MAP](state, colors) {
       state.colorMap = colors
     },
-    [IS_OVERLAY_TNS](state, bool) {
-      state.isOverlayTns = bool
+    [IS_OVERLAY_IN](state, bool) {
+      state.isOverlayIn = bool
+    },
+    [IS_OVERLAY_OUT](state, bool) {
+      state.isOverlayOut = bool
     }
   },
   actions: {
@@ -120,8 +125,11 @@ export default new Vuex.Store({
     switchColorMap({ commit }, colors) {
       commit(SWITCH_COLOR_MAP, colors)
     },
-    switchOverlayTns({ commit }, bool) {
-      commit(IS_OVERLAY_TNS, bool)
+    overlayIn({ commit }, bool) {
+      commit(IS_OVERLAY_IN, bool)
+    },
+    overlayOut({ commit }, bool) {
+      commit(IS_OVERLAY_OUT, bool)
     }
   },
   getters: {

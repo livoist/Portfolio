@@ -34,11 +34,18 @@ export default {
   },
   methods: {
     async closeView(bool) {
-      await this.$store.dispatch('isFullView', bool)
       await this.$store.dispatch('getGridTimelineState', bool)
 
       const secEl = document.querySelector('.content--second')
-      secEl.classList.add('ovh-auto')
+      await secEl.classList.add('ovh-auto')
+
+      this.$store.dispatch('overlayOut', true)
+
+      setTimeout(() => {
+        this.$store.dispatch('isFullView', false)
+      }, 800)
+
+      setTimeout(() => { this.$store.dispatch('overlayOut', false) }, 1000)
     }
   }
 }

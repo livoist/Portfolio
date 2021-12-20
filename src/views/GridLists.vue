@@ -43,14 +43,14 @@ export default {
       this.$store.dispatch('getNamePos', pos)
       this.$store.dispatch('getGridTimelineState', true)
 
-      this.$store.dispatch('switchOverlayTns', true)
+      this.$store.dispatch('overlayIn', true)
 
       setTimeout(() => {
         this.$store.dispatch('isFullView', true)
       }, 800)
 
       setTimeout(() => {
-        this.$store.dispatch('switchOverlayTns', false)
+        this.$store.dispatch('overlayIn', false)
       }, 1000)
     },
     saveGridItems() {

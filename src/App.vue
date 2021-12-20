@@ -3,7 +3,8 @@
   .mousemoveScope__cursor__pointer
 
   #app
-    .overlayBlock(:class="{ 'inTfm': getOverlayState }")
+    .overlay-in(:class="{ 'active': isOverlayIn }")
+    .overlay-out(:class="{ 'active': isOverlayOut }")
 
     Header
 
@@ -57,7 +58,8 @@ export default {
     ...mapState({
       curPage: 'curPageCom',
       hiddenContent: 'isReverse',
-      getOverlayState: 'isOverlayTns',
+      isOverlayIn: 'isOverlayIn',
+      isOverlayOut: 'isOverlayOut',
       getFullViewState: 'fullView'
     })
   },
@@ -79,18 +81,26 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.overlayBlock
+.overlay-in,.overlay-out
   position: absolute
-  background: #efecea
   width: 100vw
   height: 100vh
   will-change: transform
   transform: scaleX(0)
-  transform-origin: right center
-  transition: transform 0.9s cubic-bezier(0.785, 0.135, 0.15, 0.86)
   z-index: 999
-  &.inTfm
+  transition: transform 0.9s cubic-bezier(0.785, 0.135, 0.15, 0.86)
+
+.overlay-in
+  transform-origin: right center
+  background: #efecea
+  &.active
     transform-origin: left center
     transform: scale(1)
 
+.overlay-out
+  transform-origin: left center
+  background: #0e0e0e
+  &.active
+    transform-origin: right center
+    transform: scale(1)
 </style>
