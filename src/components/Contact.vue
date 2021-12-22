@@ -1,25 +1,21 @@
 <template lang="pug">
 #contact.contact
   .container
-    p.description Hi I&apos;m Ben I&apos;m a Frontend Developer
-    h2 CONTACT
+    p.description {{ $t('contact-des') }}
+    h2 {{ $t('contact-title') }}
 
     .skill
-      .subtitle Skills
-      p
-        | JavaScript / Vue.js(Vuex) / HTML5(pug) / CSS3(SCSS/SASS) / RWD / Git Flow / Canvas / SVG / GSAP(TweenMax) / Bootstrap /
-        | JQuery
-        br
-        br
-        | Learning ( PIXI.js &#x3001; Three.js &#x3001; UX/UI concept &#x3001; WebGL )
+      .subtitle {{ $t('contact-skill-title') }}
+      p {{ $t('contact-skills') }}
+      p {{ $t('contact-learning') }}
 
     .info
-      .subtitle Information
+      .subtitle {{ $t('contact-info-title') }}
       .info__email
-        a(href='mailto:waterblue104@gmail.com') Email : waterblue104@gmail.com
+        a(href='mailto:waterblue104@gmail.com') {{ $t('contact-email') }}
 
       .info__phone
-        a(href='tel:0981896398') Phone : 0981896398
+        a(href='tel:0981896398') {{ $t('contact-phone') }}
 
     .social-bar
       a.fab(
@@ -31,7 +27,7 @@
 
     .footer
       .container
-        p.copyright Copyright @ 2021 Ben All right reserved
+        p.copyright {{ $t('footer-des') }}
 
 </template>
 

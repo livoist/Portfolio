@@ -19,12 +19,17 @@
   transform: translate(-50%, -50%)
 
 .person-content
+  width: 100%
   +setFlex
   flex-direction: column
-  position: relative
-  width: 18%
-  +breakpoint(sm)
-    width: 50%
+  > div
+      +setFlex
+      flex-direction: column
+      position: relative
+      width: 30%
+      margin: 0 auto
+      +breakpoint(sm)
+        width: 65%
 
 // .darkModal .person-heading
 //   color: #fff

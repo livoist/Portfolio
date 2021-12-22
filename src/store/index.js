@@ -16,6 +16,7 @@ const GRID_TIME_REVERSE = 'GRID_TIME_REVERSE'
 const SWITCH_COLOR_MAP = 'SWITCH_COLOR_MAP'
 const IS_OVERLAY_IN = 'IS_OVERLAY_IN'
 const IS_OVERLAY_OUT = 'IS_OVERLAY_OUT'
+const I18N_LANG = 'I18N_LANG'
 
 
 export default new Vuex.Store({
@@ -33,7 +34,8 @@ export default new Vuex.Store({
     namePos: 0,
     gridTimelineReverse: false,
     isOverlayIn: false,
-    isOverlayOut: false
+    isOverlayOut: false,
+    lang: 'en'
   },
   mutations: {
     [ROTATE_LAYOUT_NAME](state, name) {
@@ -77,6 +79,9 @@ export default new Vuex.Store({
     },
     [IS_OVERLAY_OUT](state, bool) {
       state.isOverlayOut = bool
+    },
+    [I18N_LANG](state, lang) {
+      state.lang = lang
     }
   },
   actions: {
@@ -130,6 +135,9 @@ export default new Vuex.Store({
     },
     overlayOut({ commit }, bool) {
       commit(IS_OVERLAY_OUT, bool)
+    },
+    setI18nLangType({ commit }, lang) {
+      commit(I18N_LANG, lang)
     }
   },
   getters: {

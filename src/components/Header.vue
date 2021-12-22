@@ -4,6 +4,7 @@
       a.logo(
         href="javascript:void('0')"
         :class="getLogoClassList"
+        :data-lang="getI18nLang"
       ) B
       .nav.u-z-index_7
         //-a.menu-toggle(href='#popup-overlay')
@@ -50,6 +51,9 @@ export default {
         'pointer-initial': this.prePage,
         'hidden': this.getFullViewState
       }
+    },
+    getI18nLang() {
+      return this.$store.state.lang
     }
   },
   methods: {

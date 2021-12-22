@@ -1,0 +1,16 @@
+{
+  "loading-des": "いらっしゃいませ",
+  "loading-btn": "出発する",
+  "home-btn": "出発する",
+  "line-des": "線の色",
+  "lang-des": "言語",
+  "contact-des": "私が最初に会ったとき、私はクラスとWebエンジニアでした",
+  "contact-title": "お問い合わせ方法",
+  "contact-skill-title": "スキル",
+  "contact-skills": "JavaScript / Vue.js(Vuex) / HTML5(pug) / CSS3(SCSS/SASS) / RWD / Git Flow / Canvas / SVG / GSAP(TweenMax) / Bootstrap / JQuery",
+  "contact-learning": "学ぶ ( Three.js、UI/UX concept、WebGL and more... )",
+  "contact-info-title": "こじんじょうほう",
+  "contact-email": "Eメール: waterblue104@gmail.com",
+  "contact-phone": "スマホ : 0981896398",
+  "footer-des": "Copyright @ 2021 Ben All right reserved"
+}
