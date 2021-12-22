@@ -10,7 +10,7 @@
 
     .content--second(
       ref="secEl"
-      :class="{ 'hidden': getFullViewState }"
+      :class="{ 'hidden': getFullViewState, 'ovh-auto': !getFullViewState }"
     )
       GridLists
       Contact
@@ -92,14 +92,14 @@ export default {
 
 .overlay-in
   transform-origin: right center
-  background: #efecea
+  background: #0e0e0e
   &.active
     transform-origin: left center
     transform: scale(1)
 
 .overlay-out
   transform-origin: left center
-  background: #0e0e0e
+  background: #efecea
   &.active
     transform-origin: right center
     transform: scale(1)

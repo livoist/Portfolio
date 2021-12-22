@@ -25,8 +25,7 @@ export default {
       isFullView: 'fullView',
       getCurFullView: 'curFullView',
       getGridTimeline: 'gridTimeline',
-      getNamePos: 'namePos',
-      getOverlayState: 'isOverlayTns',
+      getNamePos: 'namePos'
     }),
     getFullViewImage() {
       return require(`@img/${this.getCurFullView}.jpg`)
@@ -36,10 +35,7 @@ export default {
     async closeView(bool) {
       await this.$store.dispatch('getGridTimelineState', bool)
 
-      const secEl = document.querySelector('.content--second')
-      await secEl.classList.add('ovh-auto')
-
-      this.$store.dispatch('overlayOut', true)
+      await this.$store.dispatch('overlayOut', true)
 
       setTimeout(() => {
         this.$store.dispatch('isFullView', false)
