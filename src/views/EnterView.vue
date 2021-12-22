@@ -19,7 +19,7 @@
       ) ENTER
 
   .switchColorMaps(:class="{ 'show': loadingAnStep2 }")
-    p Switch LineColors
+    p lines
     .flexBox
       .colorMapBtn(
         v-for="(item, idx) in colorMaps"
@@ -27,7 +27,8 @@
         :class="getColorMapClassList(idx)"
         @click="switchMeshLineColorMap(item, idx)"
       )
-  //- .switchBgModal(@click="switchBgModal()") switch
+
+  //- .switchBgModal(@click="switchBgModal()") theme
 
 </template>
 
@@ -283,23 +284,23 @@ export default {
 
 @keyframes rotateRect1
   0%
-    transform: translateX(-50%) rotate3d(0,0,0,45deg)
+    transform: translateX(-50%) rotate(0deg)
   33%
-    transform: translateX(-50%) rotate3d(0.9,0,0.9,315deg)
+    transform: translateX(-50%) rotate
   66%
-    transform: translateX(-50%) rotate3d(0,0,0,45deg)
+    transform: translateX(-50%) rotate
   95%,100%
-    transform: translateX(-50%) rotate3d(0.9,0,0.9,315deg)
+    transform: translateX(-50%) rotate(315deg)
 
 @keyframes rotateRect2
   0%
-    transform: translateX(-50%) rotate3d(0,0,0,-45deg)
+    transform: translateX(-50%) rotate(0deg)
   33%
-    transform: translateX(-50%) rotate3d(0.9,0,0.9,-315deg)
+    transform: translateX(-50%) rotate
   66%
-    transform: translateX(-50%) rotate3d(0,0,0,-45deg)
+    transform: translateX(-50%) rotate
   95%,100%
-    transform: translateX(-50%) rotate3d(0.9,0,0.9,-315deg)
+    transform: translateX(-50%) rotate(-315deg)
 
 @keyframes delayShow
   0%
@@ -321,7 +322,6 @@ export default {
   transition: 2s 4s
   opacity: 0
   visibility: hidden
-  border-bottom: 1px solid rgba(#000,0.2)
   padding-bottom: 8px
   +setFlex
   +breakpoint(sm)
