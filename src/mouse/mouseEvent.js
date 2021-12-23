@@ -1,5 +1,4 @@
 import { TweenLite, Power4 } from 'gsap'
-
 export default class MouseCursor {
   constructor () {
     // mouse scope
@@ -14,12 +13,12 @@ export default class MouseCursor {
 
   // get mouse pos
   moveMousePos (e) {
-    const mousePosX = e.clientX
-    const mousePosY = e.clientY
+    const { clientX, clientY } = e
     const cursor = document.querySelector('.mousemoveScope__cursor__pointer')
+
     TweenLite.to(cursor, {
-      x: mousePosX,
-      y: mousePosY,
+      x: clientX,
+      y: clientY,
       ease: Power4.easeOut
     })
   }
@@ -42,28 +41,51 @@ export default class MouseCursor {
 
   updateOnHover (e) {
     // update hover status, if tag === target change class
-    const { tagName } = e.target
 
-    if (
-      tagName === 'A'
-      || tagName === 'BUTTON'
-      || tagName === 'IMG'
-      || e.target.classList.contains('gridItem')
-      || e.target.classList.contains('fullViewNext')
-      || e.target.classList.contains('fullViewClose')
-      || e.target.classList.contains('viewOverlayClose')
-      || e.target.classList.contains('colorMapBtn')
-      || e.target.parentElement.tagName === 'A'
-    ) {
-      // switch style1
-      document.querySelector('html').classList.toggle('is-hover')
+    const normalTargetMap = [
+      'A', 'BUTTON', 'IMG',
+      'gridItem', 'fullViewNext',
+      'fullViewClose', 'viewOverlayClose',
+      'anMaterial', 'flexBox'
+    ]
+
+    const cursorNoneMap = [
+      'en', 'jp',
+      'colorMapBtn', 'choiceInfo'
+    ]
+
+    const isContainsTarget = (target) => {
+      let result
+
+      const checkContainTarget = (list) => {
+        return e.target.classList.contains(list)
+        || e.target.parentElement.classList.contains(list)
+        || e.target.tagName === list
+        || e.target.parentElement.tagName === list
+      }
+
+      if (Array.isArray(target)) {
+        result = target.some(item => checkContainTarget(item))
+      } else {
+        result = checkContainTarget(target)
+      }
+
+      return result
     }
 
-    if (
-      (e.target.classList.contains('fab') && tagName === 'A')
-    ) {
-      // switch style2
-      document.querySelector('html').classList.toggle('is-hover2')
+    // add normal cursor
+    if (isContainsTarget(normalTargetMap)) {
+      document.querySelector('html').classList.toggle('normalCursor')
+    }
+
+    // change cursor z-index
+    if (isContainsTarget('fab') && isContainsTarget('A')) {
+      document.querySelector('html').classList.toggle('changeCursorZindex')
+    }
+
+    // custom cursor none
+    if (isContainsTarget(cursorNoneMap)) {
+      document.querySelector('html').classList.toggle('customCursorNone')
     }
   }
 

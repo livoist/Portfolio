@@ -1,6 +1,5 @@
 const { random, floor } = Math
 
-
 // getRandom float
 const getRandomFloat = (min, max) => (random() * (max - min)) + min
 

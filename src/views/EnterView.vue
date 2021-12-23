@@ -1,13 +1,16 @@
 <template lang="pug">
 #about.wrapper
   .person.container
-    LoadingPage(@step2State="getStep2State")
+    LoadingPage(
+      @step2State="getStep2State"
+      @step1State="getStep1State"
+    )
 
-    .person-content
-      .en-heading(v-show="getI18nLang === 'en'")
+    .person-content(:class="{ 'transition': isGlbTransitionState }")
+      .en-heading(:class="{ 'show': getI18nLang === 'en'}")
         .person-heading.c1(ref="enTitle1") More Try
         .person-heading.c2(ref="enTitle2") More Possibility
-      .jp-heading(v-show="getI18nLang === 'jp'")
+      .jp-heading(:class="{ 'show': getI18nLang === 'jp'}")
         .person-heading.c1(ref="jpTitle1") より多くの探索
         .person-heading.c2(ref="jpTitle2") より多くの可能性
 
@@ -51,6 +54,7 @@ export default {
     return {
       engine: '',
       step2State: false,
+      step1State: false,
       colorMaps: [
         ['#EE3239', '#5EAA5F', '#FECE00', '#9D6AB9'],
         ['#FFEFA1', '#FFB21A', '#876363', '#414B6F'],
@@ -72,11 +76,12 @@ export default {
       getReverse: 'isReverse',
       getFullView: 'fullView',
       getSecPageEl: 'secPageEl',
-      getI18nLang: 'lang'
+      getI18nLang: 'lang',
+      isGlbTransitionState: 'isGlbTransition'
     })
   },
   watch: {
-    loadingAnStep1: {
+    step1State: {
       handler(val) {
         if (val) {
           setTimeout(() => {
@@ -89,6 +94,9 @@ export default {
   methods: {
     getStep2State(val) {
       this.step2State = val
+    },
+    getStep1State(val) {
+      this.step1State = val
     },
     getColorMapClassList(idx) {
       return {

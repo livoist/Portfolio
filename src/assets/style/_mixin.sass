@@ -22,6 +22,14 @@ $headerText: #7e7869
   bottom: $b
   left: $l
 
+@mixin setPosAbs($t, $r, $b, $l, $z: 0)
+  position: absolute
+  top: $t
+  right: $r
+  bottom: $b
+  left: $l
+  z-index: $z
+
 // media query
 @mixin breakpoint($point)
   @if $point == md

@@ -10,6 +10,11 @@
   +size(100%)
   overflow-x: hidden
 
+.switchLangTransition
+  transition: opacity 0.8s ease
+  &.transition
+    opacity: 0
+
 // z-index class 
 @for $i from 1 through 7
   .u-z-index_#{$i}
@@ -95,9 +100,7 @@ p
 
 // set router fade effect
 .fade-enter-active,.fade-leave-active
-  transition-duration: 0.5s
-  transition-property: opacity
-  transition-timing-function: ease
+  transition: opacity 0.8s ease
 
-.fade-enter,.fade-leave-active
+.fade-enter,.fade-leave-to
   opacity: 0

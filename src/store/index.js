@@ -17,6 +17,7 @@ const SWITCH_COLOR_MAP = 'SWITCH_COLOR_MAP'
 const IS_OVERLAY_IN = 'IS_OVERLAY_IN'
 const IS_OVERLAY_OUT = 'IS_OVERLAY_OUT'
 const I18N_LANG = 'I18N_LANG'
+const IS_GLOBAL_TRANSITION = 'IS_GLOBAL_TRANSITION'
 
 
 export default new Vuex.Store({
@@ -35,7 +36,8 @@ export default new Vuex.Store({
     gridTimelineReverse: false,
     isOverlayIn: false,
     isOverlayOut: false,
-    lang: 'en'
+    lang: 'en',
+    isGlbTransition: false
   },
   mutations: {
     [ROTATE_LAYOUT_NAME](state, name) {
@@ -82,6 +84,9 @@ export default new Vuex.Store({
     },
     [I18N_LANG](state, lang) {
       state.lang = lang
+    },
+    [IS_GLOBAL_TRANSITION](state, bool) {
+      state.isGlbTransition = bool
     }
   },
   actions: {
@@ -138,6 +143,9 @@ export default new Vuex.Store({
     },
     setI18nLangType({ commit }, lang) {
       commit(I18N_LANG, lang)
+    },
+    setGlbTransitionState({ commit }, bool) {
+      commit(IS_GLOBAL_TRANSITION, bool)
     }
   },
   getters: {

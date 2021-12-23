@@ -6,7 +6,7 @@ module.exports = {
     resolve: {
       alias: {
         '@c': '@/components',
-        '@css': '@/assets/sass/main.sass',
+        '@css': '@/assets/style/main.sass',
         '@img': '@/assets/img'
       }
     }
@@ -15,7 +15,7 @@ module.exports = {
     // import global sass mixins
     loaderOptions: {
       sass: {
-        prependData: `@import "~@/assets/sass/_mixin.sass"`
+        prependData: `@import "~@/assets/style/_mixin.sass"`
       }
     }
   },

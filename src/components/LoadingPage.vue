@@ -1,7 +1,9 @@
 <template lang="pug">
-.preloadingAn(:class="{ 'enter': loadingAnStep1 }")
+.preloadingAn(
+  :class="[{ 'enter': loadingAnStep1 }, { 'event-none': isEventNone }]"
+)
   .preloadingText(:class="{ 'enter': loadingAnStep1 }") {{ $t('loading-des') }}
-  .anMaterial(:class="{ 'enter': loadingAnStep2 }")
+  a.anMaterial(:class="{ 'enter': loadingAnStep2 }")
     span(@click="startLoagingAn") {{ $t('loading-btn') }}
 
   .anMaterial2(:class="{ 'enter': loadingAnStep1 }")
@@ -15,15 +17,18 @@ export default {
   data() {
     return {
       loadingAnStep1: false,
-      loadingAnStep2: false
+      loadingAnStep2: false,
+      isEventNone: false
     }
   },
   methods: {
     startLoagingAn() {
+      this.isEventNone = true
       this.loadingAnStep2 = true
       this.$emit('step2State', this.loadingAnStep2)
       setTimeout(() => {
         this.loadingAnStep1 = true
+        this.$emit('step1State', this.loadingAnStep1)
       }, 2500)
     },
   }
@@ -74,8 +79,10 @@ export default {
   z-index: 100
   &.enter
     animation: materialNoneAn 2s 1s both
+  &.event-none .anMaterial, .anMaterial2
+    pointer-events: none
   .preloadingText
-    +setPosition(absolute,50%,null,null,50%)
+    +setPosAbs(50%,null,null,50%)
     color: #000
     font-size: 18px
     transform: translate(-50%,-50%)
@@ -89,7 +96,7 @@ export default {
       animation: materialNoneAn 1s both
   .anMaterial
     +size(50px)
-    +setPosition(absolute,55%,null,null,50%)
+    +setPosAbs(55%,null,null,50%)
     transform: translate(-50%,-50%)
     +breakpoint(sm)
       top: 50%
@@ -98,7 +105,7 @@ export default {
       animation: materialNoneAn 0.3s both
     &::after,&::before
       content: ''
-      +setPosition(absolute,60%,null,null,50%)
+      +setPosAbs(60%,null,null,50%)
       transform: translate(-50%,-50%)
       +size(100%)
       border: 1px solid rgba(#000, 0.4)
@@ -111,16 +118,14 @@ export default {
       display: inline-block
       +setFlex
       +size(100%)
-      +setPosition(absolute,110%,null,null,50%)
+      +setPosAbs(110%,null,null,50%,300)
       font-size: 12px
       transform: translate(-50%,-50%) rotate3d(0,0,0,0)
       animation: delayShow 1.25s 6.5s both
-      z-index: 300
 
   .anMaterial2
-    +setPosition(absolute,59%,null,null,50%)
+    +setPosAbs(58.5%,null,null,50%,200)
     transform: translate(-50%,-50%)
-    z-index: 200
     +size(50px)
     pointer-events: none
     &.enter
@@ -143,7 +148,7 @@ export default {
             background: $color
             transform: translate(-50%,-50%) rotate($pos * 22.5deg)
         &:nth-of-type(#{$pos})
-          +setPosition(absolute,50%,null,null,50%)
+          +setPosAbs(50%,null,null,50%)
           transform: translate(-50%,-50%) rotate((($pos - 1) * 22.5deg))
           &.start
             animation: colorfulRotate#{$pos} 2s #{$pos * 0.15}s both

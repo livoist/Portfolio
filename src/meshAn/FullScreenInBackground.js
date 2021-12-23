@@ -1,6 +1,7 @@
+const { innerWidth, innerHeight } = window
 export default (Target) => class FullScreenInBackground extends Target {
   constructor(props) {
-    super(window.innerWidth, window.innerHeight, props);
+    super(innerWidth, innerHeight, props);
     // Put automaticaly the canvas in background
     this.dom.style.position = 'absolute';
     this.dom.style.top = '0';
@@ -16,6 +17,6 @@ export default (Target) => class FullScreenInBackground extends Target {
   }
 
   resize() {
-    super.resize(window.innerWidth, window.innerHeight);
+    super.resize(innerWidth, innerHeight);
   }
 };

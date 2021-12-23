@@ -7,11 +7,12 @@
   +setFlex
 
 .choiceInfos
-  position: absolute
+  position: fixed
   right: 2%
   top: 3.5%
   display: flex
   transition: 1s
+  z-index: 100
 
 .choiceInfo
   transition: 2s 4s
@@ -36,22 +37,38 @@
       font-size: 3vmin
   .en,.jp
     +setFlex
+    +size(16px)
     padding: 4px
-    width: 16px
-    height: 16px
     color: #000
     border-radius: 2px
     margin: 0 5px
     font-size: 12px
-    transition: 0.3s
+    transition: 0.5s
     cursor: pointer
+    position: relative
+    z-index: 1
     &.active
       background: rgba(#000,0.7)
       color: #fff
+      pointer-events: none
+      &:after
+        opacity: 0
+    &:hover
+      z-index: 100
+      &:after
+        opacity: 1
+    &:after
+      content: ''
+      +setPosAbs(50%,null,null,50%)
+      transform: translate(-50%,-50%)
+      +size(100%)
+      border: 1px solid rgba(#000,0.3)
+      border-radius: 2px
+      transition: 1s
+      opacity: 0
 
 .colorMapBtn
-  width: 30px
-  height: 30px
+  +size(30px)
   border-radius: 50%
   margin-bottom: 20px
   cursor: pointer
@@ -62,10 +79,13 @@
   +breakpoint(sm)
     +size(4vmin)
     margin: 0 0.75vw
-  &.pointer-none
+  &.pointer-none, &.active
     pointer-events: none
   &.prevent
     opacity: 0.1
+    &:hover
+      opacity: 1
+  
 
 .navbar
   +setFlex(space-between,center)
@@ -95,10 +115,6 @@
         font-size: 3.5vmin
         right: -14vmin
         bottom: 0.5vmin
-    [data-lang="en"]:after
-      content: 'ack ←'
-    [data-lang="jp"]:after
-      content: '戻る'
     &.pointer-initial
       animation: backFrame 1.5s 1.5s both
       &::after
@@ -204,13 +220,13 @@
 
 .navbar
   .popup-menu__close
-    +setPosition(absolute,10px,10px,null,null)
+    +setPosAbs(10px,10px,null,null)
     +size(50px)
     transition: all 0.3s
     span
       +size(32px,2px)
       background-color: black
-      +setPosition(absolute,50%,50%,null,null)
+      +setPosAbs(50%,50%,null,null)
       &:nth-child(1)
         transform: translate(50%, 50%) rotate(-45deg)
       &:nth-child(2)
@@ -231,7 +247,7 @@
       content: ''
       border-radius: 50%
       background-color: black
-      +setPosition(absolute,50%,null,null,13vw)
+      +setPosAbs(50%,null,null,13vw)
       opacity: 0
       transition: .5s
       transform: translateY(-50%)

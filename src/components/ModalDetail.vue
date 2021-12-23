@@ -224,7 +224,7 @@ export default {
     &::after,&::before
       content: ''
       +size(70%,2px)
-      +setPosition(absolute,50%,null,null,50%)
+      +setPosAbs(50%,null,null,50%)
       background: #fff
     &::after
       transform: translate(-50%,-50%) rotate(45deg)

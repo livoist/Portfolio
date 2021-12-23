@@ -4,68 +4,38 @@
       a.logo(
         href="javascript:void('0')"
         :class="getLogoClassList"
-        :data-lang="getI18nLang"
       ) B
-      .nav.u-z-index_7
-        //-a.menu-toggle(href='#popup-overlay')
-          span
 
-        #popup-overlay.popup-menu
-          a.popup-menu__close.u-z-index_7(href='#!')
-            span
-            span
+      //- .nav.u-z-index_7
+      //-   //-a.menu-toggle(href='#popup-overlay')
+      //-     span
 
-          .bar-container.bg-black.u-px-30
-            ul.u-pt-100
-              li(v-for="item in headerLinks")
-                a.popup-menu__item(:href='`#${ item.title }`') {{ item.title.toUpperCase() }}
+      //-   #popup-overlay.popup-menu
+      //-     a.popup-menu__close.u-z-index_7(href='#!')
+      //-       span
+      //-       span
+
+      //-     .bar-container.bg-black.u-px-30
+      //-       ul.u-pt-100
+      //-         li(v-for="item in headerLinks")
+      //-           a.popup-menu__item(:href='`#${ item.title }`') {{ item.title.toUpperCase() }}
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Header',
-  data () {
-    return {
-      headerLinks: [
-        {
-          title: 'about',
-        },
-        {
-          title: 'portfolio'
-        },
-        {
-          title: 'contact'
-        }
-      ]
-    }
-  },
   computed: {
-    prePage() {
-      return this.$store.state.isReverse
-    },
-    getFullViewState() {
-      return this.$store.state.fullView
-    },
+    ...mapState({
+      prePage: 'isReverse',
+      getFullViewState: 'fullView',
+    }),
     getLogoClassList() {
       return {
         'pointer-initial': this.prePage,
         'hidden': this.getFullViewState
       }
-    },
-    getI18nLang() {
-      return this.$store.state.lang
-    }
-  },
-  methods: {
-    scrollTarget(target) {
-      window.scroll({
-        top: target,
-        behavior: 'smooth'
-      })
-    },
-    showIntro() {
-      this.$store.dispatch('showIntro', { comName: 'Portfolio', rotateLayoutName: 'Home' })
-      this.$store.dispatch('timelineReverse', true)
     }
   }
 }

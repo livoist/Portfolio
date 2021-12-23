@@ -6,27 +6,28 @@
     .overlay-in(:class="{ 'active': isOverlayIn }")
     .overlay-out(:class="{ 'active': isOverlayOut }")
 
-    Header
+    .switchLangTransition(:class="{ 'transition': isGlbTransitionState }")
+      Header
 
-    .content--second(
-      ref="secEl"
-      :class="{ 'hidden': getFullViewState, 'ovh-auto': !getFullViewState }"
-    )
-      GridLists
-      Contact
+      .content--second(
+        ref="secEl"
+        :class="{ 'hidden': getFullViewState, 'ovh-auto': !getFullViewState }"
+      )
+        GridLists
+        Contact
 
-    TransitionBlock
+      TransitionBlock
 
-    .content--first(
-      :class="{ 'content--hidden': hiddenContent }"
-      ref="firstEl"
-    )
-      .content__move
-        .content__reverse
-          EnterView
+      .content--first(
+        :class="{ 'content--hidden': hiddenContent }"
+        ref="firstEl"
+      )
+        .content__move
+          .content__reverse
+            EnterView
 
-    OverlayDetail
-    //- ModalDetail
+      OverlayDetail
+      //- ModalDetail
 
 </template>
 
@@ -60,7 +61,8 @@ export default {
       hiddenContent: 'isReverse',
       isOverlayIn: 'isOverlayIn',
       isOverlayOut: 'isOverlayOut',
-      getFullViewState: 'fullView'
+      getFullViewState: 'fullView',
+      isGlbTransitionState: 'isGlbTransition'
     })
   },
   methods: {
