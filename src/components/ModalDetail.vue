@@ -83,8 +83,8 @@ export default {
       }
     },
     closeFullView(bool) {
-      this.$store.dispatch('isFullView', bool)
-      this.$store.dispatch('getGridTimelineState', bool)
+      this.$store.dispatch('setFullViewState', bool)
+      this.$store.dispatch('setGridTimelineState', bool)
     }
   },
   mounted() {

@@ -3,15 +3,16 @@
   .mousemoveScope__cursor__pointer
 
   #app
-    .overlay-in(:class="{ 'active': isOverlayIn }")
-    .overlay-out(:class="{ 'active': isOverlayOut }")
+    TransitionOverlay
 
-    .switchLangTransition(:class="{ 'transition': isGlbTransitionState }")
+    .switchLangTransition(
+      :class="getLangTrnsState"
+    )
       Header
 
       .content--second(
         ref="secEl"
-        :class="{ 'hidden': getFullViewState, 'ovh-auto': !getFullViewState }"
+        :class="getSecPageTrnsState"
       )
         GridLists
         Contact
@@ -19,7 +20,7 @@
       TransitionBlock
 
       .content--first(
-        :class="{ 'content--hidden': hiddenContent }"
+        :class="getFstPageTrsnState"
         ref="firstEl"
       )
         .content__move
@@ -27,7 +28,6 @@
             EnterView
 
       OverlayDetail
-      //- ModalDetail
 
 </template>
 
@@ -35,7 +35,13 @@
 import { mapState } from 'vuex'
 import Scrollbar from 'smooth-scrollbar'
 import Mouse from '@/mouse/mouseEvent.js'
-import { Header, Contact, TransitionBlock, ModalDetail, OverlayDetail } from '@c'
+import {
+  Header,
+  Contact,
+  TransitionBlock,
+  TransitionOverlay,
+  OverlayDetail
+} from '@c'
 import { GridLists, EnterView } from '@/views'
 import '@css'
 
@@ -47,7 +53,7 @@ export default {
     GridLists,
     Contact,
     TransitionBlock,
-    ModalDetail,
+    TransitionOverlay,
     OverlayDetail
   },
   mounted() {
@@ -57,19 +63,28 @@ export default {
   },
   computed: {
     ...mapState({
-      curPage: 'curPageCom',
-      hiddenContent: 'isReverse',
-      isOverlayIn: 'isOverlayIn',
-      isOverlayOut: 'isOverlayOut',
-      getFullViewState: 'fullView',
-      isGlbTransitionState: 'isGlbTransition'
-    })
+      isHiddenContent: 'isReverse',
+      isFullView: 'fullView',
+      isGlbTransition: 'isGlbTransition'
+    }),
+    getLangTrnsState() {
+      return { 'transition': this.isGlbTransition }
+    },
+    getSecPageTrnsState() {
+      return {
+        'hidden': this.isFullView,
+        'ovh-auto': !this.isFullView
+      }
+    },
+    getFstPageTrsnState() {
+      return { 'content--hidden': this.isHiddenContent }
+    }
   },
   methods: {
     getTransitionElems() {
       const { firstEl, secEl } = this.$refs
-      this.$store.dispatch('getFirstEl', firstEl)
-      this.$store.dispatch('getSecEl', secEl)
+      this.$store.dispatch('setFirstEl', firstEl)
+      this.$store.dispatch('setSecEl', secEl)
     },
     mouseEvent() {
       const mouseCursor = new Mouse()
@@ -81,28 +96,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass" scoped>
-.overlay-in,.overlay-out
-  position: absolute
-  width: 100vw
-  height: 100vh
-  will-change: transform
-  transform: scaleX(0)
-  z-index: 999
-  transition: transform 0.9s cubic-bezier(0.785, 0.135, 0.15, 0.86)
-
-.overlay-in
-  transform-origin: right center
-  background: #0e0e0e
-  &.active
-    transform-origin: left center
-    transform: scale(1)
-
-.overlay-out
-  transform-origin: left center
-  background: #efecea
-  &.active
-    transform-origin: right center
-    transform: scale(1)
-</style>

@@ -6,36 +6,41 @@
         :class="getLogoClassList"
       ) B
 
-      //- .nav.u-z-index_7
-      //-   //-a.menu-toggle(href='#popup-overlay')
-      //-     span
+    .choiceInfos(:class="getChoiceInfosClassList")
+      MeshLineSwitcher
+      LangSwitcher
 
-      //-   #popup-overlay.popup-menu
-      //-     a.popup-menu__close.u-z-index_7(href='#!')
-      //-       span
-      //-       span
-
-      //-     .bar-container.bg-black.u-px-30
-      //-       ul.u-pt-100
-      //-         li(v-for="item in headerLinks")
-      //-           a.popup-menu__item(:href='`#${ item.title }`') {{ item.title.toUpperCase() }}
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import MeshLineSwitcher from './MeshLineSwitcher.vue'
+import LangSwitcher from './LangSwitcher.vue'
 
 export default {
   name: 'Header',
+  components: {
+    MeshLineSwitcher,
+    LangSwitcher
+  },
   computed: {
     ...mapState({
-      prePage: 'isReverse',
-      getFullViewState: 'fullView',
+      isTimelineReverse: 'isReverse',
+      isFullView: 'fullView',
+      isEnterMainPage: 'isEnterMainPage',
+      isLoadingPage: 'isLoagingPage',
+      isGlbTransition: 'isGlbTransition'
     }),
     getLogoClassList() {
       return {
-        'pointer-initial': this.prePage,
-        'hidden': this.getFullViewState
+        'pointer-initial': this.isTimelineReverse,
+        'hidden': this.isFullView || this.isLoadingPage,
+        'duration1': (this.isLoadingPage || !this.isLoadingPage),
+        'duration2': this.isEnterMainPage
       }
+    },
+    getChoiceInfosClassList() {
+      return { 'pointer-none': this.isGlbTransition }
     }
   }
 }

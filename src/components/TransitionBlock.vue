@@ -6,7 +6,7 @@ div
     ref="overlays"
   )
     .overlay__inner(:class="`overlay__inner--color-${n}`")
-      .portfolioTitle(v-if="n === 1") {{ curName }}
+      .portfolioTitle(v-if="n === 1") {{ getCurRotateLayoutName }}
 
 </template>
 
@@ -14,7 +14,7 @@ div
 export default {
   name: 'TransitionBlock',
   computed: {
-    curName() {
+    getCurRotateLayoutName() {
       return this.$store.state.rotateLayoutName
     }
   },

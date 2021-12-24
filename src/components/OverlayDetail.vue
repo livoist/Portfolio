@@ -23,9 +23,7 @@ export default {
   computed: {
     ...mapState({
       isFullView: 'fullView',
-      getCurFullView: 'curFullView',
-      getGridTimeline: 'gridTimeline',
-      getNamePos: 'namePos'
+      getCurFullView: 'curFullView'
     }),
     getFullViewImage() {
       return require(`@img/${this.getCurFullView}.jpg`)
@@ -33,12 +31,12 @@ export default {
   },
   methods: {
     async closeView(bool) {
-      await this.$store.dispatch('getGridTimelineState', bool)
+      await this.$store.dispatch('setGridTimelineState', bool)
 
       await this.$store.dispatch('overlayOut', true)
 
       setTimeout(() => {
-        this.$store.dispatch('isFullView', false)
+        this.$store.dispatch('setFullViewState', false)
       }, 800)
 
       setTimeout(() => { this.$store.dispatch('overlayOut', false) }, 1000)

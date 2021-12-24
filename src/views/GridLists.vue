@@ -23,9 +23,7 @@ export default {
   },
   computed: {
     ...mapState({
-      getGridItems: 'gridItems',
-      getGridTimelineState: 'gridTimelineReverse',
-      getOverlayState: 'isOverlayTns'
+      getGridItems: 'gridItems'
     }),
     getFullViewImage() {
       return require(`@img/${this.$store.state.curFullView}.png`)
@@ -41,12 +39,12 @@ export default {
     getOverlayDetail(name, pos) {
       this.$store.dispatch('getCurFullView', name)
       this.$store.dispatch('getNamePos', pos)
-      this.$store.dispatch('getGridTimelineState', true)
+      this.$store.dispatch('setGridTimelineState', true)
 
       this.$store.dispatch('overlayIn', true)
 
       setTimeout(() => {
-        this.$store.dispatch('isFullView', true)
+        this.$store.dispatch('setFullViewState', true)
       }, 800)
 
       setTimeout(() => {

@@ -1,16 +1,13 @@
 <template lang="pug">
 #about.wrapper
   .person.container
-    LoadingPage(
-      @step2State="getStep2State"
-      @step1State="getStep1State"
-    )
+    LoadingPage(@step1State="getStep1State")
 
-    .person-content(:class="{ 'transition': isGlbTransitionState }")
-      .en-heading(:class="{ 'show': getI18nLang === 'en'}")
+    .person-content(:class="{ 'transition': isGlbTransition }")
+      .en-heading(:class="{ 'show': curI18nLang === 'en'}")
         .person-heading.c1(ref="enTitle1") More Try
         .person-heading.c2(ref="enTitle2") More Possibility
-      .jp-heading(:class="{ 'show': getI18nLang === 'jp'}")
+      .jp-heading(:class="{ 'show': curI18nLang === 'jp'}")
         .person-heading.c1(ref="jpTitle1") より多くの探索
         .person-heading.c2(ref="jpTitle2") より多くの可能性
 
@@ -18,18 +15,6 @@
         ref="enterBtn"
         href="javascript:void('0')"
       ) {{ $t('home-btn') }}
-
-  .choiceInfos
-    .choiceInfo.lines(:class="{ 'show': step2State }")
-      p {{ $t('line-des') }}
-      .flexBox
-        .colorMapBtn(
-          v-for="(item, idx) in colorMaps"
-          :style="{ background: item[1] }"
-          :class="getColorMapClassList(idx)"
-          @click="switchMeshLineColorMap(item, idx)"
-        )
-    LangSwitcher
 
 </template>
 
@@ -40,32 +25,21 @@ import {
   Engine,
   CustomLineGenerator,
   HandleCameraOrbit,
-  FullScreenInBackground,
-  AnimatedText3D,
-  Hastouch
+  FullScreenInBackground
 } from '@/meshAn'
 import RotateLayout from '@/rotateLayout/rotateLayout.js'
 import charming from 'charming'
-import { LangSwitcher, LoadingPage } from '@c'
+import { LoadingPage } from '@c'
 
 export default {
   name: 'EnterView',
   data () {
     return {
       engine: '',
-      step2State: false,
-      step1State: false,
-      colorMaps: [
-        ['#EE3239', '#5EAA5F', '#FECE00', '#9D6AB9'],
-        ['#FFEFA1', '#FFB21A', '#876363', '#414B6F'],
-        ['#E6B6C2', '#D4587A', '#DC364C', '#778633']
-      ],
-      curColorMap: 0,
-      canSwitchColorMap: true
+      step1State: false
     }
   },
   components: {
-    LangSwitcher,
     LoadingPage
   },
   computed: {
@@ -73,15 +47,14 @@ export default {
       getGridItems: 'gridItems',
       getOverlays: 'overlayElems',
       getFirstPageEl: 'firstPageEl',
-      getReverse: 'isReverse',
-      getFullView: 'fullView',
       getSecPageEl: 'secPageEl',
-      getI18nLang: 'lang',
-      isGlbTransitionState: 'isGlbTransition'
+      curI18nLang: 'lang',
+      isGlbTransition: 'isGlbTransition',
+      isEnterMainPage: 'isEnterMainPage'
     })
   },
   watch: {
-    step1State: {
+    isEnterMainPage: {
       handler(val) {
         if (val) {
           setTimeout(() => {
@@ -92,32 +65,8 @@ export default {
     }
   },
   methods: {
-    getStep2State(val) {
-      this.step2State = val
-    },
     getStep1State(val) {
-      this.step1State = val
-    },
-    getColorMapClassList(idx) {
-      return {
-        'active': this.curColorMap === idx,
-        'pointer-none': !this.canSwitchColorMap,
-        'prevent': (this.curColorMap !== idx && !this.canSwitchColorMap) || this.curColorMap !== idx
-      }
-    },
-    switchMeshLineColorMap(item, idx) {
-      this.$store.dispatch('switchColorMap', item)
-      this.curColorMap = idx
-
-      const meshCanvas = document.getElementById('#canvas')
-      meshCanvas.classList.add('tnsCanvas')
-
-      this.canSwitchColorMap = false
-
-      setTimeout(() => {
-        meshCanvas.classList.remove('tnsCanvas')
-        this.canSwitchColorMap = true
-      }, 1500)
+      this.step2State = val
     },
     enterViewTimeline() {
       const {
@@ -144,7 +93,7 @@ export default {
       }
 
       let timelineTarget
-      this.getI18nLang === 'en'
+      this.curI18nLang === 'en'
         ? timelineTarget = firstPageContent1
         : timelineTarget = firstPageContent2
 
@@ -158,8 +107,10 @@ export default {
       this.getOverlays.forEach((overlay, i) => overlays.push(new RotateLayout(overlay, { angle: i % 3 === 0 ? -5 : 5 })))
 
       const enterNextPage = () => {
+        this.$store.dispatch('setEnterMaingPageState', true)
+
         let nextPageName
-        this.getI18nLang === 'en'
+        this.curI18nLang === 'en'
           ? nextPageName = 'Portfolio'
           : nextPageName = 'ポートフォリオ'
 
@@ -217,7 +168,7 @@ export default {
       
       const introPage = async () => {
         let prePageName
-        this.getI18nLang === 'en'
+        this.curI18nLang === 'en'
           ? prePageName = 'Visual'
           : prePageName = 'ビジュアル'
 
@@ -243,12 +194,6 @@ export default {
       class CustomEngine extends Engine {} // init customEngine
       const engine = new CustomEngine()
 
-      const isMobile = Hastouch()
-      const threeText = new AnimatedText3D('Confetti', { color: '#0f070a', size: isMobile ? 0.6 : 0.8 })
-      console.log('threeText', threeText)
-      threeText.position.x -= threeText.basePosition * 0.5
-      engine.add(threeText)
-
       const linegenerator = new CustomLineGenerator({frequency: 0.2}, static_props)
       linegenerator.start()
 
@@ -257,36 +202,27 @@ export default {
     },
     charmingText () {
       const { enterBtn, enTitle1, enTitle2, jpTitle1, jpTitle2 } = this.$refs
-      const hoverEffect = {
-      // event btn
-        enterBtn: enterBtn,
-        // animation text
-        enTitle1: enTitle1,
-        enTitle2: enTitle2,
-        jpTitle1: jpTitle1,
-        jpTitle2: jpTitle2
-      }
-      // charming text add span tag
-      charming(hoverEffect.enTitle1)
-      charming(hoverEffect.enTitle2)
-      charming(hoverEffect.jpTitle1)
-      charming(hoverEffect.jpTitle2)
+
+       // charming text and add span tag
+      const targetArray = [enTitle1, enTitle2, jpTitle1, jpTitle2]
+      targetArray.forEach(item => charming(item))
 
       // select all span tag text
-      hoverEffect.personalLetters = [
-        ...hoverEffect.enTitle1.querySelectorAll('span'),
-        ...hoverEffect.enTitle2.querySelectorAll('span'),
-        ...hoverEffect.jpTitle1.querySelectorAll('span'),
-        ...hoverEffect.jpTitle2.querySelectorAll('span')
+      const letterAnimTargets = [
+        ...enTitle1.querySelectorAll('span'),
+        ...enTitle2.querySelectorAll('span'),
+        ...jpTitle1.querySelectorAll('span'),
+        ...jpTitle2.querySelectorAll('span')
       ]
+
       // random sort
-      hoverEffect.personalLetters.sort(() => Math.round(Math.random()) - 0.5)
+      letterAnimTargets.sort(() => Math.round(Math.random()) - 0.5)
       // random < 0.5
-      let letters = hoverEffect.personalLetters.filter(() => Math.random() < 0.5)
+      let letters = letterAnimTargets.filter(() => Math.random() < 0.5)
       // add EventListener func
       const onEnterHoverFn = () => {
         // random > 0.5
-        letters = hoverEffect.personalLetters.filter(() => Math.random() > 0.5)
+        letters = letterAnimTargets.filter(() => Math.random() > 0.5)
         new TimelineMax({ onComplete: () => {} })
           .staggerTo(letters, 0.2, {
             ease: Quad.easeIn,
@@ -301,7 +237,7 @@ export default {
           }, 0.04, 0.4)
       }
       // add mouseenter event on btn
-      hoverEffect.enterBtn.addEventListener('mouseenter', onEnterHoverFn)
+      enterBtn.addEventListener('mouseenter', onEnterHoverFn)
     }
   },
   mounted () {

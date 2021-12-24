@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
 Vue.use(Vuex)
+
 const ROTATE_LAYOUT_NAME = 'ROTATE_LAYOUT_NAME'
 const GET_OVERLAYS_ELEMS = 'GET_OVERLAYS_ELEMS'
 const GET_FIRST_PAGE_EL = 'GET_FIRST_PAGE_EL'
@@ -18,6 +18,8 @@ const IS_OVERLAY_IN = 'IS_OVERLAY_IN'
 const IS_OVERLAY_OUT = 'IS_OVERLAY_OUT'
 const I18N_LANG = 'I18N_LANG'
 const IS_GLOBAL_TRANSITION = 'IS_GLOBAL_TRANSITION'
+const IS_ENTER_MAIN_PAGE = 'IS_ENTER_MAIN_PAGE'
+const IS_LOADING_PAGE = 'IS_LOADING_PAGE'
 
 
 export default new Vuex.Store({
@@ -37,7 +39,9 @@ export default new Vuex.Store({
     isOverlayIn: false,
     isOverlayOut: false,
     lang: 'en',
-    isGlbTransition: false
+    isGlbTransition: false,
+    isEnterMainPage: false,
+    isLoagingPage: true
   },
   mutations: {
     [ROTATE_LAYOUT_NAME](state, name) {
@@ -87,31 +91,40 @@ export default new Vuex.Store({
     },
     [IS_GLOBAL_TRANSITION](state, bool) {
       state.isGlbTransition = bool
+    },
+    [IS_ENTER_MAIN_PAGE](state, bool) {
+      state.isEnterMainPage = bool
+    },
+    [IS_LOADING_PAGE](state, bool) {
+      state.isLoagingPage = bool
     }
   },
   actions: {
+    setLoagingPageState({ commit }, bool) {
+      commit(IS_LOADING_PAGE, bool)
+    },
+    setEnterMaingPageState({ commit }, bool) {
+      commit(IS_ENTER_MAIN_PAGE, bool)
+    },
     switchTnsName({ commit }, string) {
       commit(ROTATE_LAYOUT_NAME, string)
     },
     getOverlaysElems({ commit }, array) {
       commit(GET_OVERLAYS_ELEMS, array)
     },
-    getFirstEl({ commit }, el) {
+    setFirstEl({ commit }, el) {
       commit(GET_FIRST_PAGE_EL, el)
     },
-    getSecEl({ commit }, el) {
+    setSecEl({ commit }, el) {
       commit(GET_SEC_PAGE_EL, el)
     },
     canReverse({ commit }, isReverse) {
       commit(TIMELINE_REVERSE, isReverse)
     },
-    curTimeline({ commit }, curTimeline) {
-      commit(CUR_TIMELINE, curTimeline)
-    },
     getGridItems({ commit }, elems) {
       commit(GET_GRID_ITEMS, elems)
     },
-    isFullView({ commit }, bool) {
+    setFullViewState({ commit }, bool) {
       commit(FULL_VIEW_STATE, bool)
     },
     getCurFullView({ commit }, num) {
@@ -127,9 +140,9 @@ export default new Vuex.Store({
       commit(GET_NAME_POS, num)
     },
     switchCurView({ commit, getters }) {
-      commit(CUR_FULL_VIEW, getters.getCurPos)
+      commit(CUR_FULL_VIEW, getters.getCurGridName)
     },
-    getGridTimelineState({ commit }, bool) {
+    setGridTimelineState({ commit }, bool) {
       commit(GRID_TIME_REVERSE, bool)
     },
     switchColorMap({ commit }, colors) {
@@ -149,7 +162,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getCurPos: (state) => {
+    getCurGridName: (state) => {
       return state.gridNames[state.namePos]
     }
   }
