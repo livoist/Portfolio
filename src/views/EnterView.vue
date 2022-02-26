@@ -50,16 +50,18 @@ export default {
       getSecPageEl: 'secPageEl',
       curI18nLang: 'lang',
       isGlbTransition: 'isGlbTransition',
-      isEnterMainPage: 'isEnterMainPage'
+      isEnterMainPage: 'isEnterMainPage',
+      isLoadingPage: 'isLoagingPage'
     })
   },
   watch: {
-    isEnterMainPage: {
+    isLoadingPage: {
+      immediate: true,
       handler(val) {
-        if (val) {
+        if (!val) {
           setTimeout(() => {
             this.meshLine()
-          }, 2000)
+          }, 6500)
         }
       }
     }

@@ -1,9 +1,9 @@
 <template lang="pug">
-.choiceInfo
-  p {{ $t('lang-des') }}
+.choiceInfo(ref="langInfo")
+  p.lang {{ $t('lang-des') }}
   .langBtn(
     v-for="item in langList"
-    :class="{ 'active': curLangType === item.lang}"
+    :class="langBtnClassList(item.lang)"
     @click="switchLang(item.lang)"
   ) {{ item.name }}
 
@@ -27,7 +27,27 @@ export default {
       ]
     }
   },
+  watch: {
+    isLoading: {
+      handler(val) {
+        if(!val) {
+          this.delayAddClass()
+        }
+      }
+    }
+  },
+  computed: {
+    isLoading() {
+      return this.$store.state.isLoagingPage
+    }
+  },
   methods: {
+    langBtnClassList(target) {
+      return { 'active': this.curLangType === target }
+    },
+    delayAddClass() {
+      setTimeout(() => { this.$refs.langInfo.classList.add('normalStyle') }, 2000)
+    },
     switchLang(type) {
       this.$store.dispatch('setGlbTransitionState', true)
       setTimeout(() => { this.$store.dispatch('setGlbTransitionState', false) }, 1000)
@@ -41,21 +61,35 @@ export default {
 </script>
 
 <style lang="sass">
+.choiceInfo
+  p.lang
+    color: #efecea
+  &.normalStyle
+    p.lang
+      color: rgba(#000,0.7)
+    .langBtn
+      color: rgba(#000,0.7)
+      &.active
+        background: rgba(#000,0.7)
+        color: #efecea
+      &:after
+        border-color: rgba(#000,0.7)
+
 .langBtn
   +setFlex
   +size(16px)
   padding: 4px
-  color: #000
+  color: #efecea
   border-radius: 2px
   margin: 0 5px
   font-size: 12px
-  transition: 0.5s
+  transition: 1s
   cursor: pointer
   position: relative
   z-index: 1
   &.active
-    background: rgba(#000,0.7)
-    color: #fff
+    background: #efecea
+    color: #000
     pointer-events: none
     &:after
       opacity: 0
@@ -69,7 +103,7 @@ export default {
     +setPosAbs(50%,null,null,50%)
     transform: translate(-50%,-50%)
     +size(100%)
-    border: 1px solid rgba(#000,0.3)
+    border: 1px solid rgba(#efecea,0.3)
     border-radius: 2px
     transition: 1s
     opacity: 0

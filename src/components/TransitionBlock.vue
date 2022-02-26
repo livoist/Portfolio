@@ -32,12 +32,15 @@ export default {
 
 <style lang="sass" scoped>
 .portfolioTitle
-  font-size: 2vw
+  font-size: 1.2vw
   text-align: center
-  letter-spacing: 1vw
+  letter-spacing: 0.5vw
   color: #ffffff
   position: absolute
   left: 50%
   top: 50%
   transform: translate(-50%, -50%) rotate(5deg)
+  +breakpoint(sm)
+    font-size: 3.75vmin
+    letter-spacing: 1.25vmin
 </style>

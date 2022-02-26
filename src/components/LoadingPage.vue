@@ -5,6 +5,7 @@
   .preloadingText(:class="{ 'enter': loadingAnStep1 }") {{ $t('loading-des') }}
   a.anMaterial(:class="{ 'enter': loadingAnStep2 }")
     span(@click="startLoadingAn") {{ $t('loading-btn') }}
+    .line(v-for="n in 4")
 
   .anMaterial2(:class="{ 'enter': loadingAnStep1 }")
     span(:class="{ 'start': loadingAnStep2 }" v-for="n in 12")
@@ -30,7 +31,7 @@ export default {
       setTimeout(() => {
         this.loadingAnStep1 = true
         this.$emit('step1State', this.loadingAnStep1)
-      }, 2500)
+      }, 2000)
     },
   }
 }
@@ -44,6 +45,28 @@ export default {
   100%
     opacity: 0
     z-index: -1
+
+@keyframes changeText
+  0%
+    color: #efecea
+  100%
+    color: #000
+
+@keyframes changeBg
+  0%
+    background: #000
+  100%
+    background: #efecea
+
+@keyframes changeRectColor
+  0%
+    transform: translateX(-50%) rotate(315deg)
+    border-color: #efecea
+    color: #efecea
+  100%
+    transform: translateX(-50%) rotate(315deg)
+    border-color: #000
+    color: #000
 
 @keyframes rotateRect1
   0%
@@ -76,15 +99,15 @@ export default {
 .preloadingAn
   +size(100vw,100vh)
   position: absolute
-  background: #efecea
   z-index: 100
+  background: #000
   &.enter
-    animation: materialNoneAn 2s 2.5s both
+    animation: changeBg 1s both, materialNoneAn 2s 2.5s both
   &.event-none .anMaterial, .anMaterial2
     pointer-events: none
   .preloadingText
     +setPosAbs(50%,null,null,50%)
-    color: #000
+    color: #efecea
     font-size: 18px
     transform: translate(-50%,-50%)
     width: 100%
@@ -94,27 +117,34 @@ export default {
       font-size: 3vmin
       top: 43%
     &.enter
-      animation: materialNoneAn 1.5s 1.5s both
+      animation: changeText 1s both, materialNoneAn 1.5s 1.5s both
   .anMaterial
     +size(50px)
     +setPosAbs(55%,null,null,50%)
     transform: translate(-50%,-50%)
+    color: #efecea
     +breakpoint(sm)
       top: 50%
       transform: translate(-50%,-50%) scale(0.8)
     &.enter
       animation: materialNoneAn 0.5s both
-    &::after,&::before
-      content: ''
+      &:before,&:after
+        animation: changeRectColor 0.5s both
+    .line
       +setPosAbs(60%,null,null,50%)
       transform: translate(-50%,-50%)
-      +size(100%)
-      border: 1px solid rgba(#000, 0.4)
       box-sizing: border-box
-    &::after
-      animation: rotateRect1 5s both
-    &::before
-      animation: rotateRect2 5s both
+      +size(100%)
+      border: 1px solid #efecea
+      @for $i from 1 through 4
+        &:nth-of-type(#{$i})
+          @if $i == 1
+            animation: rotateRect1 5s both
+          @if $i == 2
+            animation: rotateRect2 5s both
+          @if $i == 3 or $i == 4
+            display: none
+
     span
       display: inline-block
       +setFlex
@@ -135,11 +165,23 @@ export default {
       top: 54%
       transform: translate(-50%,-50%) scale(0.8)
 
-    $colorAry: (1: #EE3239, 2: #5EAA5F, 3: #FECE00, 4: #9D6AB9, 5: #FFEFA1, 6: #FFB21A, 7: #876363, 8: #414B6F, 9: #E6B6C2, 10: #D4587A, 11: #DC364C, 12: #778633)
+    // 7: #876363, 8: #414B6F, 9: #E6B6C2, 10: #D4587A, 11: #DC364C, 12: #778633
+    $colorAry: (1: #fff, 2: #EE3239, 3: #5EAA5F, 4: #FECE00, 5: #9D6AB9, 6: #FFEFA1, 7: #FFB21A)
+    $colorAry2: (1: #000, 2: #efecea, 3: #000, 4: #efecea, 5: #000, 6: #efecea, 7: #000)
+
     span
       +size(90%)
       display: inline-block
-      @each $pos, $color in $colorAry
+      &:before
+        content: ''
+        position: absolute
+        +size(100%)
+        left: 50%
+        top: 50%
+        background: transparent
+        transform: translate(-50%,-50%)
+        z-index: -1
+      @each $pos, $color in $colorAry2
         @keyframes colorfulRotate#{$pos}
           0%
             background: transparent
@@ -149,10 +191,21 @@ export default {
           100%
             background: $color
             transform: translate(-50%,-50%) rotate($pos * 22.5deg)
+        // @keyframes beforeRotate#{$pos}
+        //   0%
+        //     background: transparent
+        //   5%
+        //     background: rgba(#fff,0.2)
+        //     transform: translate(-50%,-50%) rotate((($pos - 1) * 18.5deg))
+        //   100%
+        //     background: rgba(#fff,0.2)
+        //     transform: translate(-50%,-50%) rotate($pos * 18.5deg)
         &:nth-of-type(#{$pos})
           +setPosAbs(50%,null,null,50%)
           transform: translate(-50%,-50%) rotate((($pos - 1) * 22.5deg))
           &.start
-            animation: colorfulRotate#{$pos} 1s #{$pos * 0.2}s both
+            animation: colorfulRotate#{$pos} 0.4s #{$pos * 0.2}s both
+            // &:before
+            //   animation: beforeRotate#{$pos} 0.4s #{$pos * 0.2}s both
 
 </style>

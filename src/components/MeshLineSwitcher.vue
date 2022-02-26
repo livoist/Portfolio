@@ -20,6 +20,7 @@ export default {
   data() {
     return {
       colorMaps: [
+        ['#FEB75D', '#55C9EA', '#013B63', '#000E2B'],
         ["#EE3239", "#5EAA5F", "#FECE00", "#9D6AB9"],
         ["#FFEFA1", "#FFB21A", "#876363", "#414B6F"],
         ["#E6B6C2", "#D4587A", "#DC364C", "#778633"],
@@ -53,18 +54,18 @@ export default {
       };
     },
     switchMeshLineColorMap(item, idx) {
-      this.$store.dispatch("switchColorMap", item);
+      setTimeout(() => { this.$store.dispatch("switchColorMap", item) }, 750)
       this.curColorMap = idx;
 
-      const meshCanvas = document.getElementById("#canvas");
-      meshCanvas.classList.add("tnsCanvas");
+      const meshCanvas = document.getElementById("#canvas")
+      meshCanvas.classList.add("tnsCanvas")
 
-      this.canSwitchColorMap = false;
+      this.canSwitchColorMap = false
 
       setTimeout(() => {
-        meshCanvas.classList.remove("tnsCanvas");
-        this.canSwitchColorMap = true;
-      }, 1500);
+        meshCanvas.classList.remove("tnsCanvas")
+        this.canSwitchColorMap = true
+      }, 3000);
     },
   },
 };
