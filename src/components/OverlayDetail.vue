@@ -7,14 +7,13 @@
       )
       .viewContent
         .viewTitle.fz-36 {{ getCurFullView.name }}
-        .m-flex
-          .viewTime.fz-20.mb-10
-            span Date: 
-            | {{ getCurFullView.date }}
-          .viewTag.fz-20.mb-10
-            span Tag: 
-            | {{ getCurFullView.tag }}
-        .viewSkill.fz-20.mb-30
+        .viewTime.fz-20
+          span Date: 
+          | {{ getCurFullView.date }}
+        .viewTag.fz-20
+          span Tag: 
+          | {{ getCurFullView.tag }}
+        .viewSkill.fz-20
           span UseSkill: 
           | {{ getCurFullView.skill }}
         .viewDes.fz-20.mb-30
@@ -62,8 +61,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-#overlayView
-  font-family: 'sans-serif'
 .fz-36
   font-size: 36px
   +breakpoint(sm)
@@ -123,6 +120,12 @@ export default {
     flex-direction: column
     align-items: center
 
+.viewTime,.viewTag,.viewDes,.viewSkill
+  line-height: 1.8
+  span 
+    font-weight: bold
+    letter-spacing: 2px
+
 .viewTime
   +breakpoint(sm)
     margin-right: 6vmin
@@ -131,7 +134,7 @@ export default {
   margin-bottom: 30px
   letter-spacing: 4px
   +breakpoint(sm)
-    margin-bottom: 3vmin
+    margin-bottom: 8vmin
 
 .viewContentsInner
   +size(100%)
@@ -164,5 +167,8 @@ export default {
   right: 0
   +breakpoint(sm)
     font-size: 12px
+    right: 50%
+    bottom: -10vmin
+    transform: translateX(50%)
 
 </style>

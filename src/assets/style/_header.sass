@@ -56,17 +56,17 @@
     pointer-events: none
     z-index: 999
     @media (min-width: 996px)
-      +setFont(38px,bold,null,null)
+      +setFont(38px,null,null,null)
     &::after
       content: 'ack ←'
-      +setPosAbs(null,-60px,4px,null)
+      +setPosAbs(null,-72px,4px,null)
       font-size: 16px
       letter-spacing: 4px
       opacity: 0
       visibility: hidden
       +breakpoint(xs)
         font-size: 3.5vmin
-        right: -14vmin
+        right: -16vmin
         bottom: 0.5vmin
     &.pointer-initial
       animation: backFrame 1.5s 1.5s both

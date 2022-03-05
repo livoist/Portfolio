@@ -1,4 +1,4 @@
-import { TweenLite, Power4 } from 'gsap'
+import { TweenMax, Power4 } from 'gsap'
 export default class MouseCursor {
   constructor () {
     // mouse scope
@@ -6,8 +6,8 @@ export default class MouseCursor {
 
     // get cursor
     const cursor = document.querySelector('.mousemoveScope__cursor__pointer')
-    TweenLite.to(cursor, {
-      autoAlpha: 0
+    TweenMax.to(cursor, {
+      opacity: 0
     })
   }
 
@@ -16,7 +16,7 @@ export default class MouseCursor {
     const { clientX, clientY } = e
     const cursor = document.querySelector('.mousemoveScope__cursor__pointer')
 
-    TweenLite.to(cursor, {
+    TweenMax.to(cursor, {
       x: clientX,
       y: clientY,
       ease: Power4.easeOut
@@ -25,8 +25,8 @@ export default class MouseCursor {
 
   enterMouse () {
     const cursor = document.querySelector('.mousemoveScope__cursor__pointer')
-    TweenLite.to(cursor, {
-      autoAlpha: 1,
+    TweenMax.to(cursor, {
+      opacity: 1,
       ease: Power4.easeIn
     })
   }

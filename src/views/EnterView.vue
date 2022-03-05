@@ -36,7 +36,8 @@ export default {
   data () {
     return {
       engine: '',
-      step1State: false
+      step1State: false,
+      pageToggleTimeline: ''
     }
   },
   components: {
@@ -243,6 +244,7 @@ export default {
     }
   },
   mounted () {
+    this.pageToggleTimeline = new TimelineMax()
     this.charmingText()
     this.enterViewTimeline()
   }

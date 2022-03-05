@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/Portfolio/',
   productionSourceMap: false,
   configureWebpack: {
     entry: './src/main.js',
