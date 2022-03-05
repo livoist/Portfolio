@@ -7,18 +7,19 @@
       )
       .viewContent
         .viewTitle.fz-36 {{ getCurFullView.name }}
-        .viewTime.fz-20
+        .viewTime.fz-16
           span Date: 
           | {{ getCurFullView.date }}
-        .viewTag.fz-20
+        .viewTag.fz-16
           span Tag: 
           | {{ getCurFullView.tag }}
-        .viewSkill.fz-20
+        .viewSkill.fz-16
           span UseSkill: 
           | {{ getCurFullView.skill }}
-        .viewDes.fz-20.mb-30
+        .viewDes.fz-16.mb-30
           span Description: 
           | {{ getCurFullView.des }}
+        a.viewLink(:href="`https://livoist.github.io${getCurFullView.link}`" target="_blank") Portfolio link
         .viewOverlayClose(@click="closeView(false)" style="cursor: pointer") ← back
 
 </template>
@@ -72,7 +73,7 @@ export default {
     font-size: 7vmin
 
 .fz-20
-  font-size: 18px
+  font-size: 16px
   +breakpoint(sm)
     font-size: 3.75vmin
 
@@ -121,10 +122,18 @@ export default {
     align-items: center
 
 .viewTime,.viewTag,.viewDes,.viewSkill
-  line-height: 1.8
+  line-height: 2.2
+  letter-spacing: 2px
+  font-size: 14px
   span 
     font-weight: bold
-    letter-spacing: 2px
+    letter-spacing: 1px
+    font-size: 16px
+
+.viewLink
+  border-bottom: 1px solid #013B63
+  color: #013B63
+  font-weight: bold
 
 .viewTime
   +breakpoint(sm)
@@ -135,6 +144,7 @@ export default {
   letter-spacing: 4px
   +breakpoint(sm)
     margin-bottom: 8vmin
+    text-align: center
 
 .viewContentsInner
   +size(100%)

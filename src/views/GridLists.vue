@@ -26,7 +26,8 @@ export default {
           tag: 'Vue Framework',
           name: 'Bike Map',
           des: 'provide bike rent、bike route search、user location of near tour information。',
-          skill: 'Nuxt.js(Vue SSR framework)、MapBox、pug、sass'
+          skill: 'Nuxt.js(Vue SSR framework)、MapBox、pug、sass',
+          link: '/F2E-3-2/'
         },
         {
           id: 2,
@@ -34,7 +35,8 @@ export default {
           tag: 'Creating Coding',
           name: 'Random World',
           des: 'small project of crearing coding，click can change shape、color mode，have fun!',
-          skill: 'p5.js'
+          skill: 'p5.js',
+          link: '/codeArt-1/'
         },
         {
           id: 3,
@@ -42,7 +44,8 @@ export default {
           tag: 'Creating Coding',
           name: 'Colors Dove',
           des: 'small project of creating coding，click can random change dove color，have fun!',
-          skill: 'p5.js'
+          skill: 'p5.js',
+          link: '/codeArt-2/'
         },
         {
           id: 4,
@@ -50,7 +53,8 @@ export default {
           tag: 'Algorithm',
           name: 'Dynamic Table',
           des: 'show dynamic programing process of longest common subsequence。',
-          skill: 'HTML、CSS、JavaScript'
+          skill: 'HTML、CSS、JavaScript',
+          link: '/DynamicTable/'
         }
       ]
     }
@@ -150,8 +154,9 @@ $mb-grid-items: ("a" "2 / 1 / 4 / 7", "b" "4 / 7 / 6 / 13", "c" "6 / 1 / 8 / 7",
     color: #fff
     +breakpoint(sm)
       font-size: 3vmin
-  &:hover:after
-    opacity: 0
+  @media (min-width: 1200px)
+    &:hover:after
+      opacity: 0
   &.portfolio1
     grid-area: 1 / 2 / 5 / 8
     +breakpoint(sm)
