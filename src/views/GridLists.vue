@@ -3,9 +3,9 @@ div
   .gridContainer
     .gridInner
       .gridItem(
-        v-for="(item, idx) in gridNames"
-        :style="{ backgroundImage: `url(${require(`@img/${item}.jpg`)})` }"
-        :class="item"
+        v-for="(item, idx) in gridContents"
+        :style="{ backgroundImage: `url(${require(`@img/portfolio${item.id}.png`)})` }"
+        :class="`portfolio${item.id}`"
         ref="gridItems"
         @click="getOverlayDetail(item, idx)"
       )
@@ -18,7 +18,41 @@ export default {
   name: 'GridLists',
   data() {
     return {
-      gridNames: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']
+      // gridNames: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']
+      gridContents: [
+        {
+          id: 1,
+          date: '2021-2022',
+          tag: 'Vue Framework',
+          name: 'Bike Map',
+          des: 'provide bike rent、bike route search、user location of near tour information。',
+          skill: 'Nuxt.js(Vue SSR framework)、MapBox、pug、sass'
+        },
+        {
+          id: 2,
+          date: '2021-2022',
+          tag: 'Creating Coding',
+          name: 'Random World',
+          des: 'small project of crearing coding，click can change shape、color mode，have fun!',
+          skill: 'p5.js'
+        },
+        {
+          id: 3,
+          date: '2021-2022',
+          tag: 'Creating Coding',
+          name: 'Colors Dove',
+          des: 'small project of creating coding，click can random change dove color，have fun!',
+          skill: 'p5.js'
+        },
+        {
+          id: 4,
+          date: '2021-2022',
+          tag: 'Algorithm',
+          name: 'Dynamic Table',
+          des: 'show dynamic programing process of longest common subsequence。',
+          skill: 'HTML、CSS、JavaScript'
+        }
+      ]
     }
   },
   computed: {
@@ -36,8 +70,8 @@ export default {
     //   this.$store.dispatch('getNamePos', pos)
     //   this.$store.dispatch('getGridTimelineState', true)
     // },
-    getOverlayDetail(name, pos) {
-      this.$store.dispatch('getCurFullView', name)
+    getOverlayDetail(item, pos) {
+      this.$store.dispatch('getCurFullView', item)
       this.$store.dispatch('getNamePos', pos)
       this.$store.dispatch('setGridTimelineState', true)
 
@@ -89,7 +123,7 @@ $mb-grid-items: ("a" "2 / 1 / 4 / 7", "b" "4 / 7 / 6 / 13", "c" "6 / 1 / 8 / 7",
   perspective-origin: center center
   +breakpoint(sm)
     grid-template-columns: repeat(12, 1fr)
-    grid-template-rows: repeat(24, 1fr)
+    // grid-template-rows: repeat(24, 1fr)
   +breakpoint(xs)
     grid-gap: 4vw
 
@@ -98,10 +132,50 @@ $mb-grid-items: ("a" "2 / 1 / 4 / 7", "b" "4 / 7 / 6 / 13", "c" "6 / 1 / 8 / 7",
   background-size: cover
   background-position: center
   opacity: 0
-  filter: brightness(0.3)
+  // filter: brightness(0.3)
   transform: translate3d(0, 0, 0px)
   will-change: transform
   cursor: pointer
+  &:after
+    position: absolute
+    left: 50%
+    top: 50%
+    +size(100%)
+    transform: translate(-50%,-50%)
+    background: rgba(#000,0.95)
+    +setFlex
+    letter-spacing: 4px
+    font-size: 28px
+    transition: 0.3s
+    color: #fff
+    +breakpoint(sm)
+      font-size: 3vmin
+  &:hover:after
+    opacity: 0
+  &.portfolio1
+    grid-area: 1 / 2 / 5 / 8
+    +breakpoint(sm)
+      grid-area: 2 / 1 / 4 / 7
+    &:after
+      content: 'BikeMap'
+  &.portfolio2
+    grid-area: 5 / 3 / 12 / 9
+    +breakpoint(sm)
+      grid-area: 4 / 7 / 6 / 13
+    &:after
+      content: 'RandomWorld'
+  &.portfolio3
+    grid-area: 5 / 14 / 12 / 9
+    +breakpoint(sm)
+        grid-area: 6 / 1 / 8 / 7
+    &:after
+      content: 'ColorDove'
+  &.portfolio4
+    grid-area: 5 / 13 / 1 / 8
+    +breakpoint(sm)
+      grid-area: 8 / 7 / 13 / 13
+    &:after
+      content: 'DynamicTable'
   &.a
     grid-area: 2 / 1 / 6 / 5
   &.b
@@ -124,8 +198,8 @@ $mb-grid-items: ("a" "2 / 1 / 4 / 7", "b" "4 / 7 / 6 / 13", "c" "6 / 1 / 8 / 7",
     grid-area: 4 / 8 / 6 / 11
   &.k
     grid-area: 7 / 5 / 9 / 8
-  &:hover
-    filter: brightness(1)
+  // &:hover
+  //   filter: brightness(1)
   +breakpoint(sm)
     @each $item, $grid in $mb-grid-items
       &.#{$item}

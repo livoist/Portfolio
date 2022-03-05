@@ -2,12 +2,24 @@
 #overlayView(:class="{ 'show': isFullView }")
   .viewContentsInner(:class="{ 'show': isFullView }")
     .viewContents
-      .viewContentImage(:style="{ backgroundImage: `url(${getFullViewImage})` }")
+      .viewContentImage(
+        :style="{ backgroundImage: `url(${getFullViewImg})` }"
+      )
       .viewContent
-        .viewTime.mb-10 2021 / 3 / {{ getCurFullView }}
-        .viewTag.fz-32.mb-30 Layout Demo {{ getCurFullView }}
-        .viewTitle.fz-28.mb-10 Title {{ getCurFullView }}
-        .viewDes.fz-20.mb-30 Welcome to Kazuki Noda's portfolio.This website plays background music.Please select "off" if you would rather not listen to the background music.
+        .viewTitle.fz-36 {{ getCurFullView.name }}
+        .m-flex
+          .viewTime.fz-20.mb-10
+            span Date: 
+            | {{ getCurFullView.date }}
+          .viewTag.fz-20.mb-10
+            span Tag: 
+            | {{ getCurFullView.tag }}
+        .viewSkill.fz-20.mb-30
+          span UseSkill: 
+          | {{ getCurFullView.skill }}
+        .viewDes.fz-20.mb-30
+          span Description: 
+          | {{ getCurFullView.des }}
         .viewOverlayClose(@click="closeView(false)" style="cursor: pointer") ← back
 
 </template>
@@ -25,8 +37,12 @@ export default {
       isFullView: 'fullView',
       getCurFullView: 'curFullView'
     }),
-    getFullViewImage() {
-      return require(`@img/${this.getCurFullView}.jpg`)
+    getFullViewImg() {
+      if (this.getCurFullView !== 1) {
+        return require(`@img/portfolio${this.getCurFullView.id}.png`)
+      } else {
+        return require(`@img/portfolio1.png`)
+      }
     }
   },
   methods: {
@@ -46,18 +62,20 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.fz-32
-  font-size: 32px
+#overlayView
+  font-family: 'sans-serif'
+.fz-36
+  font-size: 36px
   +breakpoint(sm)
     font-size: 7vmin
 
 .fz-28
   font-size: 28px
   +breakpoint(sm)
-    font-size: 6vmin
+    font-size: 7vmin
 
 .fz-20
-  font-size: 20px
+  font-size: 18px
   +breakpoint(sm)
     font-size: 3.75vmin
 
@@ -71,6 +89,10 @@ export default {
   +breakpoint(sm)
     margin-bottom: 2vmin
 
+.m-flex
+  +breakpoint(sm)
+    display: flex
+
 #overlayView
   +size(100vw,100vh)
   position: fixed
@@ -82,23 +104,34 @@ export default {
     visibility: visible
 
 .viewContentImage
-  +size(300px)
+  // +size(300px)
+  +size(500px,350px)
   background-size: cover
   background-position: center
   transition: 0.3s
   +breakpoint(sm)
-    +size(72vmin)
+    +size(100%,72vmin)
     margin-bottom: 5vmin
 
 .viewContents
   display: flex
   justify-content: space-between
-  max-width: 700px
+  // max-width: 700px
+  max-width: 1200px
   width: 100%
   +breakpoint(sm)
-    width: 72%
     flex-direction: column
     align-items: center
+
+.viewTime
+  +breakpoint(sm)
+    margin-right: 6vmin
+
+.viewTitle
+  margin-bottom: 30px
+  letter-spacing: 4px
+  +breakpoint(sm)
+    margin-bottom: 3vmin
 
 .viewContentsInner
   +size(100%)
@@ -116,15 +149,20 @@ export default {
 
 .viewContent
   width: 52%
+  position: relative
   +breakpoint(sm)
-    width: 100%
+    width: 90%
 
 .viewDes
   line-height: 1.25
 
 .viewOverlayClose
-  letter-spacing: 4px
-  font-weight: bold
+  letter-spacing: 2px
   font-size: 14px
+  position: absolute
+  bottom: 0
+  right: 0
+  +breakpoint(sm)
+    font-size: 12px
 
 </style>

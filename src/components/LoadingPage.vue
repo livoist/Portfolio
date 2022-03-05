@@ -102,7 +102,7 @@ export default {
   z-index: 100
   background: #000
   &.enter
-    animation: changeBg 1s both, materialNoneAn 2s 2.5s both
+    animation: changeBg 1s 0.5s both, materialNoneAn 2s 2.5s both
   &.event-none .anMaterial, .anMaterial2
     pointer-events: none
   .preloadingText
@@ -117,7 +117,7 @@ export default {
       font-size: 3vmin
       top: 43%
     &.enter
-      animation: changeText 1s both, materialNoneAn 1.5s 1.5s both
+      animation: changeText 1s 0.5s both, materialNoneAn 1.5s 1.5s both
   .anMaterial
     +size(50px)
     +setPosAbs(55%,null,null,50%)
@@ -204,7 +204,7 @@ export default {
           +setPosAbs(50%,null,null,50%)
           transform: translate(-50%,-50%) rotate((($pos - 1) * 22.5deg))
           &.start
-            animation: colorfulRotate#{$pos} 0.4s #{$pos * 0.2}s both
+            animation: colorfulRotate#{$pos} 0.7s #{$pos * 0.2}s both
             // &:before
             //   animation: beforeRotate#{$pos} 0.4s #{$pos * 0.2}s both
 

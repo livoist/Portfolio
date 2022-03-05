@@ -32,7 +32,7 @@ export default new Vuex.Store({
     isReverse: false,
     gridItems: '',
     fullView: false,
-    curFullView: 'a',
+    curFullView: 1,
     gridNames: [],
     namePos: 0,
     gridTimelineReverse: false,
@@ -127,8 +127,8 @@ export default new Vuex.Store({
     setFullViewState({ commit }, bool) {
       commit(FULL_VIEW_STATE, bool)
     },
-    getCurFullView({ commit }, num) {
-      commit(CUR_FULL_VIEW, num)
+    getCurFullView({ commit }, item) {
+      commit(CUR_FULL_VIEW, item)
     },
     getGridTimeline({ commit }, el) {
       commit(GRID_TIMELINE, el)
