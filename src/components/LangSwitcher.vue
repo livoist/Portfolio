@@ -1,5 +1,5 @@
 <template lang="pug">
-.choiceInfo(ref="langInfo")
+.choiceInfo.lang(ref="langInfo")
   p.lang {{ $t('lang-des') }}
   .langBtn(
     v-for="item in langList"
@@ -62,6 +62,8 @@ export default {
 
 <style lang="sass">
 .choiceInfo
+  &.lang
+    margin: 0
   p.lang
     color: #efecea
   &.normalStyle

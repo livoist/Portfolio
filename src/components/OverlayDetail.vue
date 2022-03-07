@@ -65,7 +65,7 @@ export default {
 .fz-36
   font-size: 36px
   +breakpoint(sm)
-    font-size: 7vmin
+    font-size: 6vmin
 
 .fz-28
   font-size: 28px
@@ -108,8 +108,7 @@ export default {
   background-position: center
   transition: 0.3s
   +breakpoint(sm)
-    +size(100%,72vmin)
-    margin-bottom: 5vmin
+    +size(100%,60vmin)
 
 .viewContents
   display: flex
@@ -125,15 +124,21 @@ export default {
   line-height: 2.2
   letter-spacing: 2px
   font-size: 14px
+  +breakpoint(sm)
+    font-size: 3.25vmin
   span 
     font-weight: bold
     letter-spacing: 1px
     font-size: 16px
+    +breakpoint(sm)
+      font-size: 3.5vmin
 
 .viewLink
   border-bottom: 1px solid #013B63
   color: #013B63
   font-weight: bold
+  +breakpoint(sm)
+    font-size: 4vmin
 
 .viewTime
   +breakpoint(sm)
@@ -143,8 +148,9 @@ export default {
   margin-bottom: 30px
   letter-spacing: 4px
   +breakpoint(sm)
-    margin-bottom: 8vmin
+    margin: 4.5vmin auto
     text-align: center
+    letter-spacing: 0.5vmin
 
 .viewContentsInner
   +size(100%)

@@ -9,12 +9,14 @@
 .choiceInfos
   position: fixed
   right: 2%
-  top: 3.5%
+  top: 4%
   display: flex
   transition: 1s
   z-index: 100
   &.pointer-none
     pointer-events: none
+  +breakpoint(sm)
+    top: 2.5%
 
 .choiceInfo
   padding-bottom: 8px
@@ -45,10 +47,10 @@
 
 .navbar
   +setFlex(space-between,center)
-  padding: 2.5vw 2.5vw 0
+  padding: 2vw 2.5vw 0
   box-sizing: border-box
   +breakpoint(sm)
-    padding: 5vw 5vw 0
+    padding: 3.5vw 4.5vw 0
   .logo
     color: $headerText
     font-size: 7vmin
