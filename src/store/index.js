@@ -20,7 +20,7 @@ const I18N_LANG = 'I18N_LANG'
 const IS_GLOBAL_TRANSITION = 'IS_GLOBAL_TRANSITION'
 const IS_ENTER_MAIN_PAGE = 'IS_ENTER_MAIN_PAGE'
 const IS_LOADING_PAGE = 'IS_LOADING_PAGE'
-
+const GET_PORTFOLIO_LIST = 'GET_PORTFOLIO_LIST'
 
 export default new Vuex.Store({
   state: {
@@ -32,7 +32,7 @@ export default new Vuex.Store({
     isReverse: false,
     gridItems: '',
     fullView: false,
-    curFullView: 1,
+    curFullViewID: 0,
     gridNames: [],
     namePos: 0,
     gridTimelineReverse: false,
@@ -41,7 +41,8 @@ export default new Vuex.Store({
     lang: 'en',
     isGlbTransition: false,
     isEnterMainPage: false,
-    isLoagingPage: true
+    isLoagingPage: true,
+    portfolioList: []
   },
   mutations: {
     [ROTATE_LAYOUT_NAME](state, name) {
@@ -63,7 +64,7 @@ export default new Vuex.Store({
       state.fullView = bool
     },
     [CUR_FULL_VIEW](state, num) {
-      state.curFullView = num
+      state.curFullViewID = num
     },
     [GET_GRID_NAMES](state, ary) {
       state.gridNames = ary
@@ -97,9 +98,15 @@ export default new Vuex.Store({
     },
     [IS_LOADING_PAGE](state, bool) {
       state.isLoagingPage = bool
+    },
+    [GET_PORTFOLIO_LIST](state, list) {
+      state.portfolioList = list
     }
   },
   actions: {
+    getPortfolioList({ commit }, list) {
+      commit(GET_PORTFOLIO_LIST, list)
+    },
     setLoagingPageState({ commit }, bool) {
       commit(IS_LOADING_PAGE, bool)
     },
@@ -127,8 +134,8 @@ export default new Vuex.Store({
     setFullViewState({ commit }, bool) {
       commit(FULL_VIEW_STATE, bool)
     },
-    getCurFullView({ commit }, item) {
-      commit(CUR_FULL_VIEW, item)
+    getCurFullViewID({ commit }, id) {
+      commit(CUR_FULL_VIEW, id)
     },
     getGridTimeline({ commit }, el) {
       commit(GRID_TIMELINE, el)

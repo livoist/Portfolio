@@ -21,7 +21,7 @@ export default {
       // gridNames: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']
       gridContents: [
         {
-          id: 1,
+          id: 0,
           date: '2021-2022',
           tag: 'Vue Framework',
           name: 'Bike Map',
@@ -30,7 +30,7 @@ export default {
           link: '/F2E-3-2/'
         },
         {
-          id: 2,
+          id: 1,
           date: '2021-2022',
           tag: 'Creating Coding',
           name: 'Random World',
@@ -39,7 +39,7 @@ export default {
           link: '/codeArt-1/'
         },
         {
-          id: 3,
+          id: 2,
           date: '2021-2022',
           tag: 'Creating Coding',
           name: 'Colors Dove',
@@ -48,7 +48,7 @@ export default {
           link: '/codeArt-2/'
         },
         {
-          id: 4,
+          id: 3,
           date: '2021-2022',
           tag: 'Algorithm',
           name: 'Dynamic Table',
@@ -74,9 +74,12 @@ export default {
     //   this.$store.dispatch('getNamePos', pos)
     //   this.$store.dispatch('getGridTimelineState', true)
     // },
+    savePortfolioList() {
+      this.$store.dispatch('getPortfolioList', this.gridContents)
+    },
     getOverlayDetail(item, pos) {
-      this.$store.dispatch('getCurFullView', item)
-      this.$store.dispatch('getNamePos', pos)
+      this.$store.dispatch('getCurFullViewID', item.id)
+      // this.$store.dispatch('getNamePos', pos)
       this.$store.dispatch('setGridTimelineState', true)
 
       this.$store.dispatch('overlayIn', true)
@@ -100,6 +103,7 @@ export default {
   mounted() {
     this.saveGridItems()
     this.getGridNames()
+    this.savePortfolioList()
   }
 }
 </script>
@@ -149,33 +153,34 @@ $mb-grid-items: ("a" "2 / 1 / 4 / 7", "b" "4 / 7 / 6 / 13", "c" "6 / 1 / 8 / 7",
     background: rgba(#000,0.95)
     +setFlex
     letter-spacing: 4px
-    font-size: 28px
+    font-size: 22px
     transition: 0.3s
     color: #fff
     +breakpoint(sm)
       font-size: 3vmin
+      letter-spacing: 2px
   @media (min-width: 1200px)
     &:hover:after
       opacity: 0
-  &.portfolio1
+  &.portfolio0
     grid-area: 1 / 2 / 5 / 8
     +breakpoint(sm)
       grid-area: 2 / 1 / 4 / 7
     &:after
       content: 'BikeMap'
-  &.portfolio2
+  &.portfolio1
     grid-area: 5 / 3 / 12 / 9
     +breakpoint(sm)
       grid-area: 4 / 7 / 6 / 13
     &:after
       content: 'RandomWorld'
-  &.portfolio3
+  &.portfolio2
     grid-area: 5 / 14 / 12 / 9
     +breakpoint(sm)
         grid-area: 6 / 1 / 8 / 7
     &:after
       content: 'ColorDove'
-  &.portfolio4
+  &.portfolio3
     grid-area: 5 / 13 / 1 / 8
     +breakpoint(sm)
       grid-area: 8 / 7 / 13 / 13
