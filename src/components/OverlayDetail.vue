@@ -3,13 +3,13 @@
   .viewContentsInner(:class="{ 'show': isFullView }")
     .viewContents
       .viewSwitcher
-        .preBtn(@click="switchPortfolio('pre')" :class="{ 'prevent-event': isSwitch }")
+        .preBtn(@click="switchPortfolio('pre')" :class="switchButtonState")
           svg(viewBox='0 0 26 47' xmlns='http://www.w3.org/2000/svg')
             path(d='M23.1 46.2l2.8-2.7L5.5 23.1 25.9 2.7 23.1 0 0 23.1l23.1 23.1z')
         .progressBar
           .innerBar(:style="{ width: `${getProgressBarProcess}%` }")
           .portfolioNum {{ curId + 1 }}
-        .nextBtn(@click="switchPortfolio('next')" :class="{ 'prevent-event': isSwitch }")
+        .nextBtn(@click="switchPortfolio('next')" :class="switchButtonState")
           svg(viewBox='0 0 26 47' xmlns='http://www.w3.org/2000/svg')
             path(d='M23.1 46.2l2.8-2.7L5.5 23.1 25.9 2.7 23.1 0 0 23.1l23.1 23.1z')
 
@@ -19,23 +19,24 @@
 
         .viewContent(:class="{ 'switch': isSwitch }")
           .viewTitle.fz-36 {{ getCurViewContent.name }}
+          .skillContainer
+            .skillBox
+              .viewSkill.fz-16(v-for="item in getCurViewContent.skill") {{ item }}
+            .slash
           .viewTime.fz-16
-            span Date: 
+            span date: 
             | {{ getCurViewContent.date }}
           .viewTag.fz-16
-            span Tag: 
+            span tag: 
             | {{ getCurViewContent.tag }}
-          .viewSkill.fz-16
-            span UseSkill: 
-            | {{ getCurViewContent.skill }}
           .viewDes.fz-16.mb-30
-            span Description: 
+            span description: 
             | {{ getCurViewContent.des }}
           a.viewLink(
             :href="`https://livoist.github.io${getCurViewContent.link}`"
             target="_blank"
           ) Portfolio link
-          .viewOverlayClose(@click="closeView(false)" style="cursor: pointer") ← back
+          .viewOverlayClose(@click="closeView(false)" style="cursor: pointer") Close
 
 </template>
 
@@ -64,6 +65,9 @@ export default {
     },
     getProgressBarProcess() {
       return (this.curId + 1) / 4 * 100
+    },
+    switchButtonState() {
+      return { 'prevent-event': this.isSwitch }
     }
   },
   watch: {
@@ -90,7 +94,7 @@ export default {
         this.curId = 0
       }, 1000)
     },
-    switchPortfolio(type) {
+    async switchPortfolio(type) {
       if (
         (this.curId === 3 && type === 'next') ||
         (this.curId === 0 && type === 'pre')
@@ -100,11 +104,11 @@ export default {
       }
 
       this.isSwitch = true
-      setTimeout(() => { this.isSwitch = false }, 1200)
+      setTimeout(() => { this.isSwitch = false }, 1800)
 
       if (this.isSwitch) {
         if (type === 'pre') {
-          setTimeout(() => { this.curId-- }, 1200)
+          setTimeout(() => { this.curId-- }, 1800)
           if (this.curId <= 0) {
             setTimeout(() => {
               this.closeView(true)
@@ -113,7 +117,7 @@ export default {
           }
         }
         if (type === 'next') {
-          setTimeout(() => { this.curId++ }, 1200)
+          setTimeout(() => { this.curId++ }, 1800)
           if (this.curId >= 3) {
             setTimeout(() => {
               this.closeView(true)
@@ -123,16 +127,13 @@ export default {
         }
       }
     }
-  },
-  mounted() {
-    this.curId = this.getCurFullViewID
   }
 }
 </script>
 
 <style lang="sass" scoped>
 .fz-36
-  font-size: 36px
+  font-size: 32px
   +breakpoint(sm)
     font-size: 6vmin
 
@@ -201,7 +202,7 @@ export default {
   +setFlex
   margin-bottom: 60px
   +breakpoint(sm)
-    margin: 8vmin auto 0
+    margin: 0 auto 8vmin 
   .progressBar
     width: 200px
     height: 2px
@@ -229,6 +230,15 @@ export default {
       transition: width 0.5s
   .preBtn,.nextBtn
     cursor: pointer
+    position: relative
+    &:after
+      content: 'Close'
+      position: absolute
+      font-size: 12px
+      top: 50%
+      transform: translateY(-50%)
+      transition: 0.5s
+      opacity: 0
     &.prevent-event
       pointer-events: none
     +breakpoint(sm)
@@ -237,18 +247,46 @@ export default {
       width: 14px
       +breakpoint(sm)
         width: 2vmin
+  .preBtn:after
+    left: -600%
+    &.showLCloseHint:after
+      opacity: 1
   .nextBtn
     transform: rotate(180deg)
+    &.showRCloseHint:after
+      opacity: 1
+    &:after
+      left: -600%
+      transform: translateY(-50%) rotate(-180deg)
 
-.viewTime,.viewTag,.viewDes,.viewSkill
-  line-height: 2.2
+.skillBox
+  +breakpoint(sm)
+    +setFlex
+
+.slash
+  width: 100%
+  margin-top: 20px
+  border-bottom: 1px solid #000
+  +breakpoint(sm)
+    margin-top: 4vmin
+
+.viewSkill
+  display: inline-block
+  margin-right: 10px
+  font-size: 12px
+  background: rgba(#000,0.8)
+  color: rgba(#fff,0.8)
+  padding: 4px 6px
+  border-radius: 2px
+
+.viewTime,.viewTag,.viewDes
+  line-height: 1.7
   letter-spacing: 2px
   font-size: 14px
   +breakpoint(sm)
     font-size: 3.25vmin
     line-height: 2
   span 
-    font-weight: bold
     letter-spacing: 1px
     font-size: 16px
     +breakpoint(sm)
@@ -259,15 +297,16 @@ export default {
   color: #013B63
   font-weight: bold
   +breakpoint(sm)
-    font-size: 4vmin
+    font-size: 3.5vmin
 
 .viewTime
+  margin-top: 10px
   +breakpoint(sm)
     margin-right: 6vmin
 
 .viewTitle
   margin-bottom: 30px
-  letter-spacing: 4px
+  letter-spacing: 2px
   +breakpoint(sm)
     margin: 4vmin auto
     text-align: center
@@ -294,21 +333,31 @@ export default {
     +setFlex
     min-height: 132vmin
 
+@keyframes delayBlurIn
+  0%
+    opacity: 1
+    filter: blur(0)
+  100%
+    opacity: 0
+    filter: blur(10px)
+
 .viewContent
   +size(52%,100%)
   position: relative
-  transition: 0.7s 0.5s
+  transition: 2s
   +breakpoint(sm)
     width: 90%
   &.switch
     opacity: 0
-
-.viewDes
-  line-height: 1.25
+    filter: blur(2px)
+    > div
+        @for $i from 1 through 6
+          &:nth-of-type(#{$i})
+            animation: delayBlurIn both 0.4s $i * 0.2s
 
 .viewOverlayClose
   letter-spacing: 2px
-  font-size: 14px
+  font-size: 12px
   position: absolute
   bottom: 0
   right: 0

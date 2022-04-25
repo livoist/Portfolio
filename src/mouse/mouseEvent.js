@@ -46,7 +46,8 @@ export default class MouseCursor {
       'A', 'BUTTON', 'IMG',
       'gridItem', 'fullViewNext',
       'fullViewClose', 'viewOverlayClose',
-      'anMaterial', 'flexBox'
+      'anMaterial', 'flexBox',
+      'preBtn', 'nextBtn'
     ]
 
     const cursorNoneMap = [

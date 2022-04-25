@@ -27,8 +27,10 @@
       font-size: 12px
 
 .social-bar
-  padding-top: 50px
+  margin: 50px auto
   display: inline-block
+  +breakpoint(sm)
+    margin: 12vmin auto 14vmin
   a.fab
     display: inline-block
     color: rgba(0, 0, 0, 0.6)
@@ -46,8 +48,7 @@
       position: relative
       transition: 0.3s
 
-.footer
-  margin-top: 100px
-
 .copyright
   text-align: center
+  +breakpoint(sm)
+    margin-bottom: 3vmin
