@@ -7,7 +7,7 @@
   "contact-des": "Hi I'm Ben I'm a FrontEnd Developer",
   "contact-title": "CONTACT",
   "contact-skill-title": "Skills",
-  "contact-skills": "JavaScript / Vue.js(Vuex) / Nuxt.js(Vue SSR Framework) / HTML5(pug) / CSS3(SCSS/SASS) / RWD / Git Flow / Docker / Canvas / SVG / GSAP(TweenMax) / Bootstrap / JQuery",
+  "contact-skills": "JavaScript / TypeScript / Vue.js(2 and 3) / StateManager(vuex、pinia) / Vite / Nuxt.js(Vue SSR Framework) / HTML5(pug) / CSS3(SCSS/SASS) / RWD / Git Flow / Docker / Canvas / SVG / GSAP(TweenMax) / Bootstrap / JQuery",
   "contact-learning": "Learning ( Three.js、UI/UX concept、WebGL and more... )",
   "contact-info-title": "Information",
   "contact-email": "Email : waterblue104@gmail.com",

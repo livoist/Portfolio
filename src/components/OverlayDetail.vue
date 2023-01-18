@@ -14,10 +14,10 @@
             path(d='M23.1 46.2l2.8-2.7L5.5 23.1 25.9 2.7 23.1 0 0 23.1l23.1 23.1z')
 
       .viewContentGroup
-        .viewContentImage
+        .viewContentImage(ref="detailImg" :class="{ 'switch': isSwitch }")
           img(:src="require(`@img/portfolio${curId}.png`)" :class="{ 'switch': isSwitch }")
 
-        .viewContent(:class="{ 'switch': isSwitch }")
+        .viewContent(ref="detailContent" :class="{ 'switch': isSwitch }")
           .viewTitle.fz-36 {{ getCurViewContent.name }}
           .skillContainer
             .skillBox
@@ -42,11 +42,13 @@
 
 <script>
 import { mapState } from 'vuex'
+import { TimelineMax, Linear } from 'gsap'
 
 export default {
   name: 'OverlayView',
   data() {
     return {
+      detailTimeline: "",
       curId: 0,
       isSwitch: false
     }
@@ -78,12 +80,21 @@ export default {
           this.curId = val
         }
       }
+    },
+    isFullView: {
+      immediate: true,
+      handler(val) {
+        if (val) {
+          this.detailInAnim()
+        }
+      }
     }
   },
   methods: {
     async closeView(bool) {
       await this.$store.dispatch('setGridTimelineState', bool)
       await this.$store.dispatch('overlayOut', true)
+      this.detailInAnimReverse()
 
       setTimeout(() => {
         this.$store.dispatch('setFullViewState', false)
@@ -126,6 +137,24 @@ export default {
           }
         }
       }
+    },
+    detailInAnim() {
+      this.detailTimeline = new TimelineMax()
+
+      this.detailTimeline
+        .to(this.$refs.detailImg, 1.25, {
+          ease: Linear.easeIn,
+          opacity: 1,
+          x: '0%'
+        })
+        .to(this.$refs.detailContent, 0.65, {
+          ease: Linear.easeIn,
+          opacity: 1,
+          x: '0%'
+        })
+    },
+    detailInAnimReverse() {
+      this.detailTimeline.reverse()
     }
   }
 }
@@ -172,6 +201,8 @@ export default {
     visibility: visible
 
 .viewContentImage
+  opacity: 0
+  transform: translateX(-1.5%)
   // +size(300px)
   +size(500px,320px)
   background-size: cover
@@ -342,18 +373,20 @@ export default {
     filter: blur(10px)
 
 .viewContent
+  opacity: 0
+  transform: translateX(-1%)
   +size(52%,100%)
   position: relative
-  transition: 2s
   +breakpoint(sm)
     width: 90%
   &.switch
     opacity: 0
     filter: blur(2px)
-    > div
-        @for $i from 1 through 6
-          &:nth-of-type(#{$i})
-            animation: delayBlurIn both 0.4s $i * 0.2s
+    transition: 1.5s
+    animation: delayBlurIn both 0.25s 2s
+        // @for $i from 1 through 6
+        //   &:nth-of-type(#{$i})
+        //     animation: delayBlurIn both 0.4s $i * 0.2s
 
 .viewOverlayClose
   letter-spacing: 2px

@@ -153,7 +153,7 @@ $mb-grid-items: ("a" "2 / 1 / 4 / 7", "b" "4 / 7 / 6 / 13", "c" "6 / 1 / 8 / 7",
     background: rgba(#000,0.95)
     +setFlex
     letter-spacing: 4px
-    font-size: 22px
+    font-size: 14px
     transition: 0.3s
     color: #fff
     +breakpoint(sm)
@@ -163,25 +163,25 @@ $mb-grid-items: ("a" "2 / 1 / 4 / 7", "b" "4 / 7 / 6 / 13", "c" "6 / 1 / 8 / 7",
     &:hover:after
       opacity: 0
   &.portfolio0
-    grid-area: 1 / 2 / 5 / 8
+    grid-area: 2 / 4 / 5 / 8
     +breakpoint(sm)
       grid-area: 2 / 1 / 4 / 7
     &:after
       content: 'BikeMap'
   &.portfolio1
-    grid-area: 5 / 3 / 12 / 9
+    grid-area: 5 / 4 / 8 / 8
     +breakpoint(sm)
       grid-area: 4 / 7 / 6 / 13
     &:after
       content: 'RandomWorld'
   &.portfolio2
-    grid-area: 5 / 14 / 12 / 9
+    grid-area: 5 / 8 / 8 / 12
     +breakpoint(sm)
         grid-area: 6 / 1 / 8 / 7
     &:after
       content: 'ColorDove'
   &.portfolio3
-    grid-area: 5 / 13 / 1 / 8
+    grid-area: 5 / 12 / 2 / 8
     +breakpoint(sm)
       grid-area: 8 / 7 / 13 / 13
     &:after
