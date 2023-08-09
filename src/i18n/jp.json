@@ -7,10 +7,10 @@
   "contact-des": "私が最初に会ったとき、私はクラスとWebエンジニアでした",
   "contact-title": "お問い合わせ方法",
   "contact-skill-title": "スキル",
-  "contact-skills": "JavaScript / Vue.js(Vuex) / HTML5(pug) / CSS3(SCSS/SASS) / RWD / Git Flow / Canvas / SVG / GSAP(TweenMax) / Bootstrap / JQuery",
-  "contact-learning": "学ぶ ( Three.js、UI/UX concept、WebGL and more... )",
+  "contact-skills": "JavaScript / TypeScript / Vue.js(2 and 3) / StateManager(Vuex、Pinia) / Vite / Nuxt.js(Vue SSR Framework) / HTML5(pug) / CSS(SCSS、SASS、TailwindCSS) / RWD / Docker",
+  "contact-learning": "Learning ( Canvas、SVG、GSAP(TweenMax)、Three.js、WebGL、UI/UX concept and more... )",
   "contact-info-title": "こじんじょうほう",
   "contact-email": "Eメール: waterblue104@gmail.com",
   "contact-phone": "スマホ : 0981896398",
-  "footer-des": "Copyright @ 2022 Ben All right reserved"
+  "footer-des": "Copyright @ 2023 Ben All right reserved"
 }
