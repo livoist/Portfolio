@@ -316,7 +316,7 @@ export default {
 .viewTitle
   margin-bottom: 30px
   +breakpoint(sm)
-    margin: 6vmin auto
+    margin: 5vmin auto
     text-align: center
     letter-spacing: 1px
 

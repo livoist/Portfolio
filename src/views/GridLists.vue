@@ -28,7 +28,7 @@ export default {
           tag: 'Vue Framework',
           name: 'Bike Map',
           des: 'provide bike rent、bike route search、user location of near tour information。',
-          skill: ["Nuxt.js", "PWA", "MapBox", "Pug", "Sass", "RWD"],
+          skill: ["Nuxt.js", "PWA", "MapBox", "RWD"],
           link: '/F2E-3-2/'
         },
         {
@@ -55,7 +55,7 @@ export default {
           tag: 'Algorithm',
           name: 'Dynamic Table',
           des: 'show dynamic programing process of longest common subsequence。',
-          skill: ["HTML", "CSS", "JavaScript"],
+          skill: ["JavaScript"],
           link: '/DynamicTable/'
         }
       ]
