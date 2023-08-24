@@ -18,25 +18,24 @@
           img(:src="require(`@img/portfolio${curId}.png`)" :class="{ 'switch': isSwitch }")
 
         .viewContent(ref="detailContent" :class="{ 'switch': isSwitch }")
-          .viewTitle.fz-36 {{ getCurViewContent.name }}
-          .skillContainer
-            .skillBox
-              .viewSkill.fz-16(v-for="item in getCurViewContent.skill") {{ item }}
+          div
+            .viewTitle.fz-24 {{ getCurViewContent.name }}
             .slash
-          .viewTime.fz-16
-            span date: 
-            | {{ getCurViewContent.date }}
-          .viewTag.fz-16
-            span tag: 
-            | {{ getCurViewContent.tag }}
-          .viewDes.fz-16.mb-30
-            span description: 
-            | {{ getCurViewContent.des }}
-          a.viewLink(
-            :href="`https://livoist.github.io${getCurViewContent.link}`"
-            target="_blank"
-          ) Portfolio link
-          .viewOverlayClose(@click="closeView(false)" style="cursor: pointer") Close
+            .viewTime
+              span Date: 
+              | {{ getCurViewContent.date }}
+            .viewTag
+              span Tag: 
+              .viewSkillTag(v-for="item in getCurViewContent.skill") {{ item }}
+            .viewDes.mb-30
+              span Description: 
+              | {{ getCurViewContent.des }}
+          div
+            a.viewLink(
+              :href="`https://livoist.github.io${getCurViewContent.link}`"
+              target="_blank"
+            ) More
+            .viewOverlayClose(@click="closeView(false)" style="cursor: pointer") Close
 
 </template>
 
@@ -161,10 +160,10 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.fz-36
-  font-size: 32px
+.fz-24
+  font-size: 24px
   +breakpoint(sm)
-    font-size: 6vmin
+    font-size: 4.5vmin
 
 .fz-28
   font-size: 28px
@@ -202,13 +201,9 @@ export default {
 
 .viewContentImage
   opacity: 0
-  transform: translateX(-1.5%)
-  // +size(300px)
-  +size(500px,320px)
-  background-size: cover
-  background-position: center
+  width: 38%
   +breakpoint(sm)
-    +size(100%,58vmin)
+    width: 80%
   img
     +size(100%)
     transition: 1s
@@ -301,18 +296,21 @@ export default {
   +breakpoint(sm)
     margin-top: 4vmin
 
-.viewSkill
+.viewSkillTag
   display: inline-block
   margin-right: 10px
   font-size: 12px
   background: rgba(#000,0.8)
   color: rgba(#fff,0.8)
-  padding: 4px 6px
+  padding: 0 6px
   border-radius: 2px
+  +breakpoint(sm)
+    margin-right: 1vmin
+    line-height: 1.7
 
 .viewTime,.viewTag,.viewDes
   line-height: 1.7
-  letter-spacing: 2px
+  letter-spacing: 1px
   font-size: 14px
   +breakpoint(sm)
     font-size: 3.25vmin
@@ -337,11 +335,10 @@ export default {
 
 .viewTitle
   margin-bottom: 30px
-  letter-spacing: 2px
   +breakpoint(sm)
-    margin: 4vmin auto
+    margin: 6vmin auto
     text-align: center
-    letter-spacing: 0.5vmin
+    letter-spacing: 1px
 
 .viewContentsInner
   +size(100%)
@@ -374,11 +371,12 @@ export default {
 
 .viewContent
   opacity: 0
-  transform: translateX(-1%)
-  +size(52%,100%)
+  width: 55%
   position: relative
+  display: flex
+  flex-direction: column
   +breakpoint(sm)
-    width: 90%
+    width: 80%
   &.switch
     opacity: 0
     filter: blur(2px)
@@ -395,7 +393,7 @@ export default {
   bottom: 0
   right: 0
   +breakpoint(sm)
-    font-size: 12px
+    font-size: 4vmin
     right: 50%
     bottom: -10vmin
     transform: translateX(50%)

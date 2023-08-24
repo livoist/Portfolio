@@ -4,11 +4,13 @@ div
     .gridInner
       .gridItem(
         v-for="(item, idx) in gridContents"
-        :style="{ backgroundImage: `url(${require(`@img/portfolio${item.id}.png`)})` }"
         :class="`portfolio${item.id}`"
         ref="gridItems"
         @click="getOverlayDetail(item, idx)"
       )
+        p {{ item.name }}
+        img(:src="require(`@img/portfolio${item.id}.png`)")
+
 </template>
 
 <script>
@@ -122,96 +124,80 @@ $mb-grid-items: ("a" "2 / 1 / 4 / 7", "b" "4 / 7 / 6 / 13", "c" "6 / 1 / 8 / 7",
   margin: auto
   display: grid
   grid-area: 1 / 1 / 2 / 2
-  grid-template-columns: repeat(14, 1fr)
+  grid-template-columns: repeat(17, 1fr)
   grid-template-rows: repeat(8, 1fr)
   grid-gap: 1vw
-  padding-top: 5vw
+  margin-top: 5vw
   box-sizing: border-box
   perspective: 1000px
   perspective-origin: center center
   +breakpoint(sm)
-    grid-template-columns: repeat(12, 1fr)
-    // grid-template-rows: repeat(24, 1fr)
-  +breakpoint(xs)
-    grid-gap: 4vw
+    grid-gap: 7vw
+    margin-top: 20vw
+    height: auto
+    grid-template-columns: repeat(8, 1fr)
+    grid-template-rows: repeat(4, 1fr)
 
 .gridItem
   position: relative
-  background-size: cover
-  background-position: center
   opacity: 0
-  // filter: brightness(0.3)
   transform: translate3d(0, 0, 0px)
   will-change: transform
-  cursor: pointer
-  &:after
-    position: absolute
-    left: 50%
-    top: 50%
-    +size(100%)
-    transform: translate(-50%,-50%)
-    background: rgba(#000,0.95)
-    +setFlex
-    letter-spacing: 4px
-    font-size: 14px
-    transition: 0.3s
-    color: #fff
+  > p
+    font-size: 16px
+    font-weight: 500
     +breakpoint(sm)
       font-size: 3vmin
-      letter-spacing: 2px
+      margin-bottom: 2vmin
+  > img
+    cursor: pointer
+    transition: 0.35s ease-out
+    width: 100%
   @media (min-width: 1200px)
-    &:hover:after
-      opacity: 0
+    &:hover > img
+      transform: scale(0.98) !important
   &.portfolio0
-    grid-area: 2 / 4 / 5 / 8
+    grid-area: 2 / 2 / 2 / 6
     +breakpoint(sm)
-      grid-area: 2 / 1 / 4 / 7
-    &:after
-      content: 'BikeMap'
+      grid-area: 1 / 1 / 1 / 7
   &.portfolio1
-    grid-area: 5 / 4 / 8 / 8
+    grid-area: 5 / 6 / 5 / 10
     +breakpoint(sm)
-      grid-area: 4 / 7 / 6 / 13
-    &:after
-      content: 'RandomWorld'
+      grid-area: 2 / 3 / 2 / 9
   &.portfolio2
-    grid-area: 5 / 8 / 8 / 12
+    grid-area: 5 / 14 / 5 / 18
     +breakpoint(sm)
-        grid-area: 6 / 1 / 8 / 7
-    &:after
-      content: 'ColorDove'
+        grid-area: 3 / 1 / 3 / 7
   &.portfolio3
-    grid-area: 5 / 12 / 2 / 8
+    grid-area: 2 / 10 / 2 / 14
     +breakpoint(sm)
-      grid-area: 8 / 7 / 13 / 13
-    &:after
-      content: 'DynamicTable'
-  &.a
-    grid-area: 2 / 1 / 6 / 5
-  &.b
-    grid-area: 6 / 2 / 9 / 5
-  &.c
-    grid-area: 3 / 4 / 7 / 8
-  &.d
-    grid-area: 1 / 8 / 4 / 10
-  &.e
-    grid-area: 4 / 11 / 7 / 15
-  &.f
-    grid-area: 7 / 10 / 9 / 14
-  &.g
-    grid-area: 6 / 7 / 8 / 10
-  &.h
-    grid-area: 1 / 5 / 3 / 8
-  &.i
-    grid-area: 2 / 10 / 4 / 13
-  &.j
-    grid-area: 4 / 8 / 6 / 11
-  &.k
-    grid-area: 7 / 5 / 9 / 8
+      grid-area: 4 / 3 / 4 / 9
+  // &.a
+  //   grid-area: 2 / 1 / 6 / 5
+  // &.b
+  //   grid-area: 6 / 2 / 9 / 5
+  // &.c
+  //   grid-area: 3 / 4 / 7 / 8
+  // &.d
+  //   grid-area: 1 / 8 / 4 / 10
+  // &.e
+  //   grid-area: 4 / 11 / 7 / 15
+  // &.f
+  //   grid-area: 7 / 10 / 9 / 14
+  // &.g
+  //   grid-area: 6 / 7 / 8 / 10
+  // &.h
+  //   grid-area: 1 / 5 / 3 / 8
+  // &.i
+  //   grid-area: 2 / 10 / 4 / 13
+  // &.j
+  //   grid-area: 4 / 8 / 6 / 11
+  // &.k
+  //   grid-area: 7 / 5 / 9 / 8
   // &:hover
   //   filter: brightness(1)
-  +breakpoint(sm)
-    @each $item, $grid in $mb-grid-items
-      &.#{$item}
-        grid-area: unquote($grid)
+  // +breakpoint(sm)
+  //   @each $item, $grid in $mb-grid-items
+  //     &.#{$item}
+  //       grid-area: unquote($grid)
 </style>

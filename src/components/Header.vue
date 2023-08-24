@@ -1,14 +1,11 @@
 <template lang="pug">
-  .header
-    .navbar
-      a.logo(
-        href="javascript:void('0')"
-        :class="getLogoClassList"
-      ) B
+.header
+  .navbar
+    .logo(:class="getLogoClassList") B
 
-    .choiceInfos(:class="getChoiceInfosClassList")
-      MeshLineSwitcher
-      LangSwitcher
+  .choiceInfos(:class="getChoiceInfosClassList")
+    MeshLineSwitcher
+    LangSwitcher
 
 </template>
 
