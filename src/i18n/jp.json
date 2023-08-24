@@ -12,5 +12,22 @@
   "contact-info-title": "こじんじょうほう",
   "contact-email": "Eメール: waterblue104@gmail.com",
   "contact-phone": "スマホ : 0981896398",
-  "footer-des": "Copyright @ 2023 Ben All right reserved"
+  "footer-des": "Copyright @ 2023 Ben All right reserved",
+  "preview-name-bikeMap": "サイクリングマップ",
+  "preview-name-randomWorld": "ランダムな世界",
+  "preview-name-colorsDove": "カラフルなハト",
+  "preview-name-dynamicTable": "動的プログラミング",
+  "preview-date": "日付",
+  "preview-tag": "ラベル",
+  "preview-des": "説明する",
+  "preview-des-content-bikeMap": "レンタサイクル、自転車ルート検索、ユーザーの現在地付近のツアー情報を提供します。",
+  "preview-des-content-randomWorld": "コーディングを作成する小さなプロジェクト。クリックすると形状、カラーモードを変更できます。",
+  "preview-des-content-colorsDove": "コーディングを作成する小さなプロジェクト。クリックすると鳩の色をランダムに変更できます。",
+  "preview-des-content-dynamicTable": "最長共通部分列の動的計画法を示します。",
+  "preview-more-txt": "もっと",
+  "preview-close-txt": "消す",
+  "preview-num-1": "いち",
+  "preview-num-2": "に",
+  "preview-num-3": "さん",
+  "preview-num-4": "し"
 }

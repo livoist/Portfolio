@@ -8,7 +8,7 @@
             path(d='M23.1 46.2l2.8-2.7L5.5 23.1 25.9 2.7 23.1 0 0 23.1l23.1 23.1z')
         .progressBar
           .innerBar(:style="{ width: `${getProgressBarProcess}%` }")
-          .portfolioNum {{ curId + 1 }}
+          .portfolioNum {{ $t(`preview-num-${curId + 1}`) }}
         .nextBtn(@click="switchPortfolio('next')" :class="switchButtonState")
           svg(viewBox='0 0 26 47' xmlns='http://www.w3.org/2000/svg')
             path(d='M23.1 46.2l2.8-2.7L5.5 23.1 25.9 2.7 23.1 0 0 23.1l23.1 23.1z')
@@ -19,23 +19,23 @@
 
         .viewContent(ref="detailContent" :class="{ 'switch': isSwitch }")
           div
-            .viewTitle.fz-24 {{ getCurViewContent.name }}
+            .viewTitle.fz-24 {{ $t(`preview-name-${getCurViewContent.i18Tag}`) }}
             .slash
             .viewTime
-              span Date: 
+              span {{ $t('preview-date') }}:  
               | {{ getCurViewContent.date }}
             .viewTag
-              span Tag: 
+              span {{ $t("preview-tag") }}:  
               .viewSkillTag(v-for="item in getCurViewContent.skill") {{ item }}
             .viewDes.mb-30
-              span Description: 
-              | {{ getCurViewContent.des }}
+              span {{ $t("preview-des") }}: 
+              | {{ $t(`preview-des-content-${getCurViewContent.i18Tag}`) }}
           div.linkGroup
             a.viewLink(
               :href="`https://livoist.github.io${getCurViewContent.link}`"
               target="_blank"
-            ) More
-            .viewOverlayClose(@click="closeView(false)" style="cursor: pointer") Close
+            ) {{ $t('preview-more-txt') }}
+            .viewOverlayClose(@click="closeView(false)" style="cursor: pointer") {{ $t('preview-close-txt') }}
 
 </template>
 

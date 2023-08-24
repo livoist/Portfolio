@@ -12,5 +12,22 @@
   "contact-info-title": "Information",
   "contact-email": "Email : waterblue104@gmail.com",
   "contact-phone": "Phone : 0981896398",
-  "footer-des": "Copyright @ 2023 Ben All right reserved"
+  "footer-des": "Copyright @ 2023 Ben All right reserved",
+  "preview-name-bikeMap": "Bike Map",
+  "preview-name-randomWorld": "Random World",
+  "preview-name-colorsDove": "Colors Dove",
+  "preview-name-dynamicTable": "Dynamic Table",
+  "preview-date": "Date",
+  "preview-tag": "Tag",
+  "preview-des": "Description",
+  "preview-des-content-bikeMap": "provide bike rent、bike route search、user location on near tour information.",
+  "preview-des-content-randomWorld": "small project of crearing coding. click can change shape、color mode.",
+  "preview-des-content-colorsDove": "small project of creating coding. click can random change dove color.",
+  "preview-des-content-dynamicTable": "show dynamic programing process of longest common subsequence.",
+  "preview-more-txt": "More",
+  "preview-close-txt": "Close",
+  "preview-num-1": "1",
+  "preview-num-2": "2",
+  "preview-num-3": "3",
+  "preview-num-4": "4"
 }

@@ -8,7 +8,7 @@ div
         ref="gridItems"
         @click="getOverlayDetail(item, idx)"
       )
-        p {{ item.name }}
+        p {{ $t(`preview-name-${item.i18Tag}`) }}
         img(:src="require(`@img/portfolio${item.id}.png`)")
 
 </template>
@@ -25,38 +25,30 @@ export default {
         {
           id: 0,
           date: '2021-2022',
-          tag: 'Vue Framework',
-          name: 'Bike Map',
-          des: 'provide bike rent、bike route search、user location of near tour information。',
           skill: ["Nuxt.js", "PWA", "MapBox", "RWD"],
-          link: '/F2E-3-2/'
+          link: '/F2E-3-2/',
+          i18Tag: "bikeMap"
         },
         {
           id: 1,
           date: '2021-2022',
-          tag: 'Creating Coding',
-          name: 'Random World',
-          des: 'small project of crearing coding，click can change shape、color mode，have fun!',
           skill: ["p5.js"],
-          link: '/codeArt-1/'
+          link: '/codeArt-1/',
+          i18Tag: "randomWorld"
         },
         {
           id: 2,
           date: '2021-2022',
-          tag: 'Creating Coding',
-          name: 'Colors Dove',
-          des: 'small project of creating coding，click can random change dove color，have fun!',
           skill: ["p5.js"],
-          link: '/codeArt-2/'
+          link: '/codeArt-2/',
+          i18Tag: "colorsDove"
         },
         {
           id: 3,
           date: '2021-2022',
-          tag: 'Algorithm',
-          name: 'Dynamic Table',
-          des: 'show dynamic programing process of longest common subsequence。',
           skill: ["JavaScript"],
-          link: '/DynamicTable/'
+          link: '/DynamicTable/',
+          i18Tag: "dynamicTable"
         }
       ]
     }
