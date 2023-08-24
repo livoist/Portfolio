@@ -30,7 +30,7 @@
             .viewDes.mb-30
               span Description: 
               | {{ getCurViewContent.des }}
-          div
+          div.linkGroup
             a.viewLink(
               :href="`https://livoist.github.io${getCurViewContent.link}`"
               target="_blank"
@@ -165,25 +165,10 @@ export default {
   +breakpoint(sm)
     font-size: 4.5vmin
 
-.fz-28
-  font-size: 28px
-  +breakpoint(sm)
-    font-size: 7vmin
-
-.fz-20
-  font-size: 16px
-  +breakpoint(sm)
-    font-size: 3.75vmin
-
 .mb-30
   margin-bottom: 30px
   +breakpoint(sm)
     margin-bottom: 5vmin
-
-.mb-10
-  margin-bottom: 10px
-  +breakpoint(sm)
-    margin-bottom: 2vmin
 
 .m-flex
   +breakpoint(sm)
@@ -215,7 +200,6 @@ export default {
   display: flex
   justify-content: space-between
   flex-direction: column
-  // max-width: 700px
   max-width: 1200px
   width: 100%
   +breakpoint(sm)
@@ -285,10 +269,6 @@ export default {
       left: -600%
       transform: translateY(-50%) rotate(-180deg)
 
-.skillBox
-  +breakpoint(sm)
-    +setFlex
-
 .slash
   width: 100%
   margin-top: 20px
@@ -357,9 +337,8 @@ export default {
 .viewContentGroup
   +setFlex(space-between,flex-start)
   +breakpoint(sm)
-    flex-direction: column
     +setFlex
-    min-height: 132vmin
+    flex-direction: column
 
 @keyframes delayBlurIn
   0%
@@ -385,17 +364,15 @@ export default {
         // @for $i from 1 through 6
         //   &:nth-of-type(#{$i})
         //     animation: delayBlurIn both 0.4s $i * 0.2s
+  .linkGroup
+    display: flex
+    justify-content: space-between
+    align-items: center
 
 .viewOverlayClose
   letter-spacing: 2px
   font-size: 12px
-  position: absolute
-  bottom: 0
-  right: 0
   +breakpoint(sm)
-    font-size: 4vmin
-    right: 50%
-    bottom: -10vmin
-    transform: translateX(50%)
+    font-size: 3.5vmin
 
 </style>
