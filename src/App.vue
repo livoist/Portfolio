@@ -1,98 +1,70 @@
-<template lang="pug">
-#mousemoveScope
-  .mousemoveScope__cursor__pointer
-
-  #app
-    TransitionOverlay
-
-    .switchLangTransition(
-      :class="getLangTrnsState"
-    )
-      Header
-
-      .content--second(
-        ref="secEl"
-        :class="getSecPageTrnsState"
-      )
-        GridLists
-        Contact
-
-      TransitionBlock
-
-      .content--first(
-        :class="getFstPageTrsnState"
-        ref="firstEl"
-      )
-        .content__move
-          .content__reverse
-            EnterView
-
-      OverlayDetail
-
-</template>
-
-<script>
-import { mapState } from 'vuex'
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
 import Scrollbar from 'smooth-scrollbar'
-import Mouse from '@/mouse/mouseEvent.js'
-import {
-  Header,
-  Contact,
-  TransitionBlock,
-  TransitionOverlay,
-  OverlayDetail
-} from '@c'
-import { GridLists, EnterView } from '@/views'
-import '@css'
+import Mouse from '@/mouse/mouseEvent'
+import { Contact, Header, OverlayDetail, TransitionBlock, TransitionOverlay } from '@c'
+import { EnterView, GridLists } from '@/views'
+import { usePortfolioStore } from '@/stores/portfolio'
+import '@css/main.css'
 
-export default {
-  name: 'App',
-  components: {
-    Header,
-    EnterView,
-    GridLists,
-    Contact,
-    TransitionBlock,
-    TransitionOverlay,
-    OverlayDetail
-  },
-  mounted() {
-    this.mouseEvent()
-    this.getTransitionElems()
-    this.scrollEvent()
-  },
-  computed: {
-    ...mapState({
-      isHiddenContent: 'isReverse',
-      isFullView: 'fullView',
-      isGlbTransition: 'isGlbTransition'
-    }),
-    getLangTrnsState() {
-      return { 'transition': this.isGlbTransition }
-    },
-    getSecPageTrnsState() {
-      return {
-        'hidden': this.isFullView,
-        'ovh-auto': !this.isFullView
-      }
-    },
-    getFstPageTrsnState() {
-      return { 'content--hidden': this.isHiddenContent }
-    }
-  },
-  methods: {
-    getTransitionElems() {
-      const { firstEl, secEl } = this.$refs
-      this.$store.dispatch('setFirstEl', firstEl)
-      this.$store.dispatch('setSecEl', secEl)
-    },
-    mouseEvent() {
-      const mouseCursor = new Mouse()
-      mouseCursor.render()
-    },
-    scrollEvent() {
-      Scrollbar.init(document.querySelector('.content--second'), { damping: 0.03 })
-    }
-  }
+const store = usePortfolioStore()
+
+const firstEl = ref<HTMLElement | null>(null)
+const secEl = ref<HTMLElement | null>(null)
+
+const getLangTrnsState = computed(() => ({ transition: store.isGlbTransition }))
+const getSecPageTrnsState = computed(() => ({ hidden: store.fullView, 'ovh-auto': !store.fullView }))
+const getFstPageTrsnState = computed(() => ({ 'content--hidden': store.isReverse }))
+
+function getTransitionElems() {
+  store.setFirstEl(firstEl.value)
+  store.setSecEl(secEl.value)
 }
+
+function mouseEvent() {
+  const mouseCursor = new Mouse()
+  mouseCursor.render()
+}
+
+function scrollEvent() {
+  const secondPage = document.querySelector<HTMLElement>('.content--second')
+  if (secondPage) Scrollbar.init(secondPage, { damping: 0.03 })
+}
+
+onMounted(() => {
+  mouseEvent()
+  getTransitionElems()
+  scrollEvent()
+})
 </script>
+
+<template>
+  <div id="mousemoveScope">
+    <div class="mousemoveScope__cursor__pointer"></div>
+
+    <div id="app">
+      <TransitionOverlay />
+
+      <div class="switchLangTransition" :class="getLangTrnsState">
+        <Header />
+
+        <div class="content--second" ref="secEl" :class="getSecPageTrnsState">
+          <GridLists />
+          <Contact />
+        </div>
+
+        <TransitionBlock />
+
+        <div class="content--first" :class="getFstPageTrsnState" ref="firstEl">
+          <div class="content__move">
+            <div class="content__reverse">
+              <EnterView />
+            </div>
+          </div>
+        </div>
+
+        <OverlayDetail />
+      </div>
+    </div>
+  </div>
+</template>

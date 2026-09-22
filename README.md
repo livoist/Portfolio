@@ -1,31 +1,52 @@
-# 作品集展示網頁
+# 作品集展示網頁（Vue 3 + Vite）
+
+個人作品集網站，Vue 3 + TypeScript 重寫版本（原始 Vue 2 版本見上層目錄）。單頁式應用，大量使用 GSAP 時間軸、Three.js（three.meshline）動態線條背景，以及自訂的頁面旋轉過場效果。
 
 ## 使用技術
-```
-Vue2.js / Vuex / Sass / GSAP / Three.js / Sass / 以及其他頁面效果輔助套件(charming text、meshline3D、rotateLayout)
+
+- Vue 3（`<script setup>`）+ TypeScript
+- Vite
+- Pinia（狀態管理）
+- GSAP（動畫時間軸）
+- Three.js + three.meshline（背景 3D 線條動畫）
+- vue-i18n（英 / 日語言切換）
+- smooth-scrollbar
+- charming（逐字文字動畫）
+- FontAwesome
+
+## 開發
+
+```bash
+npm install
+npm run dev       # 啟動開發伺服器（HMR），預設 http://localhost:5173
+npm run build     # TypeScript 型別檢查 + 打包到 dist/
+npm run preview   # 本機預覽 build 後的成果
 ```
 
-## 載入動畫頁
-```
-關鍵字：進入提示動畫、滑鼠追蹤轉換、語言切換。
-包含進入網站的提示以及動畫、滑鼠的追蹤以及效果，以及提供語言的切換(英、日語)。
-```
-![image](https://github.com/user-attachments/assets/1e3b518d-936c-48a2-97b9-b5f7d90b3c41)
+## 專案結構
 
-## 進入頁
-```
-關鍵字：語言切換、3D line、3D line顏色切換、滑鼠追蹤、進入展示頁面的動畫過渡。
-進入頁提供語言切換、背景中的3D line的顏色配色切換以及滑鼠游標的追蹤轉換，還有進入展示頁面的動畫過渡。
-```
-![image](https://github.com/user-attachments/assets/80f88d1e-1a56-45e4-9a5c-132509555e34)
+這是單頁應用，沒有使用 vue-router；「進入頁」（`EnterView`）與「作品展示頁」（`GridLists`）是靠 Pinia store 狀態切換的兩個區塊，而不是路由頁面。
 
-## 主頁(作品展示頁)
-```
-關鍵字：返回動畫、作品細節展示、個人資料呈現
-主頁的部分提供了作品集的展示、細節的過渡動畫、返回進入頁的動畫以及個人資訊相關內容。
-```
-![image](https://github.com/user-attachments/assets/39549955-c8af-418f-b521-4c98fe99d2c9)
-![image](https://github.com/user-attachments/assets/dd7a8e08-4740-4664-9138-402ca8700cfd)
-![image](https://github.com/user-attachments/assets/665e7285-ee75-445b-9491-846549c226cb)
+路徑別名（見 `vite.config.ts`）：
 
+| 別名   | 指向                  |
+| ------ | --------------------- |
+| `@`    | `src`                 |
+| `@c`   | `src/components`      |
+| `@css` | `src/assets/style`    |
+| `@img` | `src/assets/img`      |
 
+其他重點目錄：
+
+- `src/meshAn/` — 自製的輕量 Three.js render engine，負責背景動態線條動畫。
+- `src/rotateLayout/` — 面板旋轉過場效果（`Revealer`/`RotateLayout`）。
+- `src/mouse/` — 自訂滑鼠游標追蹤效果（僅在寬度 > 1024px 啟用）。
+- `src/stores/portfolio.ts` — 集中管理跨元件的動畫狀態，例如目前顯示頁、語言、3D 線條配色、作品明細開關等。
+
+## 功能特色
+
+- 進場載入動畫、語言切換（英 / 日）
+- 背景 3D 線條動畫與配色切換
+- 滑鼠游標追蹤效果（桌面版）
+- 作品集網格展示，點擊可查看細節（含上一個 / 下一個切換）
+- 進場、返回主頁的動畫過場效果

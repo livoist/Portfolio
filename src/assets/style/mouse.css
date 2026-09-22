@@ -1,0 +1,62 @@
+#mousemoveScope {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  z-index: 999;
+}
+
+.mousemoveScope__cursor__pointer {
+  width: 56px;
+  height: 56px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  z-index: 100;
+  pointer-events: none;
+}
+@media only screen and (max-width: 996px) {
+  .mousemoveScope__cursor__pointer {
+    display: none;
+  }
+}
+.mousemoveScope__cursor__pointer::before, .mousemoveScope__cursor__pointer::after {
+  content: '';
+  border-radius: 50%;
+}
+.mousemoveScope__cursor__pointer::before {
+  width: 60%;
+  height: 60%;
+  position: absolute;
+  top: -35%;
+  left: -35%;
+  z-index: 0;
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: 2px solid #424040;
+}
+.mousemoveScope__cursor__pointer::after {
+  width: 80%;
+  height: 80%;
+  position: absolute;
+  top: -40%;
+  left: -40%;
+  z-index: 0;
+  line-height: 1.5;
+  transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.normalCursor .mousemoveScope__cursor__pointer::before {
+  opacity: 0.6;
+  background-color: #424040;
+  transform: scale(1.3);
+}
+
+.changeCursorZindex .mousemoveScope__cursor__pointer {
+  z-index: 0;
+}
+
+.customCursorNone .mousemoveScope__cursor__pointer:before,
+.customCursorNone .mousemoveScope__cursor__pointer:after {
+  opacity: 0;
+  visibility: hidden;
+}

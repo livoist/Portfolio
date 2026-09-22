@@ -1,211 +1,419 @@
-<template lang="pug">
-.preloadingAn(
-  :class="[{ 'enter': loadingAnStep1 }, { 'event-none': isEventNone }]"
-)
-  .preloadingText(:class="{ 'enter': loadingAnStep1 }") {{ $t('loading-des') }}
-  a.anMaterial(:class="{ 'enter': loadingAnStep2 }")
-    span(@click="startLoadingAn") {{ $t('loading-btn') }}
-    .line(v-for="n in 4")
+<script setup lang="ts">
+import { ref } from 'vue'
+import { usePortfolioStore } from '@/stores/portfolio'
 
-  .anMaterial2(:class="{ 'enter': loadingAnStep1 }")
-    span(:class="{ 'start': loadingAnStep2 }" v-for="n in 12")
+const store = usePortfolioStore()
 
-</template>
+const emit = defineEmits<{
+  step1State: [value: boolean]
+  step2State: [value: boolean]
+}>()
 
-<script>
-export default {
-  name: 'LoadingPage',
-  data() {
-    return {
-      loadingAnStep1: false,
-      loadingAnStep2: false,
-      isEventNone: false
-    }
-  },
-  methods: {
-    async startLoadingAn() {
-      this.isEventNone = true
-      this.loadingAnStep2 = true
-      this.$emit('step2State', this.loadingAnStep2)
-      await this.$store.dispatch('setLoagingPageState', false)
-      setTimeout(() => {
-        this.loadingAnStep1 = true
-        this.$emit('step1State', this.loadingAnStep1)
-      }, 2000)
-    },
-  }
+const loadingAnStep1 = ref(false)
+const loadingAnStep2 = ref(false)
+const isEventNone = ref(false)
+
+async function startLoadingAn() {
+  isEventNone.value = true
+  loadingAnStep2.value = true
+  emit('step2State', loadingAnStep2.value)
+  store.setLoadingPageState(false)
+  setTimeout(() => {
+    loadingAnStep1.value = true
+    emit('step1State', loadingAnStep1.value)
+  }, 2000)
 }
 </script>
 
-<style lang="sass" scoped>
-@keyframes materialNoneAn
-  0%
-    opacity: 1
-    z-index: 100
-  100%
-    opacity: 0
-    z-index: -1
+<template>
+  <div class="preloadingAn" :class="[{ enter: loadingAnStep1 }, { 'event-none': isEventNone }]">
+    <div class="preloadingText" :class="{ enter: loadingAnStep1 }">{{ $t('loading-des') }}</div>
+    <a class="anMaterial" :class="{ enter: loadingAnStep2 }">
+      <span @click="startLoadingAn">{{ $t('loading-btn') }}</span>
+      <div class="line" v-for="n in 4" :key="n"></div>
+    </a>
 
-@keyframes changeText
-  0%
-    color: #efecea
-  100%
-    color: #000
+    <div class="anMaterial2" :class="{ enter: loadingAnStep1 }">
+      <span :class="{ start: loadingAnStep2 }" v-for="n in 12" :key="n"></span>
+    </div>
+  </div>
+</template>
 
-@keyframes changeBg
-  0%
-    background: #000
-  100%
-    background: #efecea
+<style scoped>
+@keyframes materialNoneAn {
+  0% {
+    opacity: 1;
+    z-index: 100;
+  }
+  100% {
+    opacity: 0;
+    z-index: -1;
+  }
+}
 
-@keyframes changeRectColor
-  0%
-    transform: translateX(-50%) rotate(315deg)
-    border-color: #efecea
-    color: #efecea
-  100%
-    transform: translateX(-50%) rotate(315deg)
-    border-color: #000
-    color: #000
+@keyframes changeText {
+  0% {
+    color: #efecea;
+  }
+  100% {
+    color: #000;
+  }
+}
 
-@keyframes rotateRect1
-  0%
-    transform: translateX(-50%) rotate(0deg)
-  33%
-    transform: translateX(-50%) rotate
-  66%
-    transform: translateX(-50%) rotate
-  95%,100%
-    transform: translateX(-50%) rotate(315deg)
+@keyframes changeBg {
+  0% {
+    background: #000;
+  }
+  100% {
+    background: #efecea;
+  }
+}
 
-@keyframes rotateRect2
-  0%
-    transform: translateX(-50%) rotate(0deg)
-  33%
-    transform: translateX(-50%) rotate
-  66%
-    transform: translateX(-50%) rotate
-  95%,100%
-    transform: translateX(-50%) rotate(-315deg)
+@keyframes changeRectColor {
+  0% {
+    transform: translateX(-50%) rotate(315deg);
+    border-color: #efecea;
+    color: #efecea;
+  }
+  100% {
+    transform: translateX(-50%) rotate(315deg);
+    border-color: #000;
+    color: #000;
+  }
+}
 
-@keyframes delayShow
-  0%
-    opacity: 0
-    pointer-events: none
-  100%
-    opacity: 1
-    cursor: pointer
+@keyframes rotateRect1 {
+  0% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  33% {
+    transform: translateX(-50%) rotate();
+  }
+  66% {
+    transform: translateX(-50%) rotate();
+  }
+  95%,
+  100% {
+    transform: translateX(-50%) rotate(315deg);
+  }
+}
 
-.preloadingAn
-  +size(100vw,100vh)
-  position: absolute
-  z-index: 100
-  background: #000
-  &.enter
-    animation: changeBg 1s 0.5s both, materialNoneAn 2s 2.5s both
-  &.event-none .anMaterial, .anMaterial2
-    pointer-events: none
-  .preloadingText
-    +setPosAbs(50%,null,null,50%)
-    color: #efecea
-    font-size: 18px
-    transform: translate(-50%,-50%)
-    width: 100%
-    text-align: center
-    letter-spacing: 4px
-    +breakpoint(sm)
-      font-size: 3vmin
-      top: 43%
-    &.enter
-      animation: changeText 1s 0.5s both, materialNoneAn 1.5s 1.5s both
-  .anMaterial
-    +size(50px)
-    +setPosAbs(55%,null,null,50%)
-    transform: translate(-50%,-50%)
-    color: #efecea
-    +breakpoint(sm)
-      top: 50%
-      transform: translate(-50%,-50%) scale(0.8)
-    &.enter
-      animation: materialNoneAn 0.5s both
-      &:before,&:after
-        animation: changeRectColor 0.5s both
-    .line
-      +setPosAbs(60%,null,null,50%)
-      transform: translate(-50%,-50%)
-      box-sizing: border-box
-      +size(100%)
-      border: 1px solid #efecea
-      @for $i from 1 through 4
-        &:nth-of-type(#{$i})
-          @if $i == 1
-            animation: rotateRect1 5s both
-          @if $i == 2
-            animation: rotateRect2 5s both
-          @if $i == 3 or $i == 4
-            display: none
+@keyframes rotateRect2 {
+  0% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  33% {
+    transform: translateX(-50%) rotate();
+  }
+  66% {
+    transform: translateX(-50%) rotate();
+  }
+  95%,
+  100% {
+    transform: translateX(-50%) rotate(-315deg);
+  }
+}
 
-    span
-      display: inline-block
-      +setFlex
-      +size(100%)
-      +setPosAbs(110%,null,null,50%,300)
-      font-size: 12px
-      transform: translate(-50%,-50%) rotate3d(0,0,0,0)
-      animation: delayShow 1.25s 4.5s both
+@keyframes delayShow {
+  0% {
+    opacity: 0;
+    pointer-events: none;
+  }
+  100% {
+    opacity: 1;
+    cursor: pointer;
+  }
+}
 
-  .anMaterial2
-    +setPosAbs(58.5%,null,null,50%,200)
-    transform: translate(-50%,-50%)
-    +size(50px)
-    pointer-events: none
-    &.enter
-      animation: materialNoneAn 1.5s 1.5s both
-    +breakpoint(sm)
-      top: 54%
-      transform: translate(-50%,-50%) scale(0.8)
+@keyframes colorfulRotate1 {
+  0% {
+    background: transparent;
+  }
+  5% {
+    background: #000;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    background: #000;
+    transform: translate(-50%, -50%) rotate(22.5deg);
+  }
+}
+@keyframes colorfulRotate2 {
+  0% {
+    background: transparent;
+  }
+  5% {
+    background: #efecea;
+    transform: translate(-50%, -50%) rotate(22.5deg);
+  }
+  100% {
+    background: #efecea;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+}
+@keyframes colorfulRotate3 {
+  0% {
+    background: transparent;
+  }
+  5% {
+    background: #000;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  100% {
+    background: #000;
+    transform: translate(-50%, -50%) rotate(67.5deg);
+  }
+}
+@keyframes colorfulRotate4 {
+  0% {
+    background: transparent;
+  }
+  5% {
+    background: #efecea;
+    transform: translate(-50%, -50%) rotate(67.5deg);
+  }
+  100% {
+    background: #efecea;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+}
+@keyframes colorfulRotate5 {
+  0% {
+    background: transparent;
+  }
+  5% {
+    background: #000;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  100% {
+    background: #000;
+    transform: translate(-50%, -50%) rotate(112.5deg);
+  }
+}
+@keyframes colorfulRotate6 {
+  0% {
+    background: transparent;
+  }
+  5% {
+    background: #efecea;
+    transform: translate(-50%, -50%) rotate(112.5deg);
+  }
+  100% {
+    background: #efecea;
+    transform: translate(-50%, -50%) rotate(135deg);
+  }
+}
+@keyframes colorfulRotate7 {
+  0% {
+    background: transparent;
+  }
+  5% {
+    background: #000;
+    transform: translate(-50%, -50%) rotate(135deg);
+  }
+  100% {
+    background: #000;
+    transform: translate(-50%, -50%) rotate(157.5deg);
+  }
+}
 
-    // 7: #876363, 8: #414B6F, 9: #E6B6C2, 10: #D4587A, 11: #DC364C, 12: #778633
-    $colorAry: (1: #fff, 2: #EE3239, 3: #5EAA5F, 4: #FECE00, 5: #9D6AB9, 6: #FFEFA1, 7: #FFB21A)
-    $colorAry2: (1: #000, 2: #efecea, 3: #000, 4: #efecea, 5: #000, 6: #efecea, 7: #000)
-
-    span
-      +size(90%)
-      display: inline-block
-      &:before
-        content: ''
-        position: absolute
-        +size(100%)
-        left: 50%
-        top: 50%
-        background: transparent
-        transform: translate(-50%,-50%)
-        z-index: -1
-      @each $pos, $color in $colorAry2
-        @keyframes colorfulRotate#{$pos}
-          0%
-            background: transparent
-          5%
-            background: $color
-            transform: translate(-50%,-50%) rotate((($pos - 1) * 22.5deg))
-          100%
-            background: $color
-            transform: translate(-50%,-50%) rotate($pos * 22.5deg)
-        // @keyframes beforeRotate#{$pos}
-        //   0%
-        //     background: transparent
-        //   5%
-        //     background: rgba(#fff,0.2)
-        //     transform: translate(-50%,-50%) rotate((($pos - 1) * 18.5deg))
-        //   100%
-        //     background: rgba(#fff,0.2)
-        //     transform: translate(-50%,-50%) rotate($pos * 18.5deg)
-        &:nth-of-type(#{$pos})
-          +setPosAbs(50%,null,null,50%)
-          transform: translate(-50%,-50%) rotate((($pos - 1) * 22.5deg))
-          &.start
-            animation: colorfulRotate#{$pos} 0.7s #{$pos * 0.2}s both
-            // &:before
-            //   animation: beforeRotate#{$pos} 0.4s #{$pos * 0.2}s both
-
+.preloadingAn {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: 100;
+  background: #000;
+}
+.preloadingAn.enter {
+  animation: changeBg 1s 0.5s both, materialNoneAn 2s 2.5s both;
+}
+.preloadingAn.event-none .anMaterial,
+.preloadingAn .anMaterial2 {
+  pointer-events: none;
+}
+.preloadingAn .preloadingText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  color: #efecea;
+  font-size: 18px;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+  letter-spacing: 4px;
+}
+@media only screen and (max-width: 768px) {
+  .preloadingAn .preloadingText {
+    font-size: 3vmin;
+    top: 43%;
+  }
+}
+.preloadingAn .preloadingText.enter {
+  animation: changeText 1s 0.5s both, materialNoneAn 1.5s 1.5s both;
+}
+.preloadingAn .anMaterial {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  color: #efecea;
+}
+@media only screen and (max-width: 768px) {
+  .preloadingAn .anMaterial {
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+.preloadingAn .anMaterial.enter {
+  animation: materialNoneAn 0.5s both;
+}
+.preloadingAn .anMaterial.enter::before,
+.preloadingAn .anMaterial.enter::after {
+  animation: changeRectColor 0.5s both;
+}
+.preloadingAn .anMaterial .line {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #efecea;
+}
+.preloadingAn .anMaterial .line:nth-of-type(1) {
+  animation: rotateRect1 5s both;
+}
+.preloadingAn .anMaterial .line:nth-of-type(2) {
+  animation: rotateRect2 5s both;
+}
+.preloadingAn .anMaterial .line:nth-of-type(3),
+.preloadingAn .anMaterial .line:nth-of-type(4) {
+  display: none;
+}
+.preloadingAn .anMaterial span {
+  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  z-index: 300;
+  font-size: 12px;
+  transform: translate(-50%, -50%) rotate3d(0, 0, 0, 0);
+  animation: delayShow 1.25s 4.5s both;
+}
+.preloadingAn .anMaterial2 {
+  position: absolute;
+  top: 58.5%;
+  left: 50%;
+  z-index: 200;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  pointer-events: none;
+}
+.preloadingAn .anMaterial2.enter {
+  animation: materialNoneAn 1.5s 1.5s both;
+}
+@media only screen and (max-width: 768px) {
+  .preloadingAn .anMaterial2 {
+    top: 54%;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+.preloadingAn .anMaterial2 span {
+  width: 90%;
+  height: 90%;
+  display: inline-block;
+}
+.preloadingAn .anMaterial2 span::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  top: 50%;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+.preloadingAn .anMaterial2 span:nth-of-type(1) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+.preloadingAn .anMaterial2 span:nth-of-type(1).start {
+  animation: colorfulRotate1 0.7s 0.2s both;
+}
+.preloadingAn .anMaterial2 span:nth-of-type(2) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%) rotate(22.5deg);
+}
+.preloadingAn .anMaterial2 span:nth-of-type(2).start {
+  animation: colorfulRotate2 0.7s 0.4s both;
+}
+.preloadingAn .anMaterial2 span:nth-of-type(3) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.preloadingAn .anMaterial2 span:nth-of-type(3).start {
+  animation: colorfulRotate3 0.7s 0.6s both;
+}
+.preloadingAn .anMaterial2 span:nth-of-type(4) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%) rotate(67.5deg);
+}
+.preloadingAn .anMaterial2 span:nth-of-type(4).start {
+  animation: colorfulRotate4 0.7s 0.8s both;
+}
+.preloadingAn .anMaterial2 span:nth-of-type(5) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.preloadingAn .anMaterial2 span:nth-of-type(5).start {
+  animation: colorfulRotate5 0.7s 1s both;
+}
+.preloadingAn .anMaterial2 span:nth-of-type(6) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%) rotate(112.5deg);
+}
+.preloadingAn .anMaterial2 span:nth-of-type(6).start {
+  animation: colorfulRotate6 0.7s 1.2s both;
+}
+.preloadingAn .anMaterial2 span:nth-of-type(7) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%) rotate(135deg);
+}
+.preloadingAn .anMaterial2 span:nth-of-type(7).start {
+  animation: colorfulRotate7 0.7s 1.4s both;
+}
 </style>

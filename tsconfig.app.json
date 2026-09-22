@@ -1,0 +1,25 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "types": ["vite/client"],
+    "allowArbitraryExtensions": true,
+
+    /* Path aliases (kept in sync with vite.config.ts resolve.alias) */
+    "paths": {
+      "@/*": ["./src/*"],
+      "@c": ["./src/components/index.ts"],
+      "@c/*": ["./src/components/*"],
+      "@css/*": ["./src/assets/style/*"],
+      "@img": ["./src/assets/img/index.ts"],
+      "@img/*": ["./src/assets/img/*"]
+    },
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+}

@@ -1,0 +1,146 @@
+@import './reset.css';
+@import './mouse.css';
+@import './rotate.css';
+@import './keyframe.css';
+@import './contact.css';
+@import './header.css';
+@import './personal.css';
+
+#app {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+canvas {
+  transition: 2s;
+  transition-timing-function: ease-in-out;
+}
+canvas.tnsCanvas {
+  opacity: 0;
+}
+
+.switchLangTransition {
+  transition: opacity 0.8s ease;
+}
+.switchLangTransition.transition {
+  opacity: 0;
+}
+
+/* z-index class */
+.u-z-index_1 { z-index: 1; }
+.u-z-index_2 { z-index: 2; }
+.u-z-index_3 { z-index: 3; }
+.u-z-index_4 { z-index: 4; }
+.u-z-index_5 { z-index: 5; }
+.u-z-index_6 { z-index: 6; }
+.u-z-index_7 { z-index: 7; }
+
+.u-col-1-2 {
+  width: 100%;
+  margin: auto 0;
+  display: flex;
+}
+@media only screen and (max-width: 768px) {
+  .u-col-1-2 {
+    width: 85%;
+    margin: 0 auto;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .u-row-2-reverse {
+    display: block;
+  }
+}
+
+.u-pt-100 {
+  padding-top: 100px;
+}
+
+.u-px-30 {
+  padding: 0px 30px;
+}
+
+.u-text-center {
+  text-align: center;
+}
+
+h2 {
+  font-size: 30px;
+  font-weight: 400;
+  margin-bottom: 34px;
+  margin-top: 24px;
+  letter-spacing: 1px;
+}
+@media only screen and (max-width: 768px) {
+  h2 {
+    margin: 6vmin 0 10vmin;
+    font-size: 7vmin;
+  }
+}
+
+p {
+  font-size: 12px;
+  line-height: 26px;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+  display: block;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 100%;
+  position: relative;
+  width: 1920px;
+}
+
+.subtitle {
+  font-size: 24px;
+  font-weight: 400;
+  margin: 24px 0;
+  letter-spacing: 4px;
+}
+@media only screen and (max-width: 768px) {
+  .subtitle {
+    margin: 4.5vmin 0;
+    font-size: 5.5vmin;
+  }
+}
+
+.btn {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  margin: 0;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 42px;
+  min-width: 64px;
+  box-sizing: border-box;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-decoration: none;
+  border: 0;
+  outline: 0;
+  user-select: none;
+  transition: all 0.3s;
+}
+
+/* set smooth-scrollbar */
+.scroll-content {
+  width: 100%;
+  height: 100%;
+}
+
+/* set router fade effect */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.8s ease;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}

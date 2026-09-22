@@ -1,252 +1,248 @@
-<template lang="pug">
-#about.wrapper
-  .person.container
-    LoadingPage(@step1State="getStep1State")
-
-    .person-content(:class="{ 'transition': isGlbTransition }")
-      .en-heading(:class="{ 'show': curI18nLang === 'en'}")
-        .person-heading.c1(ref="enTitle1") More Try
-        .person-heading.c2(ref="enTitle2") More Possibility
-      .jp-heading(:class="{ 'show': curI18nLang === 'jp'}")
-        .person-heading.c1(ref="jpTitle1") より多くの探索
-        .person-heading.c2(ref="jpTitle2") より多くの可能性
-
-      a.btn.btn-enter(
-        ref="enterBtn"
-        href="javascript:void('0')"
-      ) {{ $t('home-btn') }}
-
-</template>
-
-<script>
-import { mapState } from 'vuex'
-import { TimelineMax, Quad, Quint, Expo } from 'gsap'
-import { 
-  Engine,
-  CustomLineGenerator,
-  HandleCameraOrbit,
-  FullScreenInBackground
-} from '@/meshAn'
-import RotateLayout from '@/rotateLayout/rotateLayout.js'
+<script setup lang="ts">
+import { markRaw, onMounted, ref, watch } from 'vue'
+import { Expo, Quad, Quint, TimelineMax } from 'gsap'
 import charming from 'charming'
+import { CustomLineGenerator, Engine, FullScreenInBackground, HandleCameraOrbit } from '@/meshAn'
+import RotateLayout from '@/rotateLayout/rotateLayout'
+import { usePortfolioStore } from '@/stores/portfolio'
 import { LoadingPage } from '@c'
 
-export default {
-  name: 'EnterView',
-  data () {
-    return {
-      engine: '',
-      step1State: false,
-      pageToggleTimeline: ''
-    }
-  },
-  components: {
-    LoadingPage
-  },
-  computed: {
-    ...mapState({
-      getGridItems: 'gridItems',
-      getOverlays: 'overlayElems',
-      getFirstPageEl: 'firstPageEl',
-      getSecPageEl: 'secPageEl',
-      curI18nLang: 'lang',
-      isGlbTransition: 'isGlbTransition',
-      isEnterMainPage: 'isEnterMainPage',
-      isLoadingPage: 'isLoagingPage'
-    })
-  },
-  watch: {
-    isLoadingPage: {
-      immediate: true,
-      handler(val) {
-        if (!val) {
-          setTimeout(() => {
-            this.meshLine()
-          }, 6500)
-        }
-      }
-    }
-  },
-  methods: {
-    getStep1State(val) {
-      this.step2State = val
-    },
-    enterViewTimeline() {
-      const {
-        enTitle1,
-        enTitle2,
-        jpTitle1,
-        jpTitle2,
-        textAn,
-        enterBtn
-      } = this.$refs
+const store = usePortfolioStore()
 
-      const firstPageContent1 = {
-        enTitle1: enTitle1,
-        enTitle2: enTitle2,
-        textAn: textAn,
-        enterBtn: enterBtn
-      }
+const enTitle1 = ref<HTMLElement | null>(null)
+const enTitle2 = ref<HTMLElement | null>(null)
+const jpTitle1 = ref<HTMLElement | null>(null)
+const jpTitle2 = ref<HTMLElement | null>(null)
+const enterBtn = ref<HTMLElement | null>(null)
+// NOTE: the original read `this.$refs.textAn`, but no template element ever carried
+// `ref="textAn"` — it was always undefined there too. Kept as an always-null ref so
+// the GSAP calls below stay 1:1 with the original (harmless no-op targets).
+const textAn = ref<HTMLElement | null>(null)
 
-      const firstPageContent2 = {
-        jpTitle1: jpTitle1,
-        jpTitle2: jpTitle2,
-        textAn: textAn,
-        enterBtn: enterBtn
-      }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let pageToggleTimeline: any = ''
+const step2State = ref(false)
 
-      let timelineTarget
-      this.curI18nLang === 'en'
-        ? timelineTarget = firstPageContent1
-        : timelineTarget = firstPageContent2
-
-      const randomFloat = (min, max) => parseFloat(Math.min(min + (Math.random() * (max - min)), max).toFixed(2))
-
-      const prePage = document.querySelector('.logo')
-      const nextPage = enterBtn
-
-      const overlays = []
-      const overlaysTotal = this.getOverlays.length
-      this.getOverlays.forEach((overlay, i) => overlays.push(new RotateLayout(overlay, { angle: i % 3 === 0 ? -5 : 5 })))
-
-      const enterNextPage = () => {
-        this.$store.dispatch('setEnterMaingPageState', true)
-
-        let nextPageName
-        this.curI18nLang === 'en'
-          ? nextPageName = 'Portfolio'
-          : nextPageName = 'ポートフォリオ'
-
-        this.$store.dispatch('canReverse', true)
-        this.$store.dispatch('switchTnsName', nextPageName)
-
-        const ease = Expo.easeInOut
-        const duration = 1.3
-  
-        this.pageToggleTimeline = new TimelineMax()
-          .to(timelineTarget.jobTitle1, duration, {
-              ease: ease,
-              opacity: 0,
-              y: '-100%',
-          }, 0)
-          .to(timelineTarget.jobTitle2, duration * 1.25, {
-              ease: ease,
-              opacity: 0,
-              y: '-100%',
-          }, 0)
-          .to(timelineTarget.textAn, duration, {
-              ease: ease,
-              opacity: 0,
-              y: '-100%',
-          }, 0)
-          .to(timelineTarget.enterBtn, duration * 0.6, {
-              ease: ease,
-              opacity: 0
-          }, 0)
-          .to(this.getFirstPageEl, duration, {
-              ease: ease,
-              opacity: 0
-          }, 0)
-          .fromTo(this.getGridItems, {
-            y: () => randomFloat(10, 200)
-          }, {
-            duration: 1.25,
-            ease: "Expo.easeOut",
-            y: 0,
-            opacity: 1,
-            delay: 0.85
-          })
-
-        this.getSecPageEl.classList.add('ovh-auto')
-
-        let t = 0
-        for (let i = 0; i <= overlaysTotal - 1; i++) {
-          t = 0.25 * i + 0.25
-          this.pageToggleTimeline.to(overlays[overlaysTotal - 1 - i].DOM.inner, duration, {
-            ease: ease,
-            y: '-100%'
-          }, i >= 3 ? t * 1.75 : t)
-        }
-      }
-      
-      const introPage = async () => {
-        let prePageName
-        this.curI18nLang === 'en'
-          ? prePageName = 'Visual'
-          : prePageName = 'ビジュアル'
-
-        this.$store.dispatch('canReverse', false)
-        this.$store.dispatch('switchTnsName', prePageName)
-
-        await this.pageToggleTimeline.reverse()
-        this.getSecPageEl.classList.remove('ovh-auto')
-      }
-
-      if (nextPage) nextPage.addEventListener('click', enterNextPage)
-      if (prePage) prePage.addEventListener('click', introPage)
-    },
-    meshLine() {
-      const static_props = {
-        width: 0.08, // meshLine width
-        nbrOfPoints: 4, // meshLine turn point
-      }
-
-      @FullScreenInBackground // auto background canvas
-      @HandleCameraOrbit({x: 4, y: 4}) // camera perspective
-
-      class CustomEngine extends Engine {} // init customEngine
-      const engine = new CustomEngine()
-
-      const linegenerator = new CustomLineGenerator({frequency: 0.2}, static_props)
-      linegenerator.start()
-
-      engine.add(linegenerator)
-      engine.start()
-    },
-    charmingText () {
-      const { enterBtn, enTitle1, enTitle2, jpTitle1, jpTitle2 } = this.$refs
-
-       // charming text and add span tag
-      const targetArray = [enTitle1, enTitle2, jpTitle1, jpTitle2]
-      targetArray.forEach(item => charming(item))
-
-      // select all span tag text
-      const letterAnimTargets = [
-        ...enTitle1.querySelectorAll('span'),
-        ...enTitle2.querySelectorAll('span'),
-        ...jpTitle1.querySelectorAll('span'),
-        ...jpTitle2.querySelectorAll('span')
-      ]
-
-      // random sort
-      letterAnimTargets.sort(() => Math.round(Math.random()) - 0.5)
-      // random < 0.5
-      let letters = letterAnimTargets.filter(() => Math.random() < 0.5)
-      // add EventListener func
-      const onEnterHoverFn = () => {
-        // random > 0.5
-        letters = letterAnimTargets.filter(() => Math.random() > 0.5)
-        new TimelineMax({ onComplete: () => {} })
-          .staggerTo(letters, 0.2, {
-            ease: Quad.easeIn,
-            y: '-100%',
-            opacity: 0
-          }, 0.04, 0)
-          .staggerTo(letters, 0.6, {
-            ease: Quint.easeOut,
-            startAt: { y: '55%' },
-            y: '0%',
-            opacity: 1
-          }, 0.04, 0.4)
-      }
-      // add mouseenter event on btn
-      enterBtn.addEventListener('mouseenter', onEnterHoverFn)
-    }
-  },
-  mounted () {
-    this.pageToggleTimeline = new TimelineMax()
-    this.charmingText()
-    this.enterViewTimeline()
-  }
+function getStep1State(val: boolean) {
+  // NOTE: the original assigned to `this.step2State` here (a typo for step1State) —
+  // an ad hoc property nothing else in the component reads. Preserved as-is.
+  step2State.value = val
 }
+
+watch(
+  () => store.isLoadingPage,
+  (val) => {
+    if (!val) {
+      setTimeout(() => {
+        meshLine()
+      }, 6500)
+    }
+  },
+  { immediate: true }
+)
+
+function enterViewTimeline() {
+  // NOTE: the original built two lookalike objects (`firstPageContent1`/`2`) keyed
+  // `enTitle1`/`enTitle2` vs `jpTitle1`/`jpTitle2`, then animated `timelineTarget.jobTitle1`
+  // /`.jobTitle2` below — a property neither object had, so those two `.to()` calls always
+  // animated `undefined` regardless of language. Normalized to one `titleEl1`/`titleEl2`
+  // pair per language so the title actually animates.
+  const timelineTarget =
+    store.lang === 'en'
+      ? { titleEl1: enTitle1.value, titleEl2: enTitle2.value, textAn: textAn.value, enterBtn: enterBtn.value }
+      : { titleEl1: jpTitle1.value, titleEl2: jpTitle2.value, textAn: textAn.value, enterBtn: enterBtn.value }
+
+  const randomFloat = (min: number, max: number) => parseFloat(Math.min(min + Math.random() * (max - min), max).toFixed(2))
+
+  const prePage = document.querySelector('.logo')
+  const nextPage = enterBtn.value
+
+  const overlays: RotateLayout[] = []
+  const overlaysTotal = store.overlayElems.length
+  store.overlayElems.forEach((overlay, i) => overlays.push(new RotateLayout(overlay, { angle: i % 3 === 0 ? -5 : 5 })))
+
+  const enterNextPage = () => {
+    store.setEnterMainPageState(true)
+
+    const nextPageName = store.lang === 'en' ? 'Portfolio' : 'ポートフォリオ'
+
+    store.canReverse(true)
+    store.switchTnsName(nextPageName)
+
+    const ease = Expo.easeInOut
+    const duration = 1.3
+
+    pageToggleTimeline = new TimelineMax()
+      .to(timelineTarget.titleEl1, duration, {
+        ease,
+        opacity: 0,
+        y: '-8%',
+      }, 0)
+      .to(timelineTarget.titleEl2, duration * 1.25, {
+        ease,
+        opacity: 0,
+        y: '-8%',
+      }, 0)
+      .to(timelineTarget.textAn, duration, {
+        ease,
+        opacity: 0,
+        y: '-8%',
+      }, 0)
+      .to(timelineTarget.enterBtn, duration * 0.6, {
+        ease,
+        opacity: 0,
+      }, 0)
+      .to(store.firstPageEl, duration, {
+        ease,
+        opacity: 0,
+      }, 0)
+      .fromTo(
+        store.gridItems,
+        {
+          y: () => randomFloat(10, 200),
+        },
+        {
+          duration: 1.25,
+          ease: 'Expo.easeOut',
+          y: 0,
+          opacity: 1,
+          delay: 0.85,
+        }
+      )
+
+    store.secPageEl?.classList.add('ovh-auto')
+
+    let t = 0
+    for (let i = 0; i <= overlaysTotal - 1; i++) {
+      t = 0.25 * i + 0.25
+      pageToggleTimeline.to(
+        overlays[overlaysTotal - 1 - i].DOM.inner,
+        duration,
+        {
+          ease,
+          y: '-100%',
+        },
+        i >= 3 ? t * 1.75 : t
+      )
+    }
+  }
+
+  const introPage = async () => {
+    const prePageName = store.lang === 'en' ? 'Visual' : 'ビジュアル'
+
+    store.canReverse(false)
+    store.switchTnsName(prePageName)
+
+    await pageToggleTimeline.reverse()
+    store.secPageEl?.classList.remove('ovh-auto')
+  }
+
+  if (nextPage) nextPage.addEventListener('click', enterNextPage)
+  if (prePage) prePage.addEventListener('click', introPage)
+}
+
+function meshLine() {
+  const staticProps = {
+    width: 0.08, // meshLine width
+    nbrOfPoints: 4, // meshLine turn point
+  }
+
+  // auto background canvas + camera perspective, composed the same way the original
+  // stacked `@FullScreenInBackground @HandleCameraOrbit({x:4,y:4})` class decorators.
+  // Cast to a zero-arg constructor: FullScreenInBackground/HandleCameraOrbit hardcode
+  // their own args internally (see their NOTE comments), so the public constructor
+  // really does take none, but TS widens the generic mixin chain's inferred signature.
+  const ComposedEngine = FullScreenInBackground(HandleCameraOrbit({ x: 4, y: 4 })(Engine)) as unknown as new () => Engine
+  const engine = new ComposedEngine()
+
+  const linegenerator = new CustomLineGenerator({ frequency: 0.2 }, staticProps, () => store.colorMap)
+  linegenerator.start()
+
+  engine.add(linegenerator)
+  engine.start()
+
+  // markRaw: skip wrapping the THREE.js instance in a reactive proxy — it's an
+  // imperative handle (MeshLineSwitcher.vue calls .rebuild() on it), not view state.
+  store.setLineGenerator(markRaw(linegenerator))
+}
+
+function charmingText() {
+  // charming text and add span tag
+  const targetArray = [enTitle1.value, enTitle2.value, jpTitle1.value, jpTitle2.value]
+  targetArray.forEach((item) => item && charming(item))
+
+  // select all span tag text
+  const letterAnimTargets = [
+    ...(enTitle1.value?.querySelectorAll('span') ?? []),
+    ...(enTitle2.value?.querySelectorAll('span') ?? []),
+    ...(jpTitle1.value?.querySelectorAll('span') ?? []),
+    ...(jpTitle2.value?.querySelectorAll('span') ?? []),
+  ]
+
+  // random sort
+  letterAnimTargets.sort(() => Math.round(Math.random()) - 0.5)
+  // random < 0.5
+  let letters = letterAnimTargets.filter(() => Math.random() < 0.5)
+  // add EventListener func
+  const onEnterHoverFn = () => {
+    // random > 0.5
+    letters = letterAnimTargets.filter(() => Math.random() > 0.5)
+    // NOTE: GSAP 2's `.staggerTo(targets, duration, vars, stagger, position)` no longer
+    // exists in GSAP 3 — stagger now lives inside `vars.stagger`, dropping the separate
+    // 5-argument form. Ported to the GSAP 3 signature (targets, duration, vars, position).
+    new TimelineMax({ onComplete: () => {} })
+      .staggerTo(
+        letters,
+        0.2,
+        {
+          ease: Quad.easeIn,
+          y: '-100%',
+          opacity: 0,
+          stagger: 0.04,
+        },
+        0
+      )
+      .staggerTo(
+        letters,
+        0.6,
+        {
+          ease: Quint.easeOut,
+          startAt: { y: '55%' },
+          y: '0%',
+          opacity: 1,
+          stagger: 0.04,
+        },
+        0.4
+      )
+  }
+  // add mouseenter event on btn
+  enterBtn.value?.addEventListener('mouseenter', onEnterHoverFn)
+}
+
+onMounted(() => {
+  pageToggleTimeline = new TimelineMax()
+  charmingText()
+  enterViewTimeline()
+})
 </script>
+
+<template>
+  <div id="about" class="wrapper">
+    <div class="person container">
+      <LoadingPage @step1-state="getStep1State" />
+
+      <div class="person-content" :class="{ transition: store.isGlbTransition }">
+        <div class="en-heading" :class="{ show: store.lang === 'en' }">
+          <div class="person-heading c1" ref="enTitle1">More Try</div>
+          <div class="person-heading c2" ref="enTitle2">More Possibility</div>
+        </div>
+        <div class="jp-heading" :class="{ show: store.lang === 'jp' }">
+          <div class="person-heading c1" ref="jpTitle1">より多くの探索</div>
+          <div class="person-heading c2" ref="jpTitle2">より多くの可能性</div>
+        </div>
+
+        <a class="btn btn-enter" ref="enterBtn" href="javascript:void('0')">{{ $t('home-btn') }}</a>
+      </div>
+    </div>
+  </div>
+</template>

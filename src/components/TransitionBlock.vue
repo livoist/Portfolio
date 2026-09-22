@@ -1,46 +1,44 @@
-<template lang="pug">
-div
-  .overlay(
-    v-for="n in 4"
-    :class="`overlay--${n}`"
-    ref="overlays"
-  )
-    .overlay__inner(:class="`overlay__inner--color-${n}`")
-      .portfolioTitle(v-if="n === 1") {{ getCurRotateLayoutName }}
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { usePortfolioStore } from '@/stores/portfolio'
 
-</template>
+const store = usePortfolioStore()
+const overlays = ref<HTMLElement[]>([])
 
-<script>
-export default {
-  name: 'TransitionBlock',
-  computed: {
-    getCurRotateLayoutName() {
-      return this.$store.state.rotateLayoutName
-    }
-  },
-  methods: {
-    getOverlaysElems() {
-      const overlays = this.$refs.overlays
-      this.$store.dispatch('getOverlaysElems', overlays)
-    }
-  },
-  mounted() {
-    this.getOverlaysElems()
-  }
+function getOverlaysElems() {
+  store.getOverlaysElems(overlays.value)
 }
+
+onMounted(() => {
+  getOverlaysElems()
+})
 </script>
 
-<style lang="sass" scoped>
-.portfolioTitle
-  font-size: 1.2vw
-  text-align: center
-  letter-spacing: 0.5vw
-  color: #ffffff
-  position: absolute
-  left: 50%
-  top: 50%
-  transform: translate(-50%, -50%) rotate(5deg)
-  +breakpoint(sm)
-    font-size: 3.75vmin
-    letter-spacing: 1.25vmin
+<template>
+  <div>
+    <div v-for="n in 4" :key="n" class="overlay" :class="`overlay--${n}`" ref="overlays">
+      <div class="overlay__inner" :class="`overlay__inner--color-${n}`">
+        <div v-if="n === 1" class="portfolioTitle">{{ store.rotateLayoutName }}</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.portfolioTitle {
+  font-size: 1.2vw;
+  text-align: center;
+  letter-spacing: 0.5vw;
+  color: #ffffff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(5deg);
+}
+@media only screen and (max-width: 768px) {
+  .portfolioTitle {
+    font-size: 3.75vmin;
+    letter-spacing: 1.25vmin;
+  }
+}
 </style>

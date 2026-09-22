@@ -1,0 +1,166 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.flexBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.choiceInfos {
+  position: fixed;
+  right: 2%;
+  top: 4%;
+  display: flex;
+  transition: 1s;
+  z-index: 100;
+}
+.choiceInfos.pointer-none {
+  pointer-events: none;
+}
+@media only screen and (max-width: 768px) {
+  .choiceInfos {
+    top: 2.5%;
+  }
+}
+
+.choiceInfo {
+  padding-bottom: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 15px;
+}
+@media only screen and (max-width: 768px) {
+  .choiceInfo {
+    top: 3.25%;
+    right: 5%;
+    padding-bottom: 1vmin;
+  }
+}
+.choiceInfo.lines {
+  opacity: 0;
+  visibility: hidden;
+}
+.choiceInfo.lines.show {
+  opacity: 1;
+  visibility: visible;
+}
+.choiceInfo.lines.show.duration2 {
+  transition: 1s 3s;
+}
+.choiceInfo.lines.duration1 {
+  transition: 2s 5.5s;
+}
+.choiceInfo.lines.duration2 {
+  transition: 0.5s 2s;
+}
+.choiceInfo > p {
+  text-align: center;
+  margin: 0 0.75vw 0 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+@media only screen and (max-width: 768px) {
+  .choiceInfo > p {
+    font-size: 3vmin;
+  }
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2vw 2.5vw 0;
+  box-sizing: border-box;
+}
+@media only screen and (max-width: 768px) {
+  .navbar {
+    padding: 3.5vw 4.5vw 0;
+  }
+}
+.navbar .logo {
+  color: #7e7869;
+  font-size: 7vmin;
+  position: relative;
+  pointer-events: none;
+  z-index: 999;
+}
+@media (min-width: 996px) {
+  .navbar .logo {
+    font-size: 38px;
+  }
+}
+.navbar .logo::after {
+  content: 'ack ←';
+  position: absolute;
+  right: -72px;
+  bottom: 4px;
+  z-index: 0;
+  font-size: 16px;
+  letter-spacing: 4px;
+  opacity: 0;
+  visibility: hidden;
+}
+@media only screen and (max-width: 575px) {
+  .navbar .logo::after {
+    font-size: 3.25vmin;
+    right: -15.5vmin;
+    bottom: 0.5vmin;
+  }
+}
+.navbar .logo.pointer-initial {
+  animation: backFrame 1.5s 1.5s both;
+}
+.navbar .logo.pointer-initial::after {
+  animation: backTextShow 1.5s 2.5s both;
+}
+.navbar .logo.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.navbar .logo.duration1 {
+  transition: 1s 5s;
+}
+.navbar .logo.duration2 {
+  transition: 0.3s;
+}
+.navbar ul.links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media only screen and (max-width: 768px) {
+  .navbar ul.links {
+    display: none;
+  }
+}
+.navbar ul.links li {
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: .5s;
+  margin: 0 10px;
+  position: relative;
+}
+.navbar ul.links li::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: black;
+  transition: .3s;
+}
+.navbar ul.links li:hover::after {
+  width: 100%;
+}
+.navbar ul.links li a {
+  color: #7e7869;
+}
