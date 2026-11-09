@@ -66,7 +66,7 @@ export default class MouseCursor {
       'nextBtn',
     ]
 
-    const cursorNoneMap = ['en', 'jp', 'colorMapBtn', 'choiceInfo']
+    const cursorNoneMap = ['en', 'jp', 'tw', 'colorMapBtn', 'choiceInfo']
 
     const isContainsTarget = (target_: string | string[]): boolean => {
       const checkContainTarget = (list: string): boolean =>

@@ -12,6 +12,7 @@ const curLangType = ref<I18nLang>('en')
 const langList: { name: string; lang: I18nLang }[] = [
   { name: 'En', lang: 'en' },
   { name: 'Ja', lang: 'jp' },
+  { name: '中', lang: 'tw' },
 ]
 
 watch(

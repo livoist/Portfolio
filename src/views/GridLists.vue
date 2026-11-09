@@ -11,31 +11,39 @@ const gridItems = ref<HTMLElement[]>([])
 const gridContents: PortfolioListItem[] = [
   {
     id: 0,
+    date: '2026',
+    skill: ['Vue 3', 'TypeScript', 'Node.js', 'Claude API', 'RAG'],
+    link: 'https://ai-approval.onrender.com/',
+    slowStart: true,
+    i18Tag: 'aiApproval',
+  },
+  {
+    id: 1,
     date: '2021-2022',
     skill: ['Nuxt.js', 'PWA', 'MapBox', 'RWD'],
     link: '/F2E-3-2/',
     i18Tag: 'bikeMap',
   },
   {
-    id: 1,
+    id: 2,
     date: '2021-2022',
-    skill: ['p5.js'],
+    skill: ['p5.js', 'Generative Art'],
     link: '/codeArt-1/',
     i18Tag: 'randomWorld',
   },
   {
-    id: 2,
-    date: '2021-2022',
-    skill: ['p5.js'],
-    link: '/codeArt-2/',
-    i18Tag: 'colorsDove',
-  },
-  {
     id: 3,
     date: '2021-2022',
-    skill: ['JavaScript'],
+    skill: ['JavaScript', 'Algorithm'],
     link: '/DynamicTable/',
     i18Tag: 'dynamicTable',
+  },
+  {
+    id: 4,
+    date: '2021-2022',
+    skill: ['p5.js', 'Low Poly'],
+    link: '/codeArt-2/',
+    i18Tag: 'colorsDove',
   },
 ]
 
@@ -115,7 +123,7 @@ onMounted(() => {
     margin-top: 20vw;
     height: auto;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
   }
 }
 
@@ -146,7 +154,7 @@ onMounted(() => {
   }
 }
 .gridItem.portfolio0 {
-  grid-area: 2 / 2 / 2 / 6;
+  grid-area: 2 / 2 / 2 / 5;
 }
 @media only screen and (max-width: 768px) {
   .gridItem.portfolio0 {
@@ -154,7 +162,7 @@ onMounted(() => {
   }
 }
 .gridItem.portfolio1 {
-  grid-area: 5 / 6 / 5 / 10;
+  grid-area: 5 / 5 / 5 / 8;
 }
 @media only screen and (max-width: 768px) {
   .gridItem.portfolio1 {
@@ -162,7 +170,7 @@ onMounted(() => {
   }
 }
 .gridItem.portfolio2 {
-  grid-area: 5 / 14 / 5 / 18;
+  grid-area: 2 / 8 / 2 / 11;
 }
 @media only screen and (max-width: 768px) {
   .gridItem.portfolio2 {
@@ -170,11 +178,19 @@ onMounted(() => {
   }
 }
 .gridItem.portfolio3 {
-  grid-area: 2 / 10 / 2 / 14;
+  grid-area: 5 / 11 / 5 / 14;
 }
 @media only screen and (max-width: 768px) {
   .gridItem.portfolio3 {
     grid-area: 4 / 3 / 4 / 9;
+  }
+}
+.gridItem.portfolio4 {
+  grid-area: 2 / 14 / 2 / 17;
+}
+@media only screen and (max-width: 768px) {
+  .gridItem.portfolio4 {
+    grid-area: 5 / 1 / 5 / 7;
   }
 }
 </style>

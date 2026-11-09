@@ -50,7 +50,13 @@
     width: 65%;
   }
 }
-.person-content > div:nth-of-type(2) {
+/*
+  三種語言的標題疊在同一個位置，只顯示目前的語言
+  第 2、3 組都要絕對定位：原本只有第 2 組是，看不見的第 3 組（中文）仍然佔著高度，
+  把 ENTER 往下推出一大段距離
+*/
+.person-content > div:nth-of-type(2),
+.person-content > div:nth-of-type(3) {
   position: absolute;
   top: 0;
 }
@@ -60,12 +66,13 @@
 }
 
 .person-heading {
-  font-size: 3vw;
-  letter-spacing: 4px;
+  /* 隨視窗縮放，但限制在 28～40px：大螢幕上不會大到失去精緻感 */
+  font-size: clamp(28px, 2.4vw, 40px);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
   color: #424040;
   cursor: default;
-  font-family: 'Shippori Mincho';
-  letter-spacing: 0px;
+  font-family: 'Shippori Mincho', 'Noto Serif TC', serif;
   transition: 0.3s;
 }
 @media only screen and (max-width: 768px) {
@@ -75,11 +82,29 @@
     -webkit-text-stroke: 0.5px #efecea;
   }
 }
-.person-heading.c1 {
-  align-self: flex-start;
+/*
+  兩行錯開排列：第二行從第一行的中段開始，上下兩行之間沒有空隙
+  容器寬度貼齊文字（max-content），不再是固定的 30%：
+  固定寬度時，第一行短的語言（英文、中文）兩行之間會空出一大段
+  第二行縮排多少依語言而定，讓三種語言的錯開比例看起來一致
+*/
+.person-content > .en-heading,
+.person-content > .jp-heading,
+.person-content > .tw-heading {
+  width: max-content;
+  align-items: flex-start;
+}
+.en-heading {
+  --heading-indent: 2.4em;
+}
+.jp-heading {
+  --heading-indent: 2.8em;
+}
+.tw-heading {
+  --heading-indent: 2em;
 }
 .person-heading.c2 {
-  align-self: flex-end;
+  margin-left: var(--heading-indent);
 }
 .person-heading span {
   display: inline-block;
@@ -107,6 +132,7 @@
 }
 
 .btn.btn-enter {
+  margin-top: 28px; /* 跟標題保持一段固定、不會太遠的距離 */
   transition: all 0.5s;
   position: relative;
   box-sizing: border-box;

@@ -13,6 +13,8 @@ const enTitle1 = ref<HTMLElement | null>(null)
 const enTitle2 = ref<HTMLElement | null>(null)
 const jpTitle1 = ref<HTMLElement | null>(null)
 const jpTitle2 = ref<HTMLElement | null>(null)
+const twTitle1 = ref<HTMLElement | null>(null)
+const twTitle2 = ref<HTMLElement | null>(null)
 const enterBtn = ref<HTMLElement | null>(null)
 // NOTE: the original read `this.$refs.textAn`, but no template element ever carried
 // `ref="textAn"` — it was always undefined there too. Kept as an always-null ref so
@@ -50,7 +52,9 @@ function enterViewTimeline() {
   const timelineTarget =
     store.lang === 'en'
       ? { titleEl1: enTitle1.value, titleEl2: enTitle2.value, textAn: textAn.value, enterBtn: enterBtn.value }
-      : { titleEl1: jpTitle1.value, titleEl2: jpTitle2.value, textAn: textAn.value, enterBtn: enterBtn.value }
+      : store.lang === 'jp'
+        ? { titleEl1: jpTitle1.value, titleEl2: jpTitle2.value, textAn: textAn.value, enterBtn: enterBtn.value }
+        : { titleEl1: twTitle1.value, titleEl2: twTitle2.value, textAn: textAn.value, enterBtn: enterBtn.value }
 
   const randomFloat = (min: number, max: number) => parseFloat(Math.min(min + Math.random() * (max - min), max).toFixed(2))
 
@@ -64,7 +68,7 @@ function enterViewTimeline() {
   const enterNextPage = () => {
     store.setEnterMainPageState(true)
 
-    const nextPageName = store.lang === 'en' ? 'Portfolio' : 'ポートフォリオ'
+    const nextPageName = { en: 'Portfolio', jp: 'ポートフォリオ', tw: '作品集' }[store.lang]
 
     store.canReverse(true)
     store.switchTnsName(nextPageName)
@@ -128,7 +132,7 @@ function enterViewTimeline() {
   }
 
   const introPage = async () => {
-    const prePageName = store.lang === 'en' ? 'Visual' : 'ビジュアル'
+    const prePageName = { en: 'Visual', jp: 'ビジュアル', tw: '視覺' }[store.lang]
 
     store.canReverse(false)
     store.switchTnsName(prePageName)
@@ -168,7 +172,7 @@ function meshLine() {
 
 function charmingText() {
   // charming text and add span tag
-  const targetArray = [enTitle1.value, enTitle2.value, jpTitle1.value, jpTitle2.value]
+  const targetArray = [enTitle1.value, enTitle2.value, jpTitle1.value, jpTitle2.value, twTitle1.value, twTitle2.value]
   targetArray.forEach((item) => item && charming(item))
 
   // select all span tag text
@@ -177,6 +181,8 @@ function charmingText() {
     ...(enTitle2.value?.querySelectorAll('span') ?? []),
     ...(jpTitle1.value?.querySelectorAll('span') ?? []),
     ...(jpTitle2.value?.querySelectorAll('span') ?? []),
+    ...(twTitle1.value?.querySelectorAll('span') ?? []),
+    ...(twTitle2.value?.querySelectorAll('span') ?? []),
   ]
 
   // random sort
@@ -239,6 +245,10 @@ onMounted(() => {
         <div class="jp-heading" :class="{ show: store.lang === 'jp' }">
           <div class="person-heading c1" ref="jpTitle1">より多くの探索</div>
           <div class="person-heading c2" ref="jpTitle2">より多くの可能性</div>
+        </div>
+        <div class="tw-heading" :class="{ show: store.lang === 'tw' }">
+          <div class="person-heading c1" ref="twTitle1">更多嘗試</div>
+          <div class="person-heading c2" ref="twTitle2">更多可能</div>
         </div>
 
         <a class="btn btn-enter" ref="enterBtn" href="javascript:void('0')">{{ $t('home-btn') }}</a>

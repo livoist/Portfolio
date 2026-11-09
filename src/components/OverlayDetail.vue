@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { Linear, TimelineMax } from 'gsap'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { getImg } from '@img'
@@ -17,8 +17,30 @@ const isFullView = computed(() => store.fullView)
 const getCurViewContent = computed(() =>
   store.portfolioList.length > 0 ? store.portfolioList[curId.value] : ({} as Partial<(typeof store.portfolioList)[number]>)
 )
-const getProgressBarProcess = computed(() => ((curId.value + 1) / 4) * 100)
+const getProgressBarProcess = computed(() => ((curId.value + 1) / store.portfolioList.length) * 100)
 const switchButtonState = computed(() => ({ 'prevent-event': isSwitch.value }))
+
+// ===== 手機版的說明：最多顯示 4 行，需要時才展開 =====
+// 只有文字真的超過 4 行才顯示「展開」；桌機版不截斷，所以永遠不會出現按鈕
+const desExpanded = ref(false)
+const desCanExpand = ref(false)
+
+function checkDesOverflow() {
+  // 用 DOM 順序找目前這一則（v-for 的 ref 陣列不保證順序）
+  const el = detailContent.value?.querySelectorAll<HTMLElement>('.viewDes')[curId.value]
+  desCanExpand.value = !!el && (desExpanded.value || el.scrollHeight > el.clientHeight + 1)
+}
+const recheckDes = () => nextTick(checkDesOverflow)
+
+// 換作品時收合：展開後高度會變長，下一個作品應該從收合的狀態開始
+watch(curId, () => {
+  desExpanded.value = false
+  recheckDes()
+})
+// 換語言、打開作品介紹時，文字長度或版面會變，重新判斷要不要顯示按鈕
+watch(() => [store.lang, store.fullView, store.portfolioList.length], recheckDes)
+onMounted(() => window.addEventListener('resize', recheckDes))
+onUnmounted(() => window.removeEventListener('resize', recheckDes))
 
 watch(
   () => store.curFullViewID,
@@ -53,7 +75,7 @@ async function closeView(bool: boolean) {
 }
 
 function switchPortfolio(type: 'pre' | 'next') {
-  if ((curId.value === 3 && type === 'next') || (curId.value === 0 && type === 'pre')) {
+  if ((curId.value === store.portfolioList.length - 1 && type === 'next') || (curId.value === 0 && type === 'pre')) {
     closeView(true)
     return
   }
@@ -129,28 +151,57 @@ function detailInAnimReverse() {
           </div>
 
           <div class="viewContent" ref="detailContent" :class="{ switch: isSwitch }">
-            <div>
-              <div v-if="getCurViewContent.i18Tag" class="viewTitle fz-24">
-                {{ $t(`preview-name-${getCurViewContent.i18Tag}`) }}
-              </div>
-              <div class="slash"></div>
-              <div class="viewTime">
-                <span>{{ $t('preview-date') }}: </span>
-                {{ getCurViewContent.date }}
-              </div>
-              <div class="viewTag">
-                <span>{{ $t('preview-tag') }}: </span>
-                <div class="viewSkillTag" v-for="item in getCurViewContent.skill" :key="item">{{ item }}</div>
-              </div>
-              <div v-if="getCurViewContent.i18Tag" class="viewDes mb-30">
-                <span>{{ $t('preview-des') }}: </span>
-                {{ $t(`preview-des-content-${getCurViewContent.i18Tag}`) }}
+            <!--
+              所有作品的文字疊在同一格，只顯示目前這一個：
+              容器的高度固定是最長的那一則，切換到文字比較少的作品時，整個區塊不會上下跳動
+            -->
+            <div class="viewTextStack">
+              <div
+                v-for="(item, index) in store.portfolioList"
+                :key="item.id"
+                class="viewText"
+                :class="{ current: index === curId }"
+                :aria-hidden="index !== curId"
+              >
+                <div class="viewTitle fz-24">
+                  {{ $t(`preview-name-${item.i18Tag}`) }}
+                </div>
+                <div class="slash"></div>
+                <div class="viewTime">
+                  <span>{{ $t('preview-date') }}: </span>
+                  {{ item.date }}
+                </div>
+                <!-- 左邊是「標籤:」，右邊是標籤區：換行的標籤會對齊第一個標籤，而不是退到最左邊 -->
+                <div class="viewTag">
+                  <span>{{ $t('preview-tag') }}: </span>
+                  <div class="viewSkillTags">
+                    <div class="viewSkillTag" v-for="skill in item.skill" :key="skill">{{ skill }}</div>
+                  </div>
+                </div>
+                <div class="mb-30">
+                  <div class="viewDes" :class="{ expanded: index === curId && desExpanded }">
+                    <span>{{ $t('preview-des') }}: </span>
+                    {{ $t(`preview-des-content-${item.i18Tag}`) }}
+                  </div>
+                  <button
+                    v-if="index === curId && desCanExpand"
+                    type="button"
+                    class="desToggle"
+                    :aria-expanded="desExpanded"
+                    @click="desExpanded = !desExpanded"
+                  >
+                    {{ $t(desExpanded ? 'preview-des-collapse' : 'preview-des-expand') }}
+                  </button>
+                </div>
               </div>
             </div>
             <div class="linkGroup">
-              <a class="viewLink" :href="`https://livoist.github.io${getCurViewContent.link}`" target="_blank">{{
-                $t('preview-more-txt')
-              }}</a>
+              <div class="linkWrap">
+                <a class="viewLink" :href="getCurViewContent.link?.startsWith('http') ? getCurViewContent.link : `https://livoist.github.io${getCurViewContent.link}`" target="_blank">{{
+                  $t('preview-more-txt')
+                }}</a>
+                <span v-if="getCurViewContent.slowStart" class="linkNote">{{ $t('preview-slow-start') }}</span>
+              </div>
               <div class="viewOverlayClose" @click="closeView(false)" style="cursor: pointer">
                 {{ $t('preview-close-txt') }}
               </div>
@@ -346,19 +397,39 @@ function detailInAnimReverse() {
   }
 }
 
+.viewTag {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.viewTag > span {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.viewSkillTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px; /* 上下也留間距：換行時第二行不會跟第一行黏在一起 */
+}
+/* 淺灰底加細框線：看得出是標籤，又不搶標題與說明的視覺焦點 */
 .viewSkillTag {
-  display: inline-block;
-  margin-right: 10px;
   font-size: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.7;
+  color: rgba(0, 0, 0, 0.88);
+  background: rgba(0, 0, 0, 0.07);
+  border: 1px solid rgba(0, 0, 0, 0.55);
   padding: 0 6px;
   border-radius: 2px;
 }
 @media only screen and (max-width: 768px) {
+  .viewTag {
+    gap: 1.5vmin;
+  }
+  .viewSkillTags {
+    gap: 1.25vmin 1.5vmin;
+  }
   .viewSkillTag {
-    margin-right: 1vmin;
-    line-height: 1.7;
+    font-size: 3vmin;
   }
 }
 
@@ -377,6 +448,31 @@ function detailInAnimReverse() {
     line-height: 2;
   }
 }
+@media only screen and (max-width: 768px) {
+  .viewDes {
+    line-height: 1.7;
+  }
+  /* 手機版最多 4 行，按「展開」看全文 */
+  .viewDes:not(.expanded) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+  }
+}
+.desToggle {
+  margin-top: 1vmin;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #013b63;
+  font-size: 3.25vmin;
+  letter-spacing: 1px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .viewTime span,
 .viewTag span,
 .viewDes span {
@@ -484,10 +580,37 @@ function detailInAnimReverse() {
   transition: 1.5s;
   animation: delayBlurIn both 0.25s 2s;
 }
+.viewTextStack {
+  display: grid;
+}
+.viewText {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+.viewText.current {
+  visibility: visible;
+}
 .viewContent .linkGroup {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.linkWrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+.linkNote {
+  font-size: 12px;
+  letter-spacing: 1px;
+  opacity: 0.6;
+}
+@media only screen and (max-width: 768px) {
+  .linkNote {
+    font-size: 3vmin;
+  }
 }
 
 .viewOverlayClose {

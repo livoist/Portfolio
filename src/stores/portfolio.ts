@@ -1,14 +1,15 @@
 import { defineStore } from 'pinia'
 import type { CustomLineGenerator } from '@/meshAn'
 
-export type I18nLang = 'en' | 'jp'
+export type I18nLang = 'en' | 'jp' | 'tw'
 
 export interface PortfolioListItem {
   id: number
   date: string
   skill: string[]
-  link: string
+  link: string // 部署在 GitHub Pages 的作品寫路徑（例如 /F2E-3-2/）；部署在其他地方的寫完整網址
   i18Tag: string
+  slowStart?: boolean // 部署在會休眠的免費主機（例如 Render）：連結旁提醒首次載入要等一下
 }
 
 export interface PortfolioState {
