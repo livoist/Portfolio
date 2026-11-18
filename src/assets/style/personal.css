@@ -108,6 +108,13 @@
 }
 .person-heading span {
   display: inline-block;
+  /*
+    讓每個字母一直待在自己的合成圖層上。
+    GSAP 動畫進行中用 translate3d（字母被提升成獨立圖層），結束時改回 2D transform（圖層被移除），
+    圖層的建立和移除會讓文字重新點陣化，位置或粗細輕微跳動，hover ENTER 時看起來就像在抖。
+    固定圖層後，動畫前、中、後都是同一種渲染方式，就不會跳了。
+  */
+  will-change: transform;
 }
 
 .input-text {
