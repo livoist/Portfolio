@@ -109,6 +109,12 @@
 .person-heading span {
   display: inline-block;
   /*
+    charming 會把每個字元（包括空格）各包成一個 span。
+    inline-block 裡只有一個空白時，預設的 white-space: normal 會把它折疊掉，寬度變成 0，
+    「More Try」就會顯示成「MoreTry」。pre 讓空白保留原本的寬度。
+  */
+  white-space: pre;
+  /*
     讓每個字母一直待在自己的合成圖層上。
     GSAP 動畫進行中用 translate3d（字母被提升成獨立圖層），結束時改回 2D transform（圖層被移除），
     圖層的建立和移除會讓文字重新點陣化，位置或粗細輕微跳動，hover ENTER 時看起來就像在抖。
