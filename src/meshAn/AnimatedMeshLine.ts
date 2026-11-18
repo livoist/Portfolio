@@ -147,6 +147,13 @@ export default class AnimatedMeshLine extends Mesh {
     }
   }
 
+  // Free the GPU buffers/shader program held by this line. Removing a mesh from the
+  // scene does NOT release them — without this, every spawned line leaks GPU memory.
+  dispose(): void {
+    this.geometry.dispose()
+    this.meshLineMaterial.dispose()
+  }
+
   /**
    * * *******************
    * * CONDITIONS

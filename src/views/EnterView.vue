@@ -24,6 +24,9 @@ const textAn = ref<HTMLElement | null>(null)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let pageToggleTimeline: any = ''
 const step2State = ref(false)
+// Background line-art render engine, created by meshLine(). Paused while the grid
+// view (second page) fully covers the canvas, resumed when heading back.
+let engine: Engine | null = null
 
 function getStep1State(val: boolean) {
   // NOTE: the original assigned to `this.step2State` here (a typo for step1State) —
@@ -114,6 +117,12 @@ function enterViewTimeline() {
         }
       )
 
+    // Once the first page (and the canvas inside it) is fully faded out, stop rendering
+    // frames nobody can see. Re-check isReverse in case the user already clicked back.
+    pageToggleTimeline.eventCallback('onComplete', () => {
+      if (store.isReverse) engine?.pause()
+    })
+
     store.secPageEl?.classList.add('ovh-auto')
 
     let t = 0
@@ -137,6 +146,9 @@ function enterViewTimeline() {
     store.canReverse(false)
     store.switchTnsName(prePageName)
 
+    // Resume before the reverse so the canvas is already animating as it fades back in.
+    engine?.start()
+
     await pageToggleTimeline.reverse()
     store.secPageEl?.classList.remove('ovh-auto')
   }
@@ -157,13 +169,15 @@ function meshLine() {
   // their own args internally (see their NOTE comments), so the public constructor
   // really does take none, but TS widens the generic mixin chain's inferred signature.
   const ComposedEngine = FullScreenInBackground(HandleCameraOrbit({ x: 4, y: 4 })(Engine)) as unknown as new () => Engine
-  const engine = new ComposedEngine()
+  engine = new ComposedEngine()
 
   const linegenerator = new CustomLineGenerator({ frequency: 0.2 }, staticProps, () => store.colorMap)
   linegenerator.start()
 
   engine.add(linegenerator)
-  engine.start()
+  // meshLine() runs on a 6.5s delay after loading — if the user has already moved to
+  // the grid view by then, don't start rendering yet; introPage() will start it.
+  if (!store.isReverse) engine.start()
 
   // markRaw: skip wrapping the THREE.js instance in a reactive proxy — it's an
   // imperative handle (MeshLineSwitcher.vue calls .rebuild() on it), not view state.

@@ -57,8 +57,25 @@ export default class Engine {
     this.meshCount--
   }
 
+  // Id of the pending animation frame; null while the loop is paused/not started.
+  private rafId: number | null = null
+
+  get isRunning(): boolean {
+    return this.rafId !== null
+  }
+
+  // Start (or resume) the render loop. Safe to call while already running.
   start(): void {
+    if (this.isRunning) return
     this.update()
+  }
+
+  // Stop the render loop, e.g. while the canvas is hidden behind another view, so it
+  // doesn't keep burning CPU/GPU on frames nobody sees. Resume with start().
+  pause(): void {
+    if (this.rafId === null) return
+    cancelAnimationFrame(this.rafId)
+    this.rafId = null
   }
 
   // Update render
@@ -69,7 +86,7 @@ export default class Engine {
     }
     this.render()
     // Loop
-    requestAnimationFrame(this.update)
+    this.rafId = requestAnimationFrame(this.update)
   }
 
   render(): void {

@@ -53,6 +53,7 @@ export default class LineGenerator extends Object3D {
 
   removeLine(line: AnimatedMeshLine): void {
     this.remove(line)
+    line.dispose()
     this.nbrOfLines--
   }
 
@@ -73,6 +74,7 @@ export default class LineGenerator extends Object3D {
   clear(): void {
     for (let idx = this.lines.length - 1; idx >= 0; idx--) {
       this.remove(this.lines[idx])
+      this.lines[idx].dispose()
     }
     this.lines = []
     this.nbrOfLines = -1
