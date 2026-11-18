@@ -2,7 +2,9 @@
 import { markRaw, onMounted, ref, watch } from 'vue'
 import { Expo, Quad, Quint, TimelineMax } from 'gsap'
 import charming from 'charming'
-import { CustomLineGenerator, Engine, FullScreenInBackground, HandleCameraOrbit } from '@/meshAn'
+// Type-only import: erased at compile time, so it doesn't pull three.js into the main
+// bundle. The runtime code is loaded lazily via `meshAnModule` below.
+import type { Engine } from '@/meshAn'
 import RotateLayout from '@/rotateLayout/rotateLayout'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { LoadingPage } from '@c'
@@ -27,6 +29,12 @@ const step2State = ref(false)
 // Background line-art render engine, created by meshLine(). Paused while the grid
 // view (second page) fully covers the canvas, resumed when heading back.
 let engine: Engine | null = null
+
+// Lazy-load the background line-art engine (three.js + three.meshline + src/meshAn).
+// It's ~60% of the JS and isn't needed until meshLine() runs (6.5s after loading ends),
+// so Vite splits it into its own chunk. Kick off the download right away so it runs in
+// parallel with the loading screen instead of blocking first paint.
+const meshAnModule = import('@/meshAn')
 
 function getStep1State(val: boolean) {
   // NOTE: the original assigned to `this.step2State` here (a typo for step1State) —
@@ -157,7 +165,19 @@ function enterViewTimeline() {
   if (prePage) prePage.addEventListener('click', introPage)
 }
 
-function meshLine() {
+async function meshLine() {
+  let mod: Awaited<typeof meshAnModule>
+  try {
+    // Usually already resolved by now (download started during the loading screen).
+    mod = await meshAnModule
+  } catch (err) {
+    // Chunk failed to load (e.g. flaky network) — the background lines are purely
+    // decorative, so skip them rather than breaking the page.
+    console.error('[EnterView] failed to load background line engine', err)
+    return
+  }
+  const { CustomLineGenerator, Engine, FullScreenInBackground, HandleCameraOrbit } = mod
+
   const staticProps = {
     width: 0.08, // meshLine width
     nbrOfPoints: 4, // meshLine turn point
