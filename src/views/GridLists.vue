@@ -89,7 +89,16 @@ onMounted(() => {
           @click="getOverlayDetail(item)"
         >
           <p>{{ $t(`preview-name-${item.i18Tag}`) }}</p>
-          <img :src="getImg(`portfolio${item.id}.png`)" :alt="$t(`preview-name-${item.i18Tag}`)" />
+          <!-- width/height = the images' intrinsic ~8:5 size, so the browser reserves the
+               right box before the file loads (no layout shift, and smooth-scrollbar
+               measures the final page height up front). CSS keeps them fluid. -->
+          <img
+            :src="getImg(`portfolio${item.id}.webp`)"
+            :alt="$t(`preview-name-${item.i18Tag}`)"
+            width="600"
+            height="380"
+            decoding="async"
+          />
         </div>
       </div>
     </div>
@@ -147,6 +156,7 @@ onMounted(() => {
   cursor: pointer;
   transition: 0.35s ease-out;
   width: 100%;
+  height: auto; /* keep the aspect ratio from the width/height attributes */
 }
 @media (min-width: 1200px) {
   .gridItem:hover > img {

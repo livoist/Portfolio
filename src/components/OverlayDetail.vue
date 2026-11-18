@@ -144,7 +144,7 @@ function detailInAnimReverse() {
         <div class="viewContentGroup">
           <div class="viewContentImage" ref="detailImg" :class="{ switch: isSwitch }">
             <img
-              :src="getImg(`portfolio${curId}.png`)"
+              :src="getImg(`portfolio${curId}.webp`)"
               :alt="getCurViewContent.i18Tag ? $t(`preview-name-${getCurViewContent.i18Tag}`) : ''"
               :class="{ switch: isSwitch }"
             />

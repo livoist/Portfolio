@@ -1,4 +1,4 @@
-const modules = import.meta.glob('./*.{png,jpg}', { eager: true, import: 'default' }) as Record<string, string>
+const modules = import.meta.glob('./*.{png,jpg,webp}', { eager: true, import: 'default' }) as Record<string, string>
 
 const imgMap: Record<string, string> = {}
 for (const path in modules) {
