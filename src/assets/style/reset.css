@@ -1,7 +1,4 @@
-/* ----- google font ----- */
-@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
+/* ----- google font: loaded via <link> in index.html (see the comment there) ----- */
 
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
 blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em,
@@ -31,7 +28,7 @@ body, html {
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   position: fixed;
-  font-family: "Shippori Mincho", "Julius Sans One", "Noto Serif TC", serif;
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
 }
 
 a {
