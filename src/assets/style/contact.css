@@ -54,7 +54,7 @@
     margin: 12vmin auto 14vmin;
   }
 }
-.social-bar a.fab {
+.social-bar .social-link {
   display: inline-block;
   color: rgba(0, 0, 0, 0.6);
   font-size: 30px;
@@ -65,12 +65,20 @@
   z-index: 1;
 }
 @media (min-width: 996px) {
-  .social-bar a.fab:hover svg {
+  .social-bar .social-link:hover .social-icon {
     color: #fcb437;
     z-index: 100;
   }
 }
-.social-bar a.fab svg {
+.social-bar .social-icon {
+  /* Sizing previously injected at runtime by FontAwesome's `.svg-inline--fa` rule
+     (fontawesome-svg-core 7.x), replicated here so the icons render identically. */
+  box-sizing: content-box;
+  display: inline-block;
+  height: 1em;
+  width: 1.25em;
+  overflow: visible;
+  vertical-align: -0.125em;
   pointer-events: none;
   position: relative;
   transition: 0.3s;

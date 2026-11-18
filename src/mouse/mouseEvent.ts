@@ -84,7 +84,7 @@ export default class MouseCursor {
     }
 
     // change cursor z-index
-    if (isContainsTarget('fab') && isContainsTarget('A')) {
+    if (isContainsTarget('social-link') && isContainsTarget('A')) {
       document.querySelector('html')?.classList.toggle('changeCursorZindex')
     }
 
