@@ -587,8 +587,12 @@ function detailInAnimReverse() {
   grid-area: 1 / 1;
   visibility: hidden;
 }
+/* `inherit`, not `visible`: an explicit `visibility: visible` on a descendant overrides
+   a hidden ancestor, so the current text stayed hit-testable even while the whole
+   overlay was hidden — an invisible layer that swallowed wheel events over the grid
+   page and stopped smooth-scrollbar from scrolling. `inherit` follows the overlay. */
 .viewText.current {
-  visibility: visible;
+  visibility: inherit;
 }
 .viewContent .linkGroup {
   display: flex;
