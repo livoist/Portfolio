@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { markRaw, onMounted, ref, watch } from 'vue'
-import { Expo, Quad, Quint, TimelineMax } from 'gsap'
+import { Expo, TimelineMax, gsap } from 'gsap'
 import charming from 'charming'
 // Type-only import: erased at compile time, so it doesn't pull three.js into the main
 // bundle. The runtime code is loaded lazily via `meshAnModule` below.
@@ -221,37 +221,31 @@ function charmingText() {
 
   // random sort
   letterAnimTargets.sort(() => Math.round(Math.random()) - 0.5)
-  // random < 0.5
-  let letters = letterAnimTargets.filter(() => Math.random() < 0.5)
-  // add EventListener func
+
+  // The running hover animation, if any. GSAP 3 tweens default to `overwrite: false`, so
+  // starting a new timeline while the previous one is still playing leaves several tweens
+  // writing `y` on the same letters every frame — the letters visibly jitter between
+  // positions. Ignoring re-triggers until the current run finishes avoids that (killing
+  // it instead would snap letters back from mid-air, which looks worse).
+  let hoverTl: gsap.core.Timeline | null = null
+
   const onEnterHoverFn = () => {
-    // random > 0.5
-    letters = letterAnimTargets.filter(() => Math.random() > 0.5)
-    // NOTE: GSAP 2's `.staggerTo(targets, duration, vars, stagger, position)` no longer
-    // exists in GSAP 3 — stagger now lives inside `vars.stagger`, dropping the separate
-    // 5-argument form. Ported to the GSAP 3 signature (targets, duration, vars, position).
-    new TimelineMax({ onComplete: () => {} })
-      .staggerTo(
+    if (hoverTl?.isActive()) return
+
+    // animate a random half of the letters
+    const letters = letterAnimTargets.filter(() => Math.random() > 0.5)
+
+    // Each letter fades out (0.04i → 0.04i + 0.2s), then fades back in from below starting
+    // at 0.4 + 0.04i — the two phases never overlap for the same letter.
+    // NOTE: previously written with the legacy `.staggerTo(targets, duration, vars, 0 / 0.4)`
+    // form; in GSAP 3 that 4th argument is `stagger`, not `position`, so the 0 / 0.4 were
+    // silently ignored and the fade-in only started after every fade-out had finished.
+    hoverTl = gsap
+      .timeline()
+      .to(letters, { duration: 0.2, ease: 'quad.in', y: '-100%', opacity: 0, stagger: 0.04 }, 0)
+      .to(
         letters,
-        0.2,
-        {
-          ease: Quad.easeIn,
-          y: '-100%',
-          opacity: 0,
-          stagger: 0.04,
-        },
-        0
-      )
-      .staggerTo(
-        letters,
-        0.6,
-        {
-          ease: Quint.easeOut,
-          startAt: { y: '55%' },
-          y: '0%',
-          opacity: 1,
-          stagger: 0.04,
-        },
+        { duration: 0.6, ease: 'quint.out', startAt: { y: '55%' }, y: '0%', opacity: 1, stagger: 0.04 },
         0.4
       )
   }
